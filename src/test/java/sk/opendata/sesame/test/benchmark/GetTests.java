@@ -23,6 +23,8 @@ public class GetTests {
 
 	private static SesameBenchmark sesameBenchmark = null;
 
+	public final static String FULL_ORGANISATIONS_DATA = "/tmp/organisations-dump-full.rdf";
+
 	@Rule
 	public MethodRule benchmarkRun = new BenchmarkRule();
 
@@ -32,7 +34,7 @@ public class GetTests {
 		sesameBenchmark.createRepository(SesameBenchmark.SESAME_DATA_DIR);
 		sesameBenchmark.prepareConnection();
 
-		sesameBenchmark.fillRepository(SesameBenchmark.ORGANISATIONS_DATA);
+		sesameBenchmark.fillRepository(FULL_ORGANISATIONS_DATA);
 		sesameBenchmark.fillRepository(SesameBenchmark.PROCUREMENT_DATA);
 		sesameBenchmark.fillRepository(SesameBenchmark.DONORS_DATA);
 	}

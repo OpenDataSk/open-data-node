@@ -19,6 +19,8 @@ public class FillTest {
 
 	private SesameBenchmark sesameBenchmark = null;
 
+	public final static String FULL_ORGANISATIONS_DATA = "/tmp/organisations-dump-full.rdf";
+
 	@Rule
 	public MethodRule benchmarkRun = new BenchmarkRule();
 
@@ -29,13 +31,13 @@ public class FillTest {
 		sesameBenchmark.prepareConnection();
 	}
 
-	@BenchmarkOptions(benchmarkRounds = 10, warmupRounds = 1)
+	@BenchmarkOptions(benchmarkRounds = 3, warmupRounds = 0)
 	@Test
 	public void testFillRepository() {
 		boolean exception = false;
 
 		try {
-			sesameBenchmark.fillRepository(SesameBenchmark.ORGANISATIONS_DATA);
+			sesameBenchmark.fillRepository(FULL_ORGANISATIONS_DATA);
 			sesameBenchmark.fillRepository(SesameBenchmark.PROCUREMENT_DATA);
 			sesameBenchmark.fillRepository(SesameBenchmark.DONORS_DATA);
 		} catch (RepositoryException e) {
