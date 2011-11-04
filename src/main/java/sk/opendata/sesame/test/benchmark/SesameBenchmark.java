@@ -24,12 +24,15 @@ public class SesameBenchmark {
 
 	public final static String SESAME_DATA_DIR = "/tmp/sesame-test-datadir";
 	public final static String ORGANISATIONS_DATA = "/tmp/organisations-dump.rdf";
+	public final static String PROCUREMENT_DATA = "/tmp/procurements-dump.rdf";
+	public final static String DONORS_DATA = "/tmp/sponzori_stran-firmy-dump.rdf";
 	public final static String TEST_ICO = "30018340";
 
 	private Repository myRepository = null;
 	private RepositoryConnection con = null;
 	private TupleQuery nameIcoListQuery = null;
 	private TupleQuery orgByIcoQuery = null;
+	private TupleQuery donorAndSupplierQuery = null;
 	private ValueFactory factory = null;
 
 	/**
@@ -88,6 +91,14 @@ public class SesameBenchmark {
 				"    opendata:ico ?ico\n" +
 				"}");
 
+		donorAndSupplierQuery = con.prepareTupleQuery(QueryLanguage.SPARQL,
+				PREFIXES +
+				"SELECT DISTINCT ?suspectIco " +
+				"WHERE { " +
+				"  ?supplier opendata:xSupplierIco ?suspectIco . " +
+				"  ?donor opendata:xProviderIco ?suspectIco . " +
+				"}");
+
 		factory = myRepository.getValueFactory();
 	}
 
@@ -98,22 +109,24 @@ public class SesameBenchmark {
 	public TupleQueryResult getOrgByIco(String ico) throws QueryEvaluationException {
 		orgByIcoQuery.setBinding("ico", factory.createLiteral(ico));
 
-		//System.out.println("  query: " + orgByIcoQuery.toString());
-
 		return orgByIcoQuery.evaluate();
+	}
+
+	public TupleQueryResult getDonorAndSupplierList() throws QueryEvaluationException {
+		return donorAndSupplierQuery.evaluate();
 	}
 
 	/**
 	 * Fill sample data into the repository.
-	 * @param organisationsRdfFileName sample RDF data created from Datanest CSV dump
+	 * @param rdfFileName sample RDF data created from Datanest CSV dump
 	 * @throws RepositoryException
 	 * @throws RDFParseException
 	 * @throws IOException
 	 */
-	public void fillRepository(String organisationsRdfFileName) throws RepositoryException, RDFParseException, IOException {
-		File organisationsRdfFile = new File(organisationsRdfFileName);
-		con.add(organisationsRdfFile,
-				"file://" + organisationsRdfFileName,
+	public void fillRepository(String rdfFileName) throws RepositoryException, RDFParseException, IOException {
+		File rdfFile = new File(rdfFileName);
+		con.add(rdfFile,
+				"file://" + rdfFileName,
 				RDFFormat.RDFXML);
 	}
 
@@ -133,7 +146,9 @@ public class SesameBenchmark {
 			sesameBenchmark.prepareConnection();
 
 			System.out.println("--- filling repository");
-			sesameBenchmark.fillRepository(ORGANISATIONS_DATA);
+			// temporarily disabled, DO NOT COMMIT: sesameBenchmark.fillRepository(ORGANISATIONS_DATA);
+			sesameBenchmark.fillRepository(PROCUREMENT_DATA);
+			sesameBenchmark.fillRepository(DONORS_DATA);
 
 			System.out.println("--- listing all organizations");
 			TupleQueryResult nameIcoListTQR = sesameBenchmark.getNameIcoList();
@@ -159,13 +174,25 @@ public class SesameBenchmark {
 					+ TEST_ICO
 					+ ": " + String.valueOf(count));
 
+			System.out.println("--- looking for procurement cases where suppliers also donated");
+			TupleQueryResult dnsTQR = sesameBenchmark.getDonorAndSupplierList();
+			count = 0;
+			while(dnsTQR.hasNext()) {
+				count++;
+				BindingSet bindingSet = dnsTQR.next();
+				Value orgName = bindingSet.getBinding("suspectIco").getValue();
+				System.out.println("  org: " + orgName);
+			}
+			dnsTQR.close();
+			System.out.println("procurement cases where supplier is also a donor: " + String.valueOf(count));
+
 			System.out.println("--- closing");
 			sesameBenchmark.close();
 		} catch (RepositoryException e) {
 			System.err.println("Sesame repository exception: " + e.getMessage());
 			e.printStackTrace();
 		} catch (IOException e) {
-			System.err.println("IOy exception: " + e.getMessage());
+			System.err.println("IO exception: " + e.getMessage());
 			e.printStackTrace();
 		} catch (RDFParseException e) {
 			System.err.println("RDF parsing exception: " + e.getMessage());

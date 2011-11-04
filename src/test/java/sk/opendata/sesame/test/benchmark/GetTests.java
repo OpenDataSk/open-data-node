@@ -33,9 +33,11 @@ public class GetTests {
 		sesameBenchmark.prepareConnection();
 
 		sesameBenchmark.fillRepository(SesameBenchmark.ORGANISATIONS_DATA);
+		sesameBenchmark.fillRepository(SesameBenchmark.PROCUREMENT_DATA);
+		sesameBenchmark.fillRepository(SesameBenchmark.DONORS_DATA);
 	}
 
-	@BenchmarkOptions(benchmarkRounds = 100)
+	@BenchmarkOptions(benchmarkRounds = 100, warmupRounds = 0)
 	@Test
 	public void testGetNameIcoList() {
 		TupleQueryResult nameIcoListTQR;
@@ -55,7 +57,7 @@ public class GetTests {
 		assertEquals(99999, count);
 	}
 
-	@BenchmarkOptions(benchmarkRounds = 1000)
+	@BenchmarkOptions(benchmarkRounds = 1000, warmupRounds = 0)
 	@Test
 	public void testGetOrgByIco() {
 		TupleQueryResult orgTQR;
@@ -76,6 +78,26 @@ public class GetTests {
 
 		assertEquals(1, count);
 		assertEquals("Roland Kolláth - COLLARD DESING", orgName);
+	}
+
+	@BenchmarkOptions(benchmarkRounds = 1000, warmupRounds = 0)
+	@Test
+	public void testGetDonorAndSupplierList() {
+		TupleQueryResult donorAndSupplierListTQR;
+		int count = 0;
+
+		try {
+			donorAndSupplierListTQR = sesameBenchmark.getDonorAndSupplierList();
+			while(donorAndSupplierListTQR.hasNext()) {
+				count++;
+				donorAndSupplierListTQR.next();
+			}
+			donorAndSupplierListTQR.close();
+		} catch (QueryEvaluationException e) {
+			assertFalse(true);
+		}
+
+		assertEquals(20, count);
 	}
 
 	@AfterClass

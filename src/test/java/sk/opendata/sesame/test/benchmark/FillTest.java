@@ -29,13 +29,15 @@ public class FillTest {
 		sesameBenchmark.prepareConnection();
 	}
 
-	@BenchmarkOptions(benchmarkRounds = 10)
+	@BenchmarkOptions(benchmarkRounds = 10, warmupRounds = 1)
 	@Test
 	public void testFillRepository() {
 		boolean exception = false;
 
 		try {
 			sesameBenchmark.fillRepository(SesameBenchmark.ORGANISATIONS_DATA);
+			sesameBenchmark.fillRepository(SesameBenchmark.PROCUREMENT_DATA);
+			sesameBenchmark.fillRepository(SesameBenchmark.DONORS_DATA);
 		} catch (RepositoryException e) {
 			exception = true;
 		} catch (RDFParseException e) {
