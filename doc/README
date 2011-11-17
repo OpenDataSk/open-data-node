@@ -1,9 +1,8 @@
-This can serve as a start point to create an Open Data Node. What
-needs to be done to make it so:
+This is a proof-of-concept of Open Data Node created by copying
+and modifying 'benchmark' project. What needs to be done to
+enhance this "copy" further:
 
-a) svn cp <...>/benchmark/trunk <...>/OpenDataNode/trunk
-
-b) transform SesameBenchmark into something like container or whatever
+a) transform SesameBenchmark into something like container or whatever
    (maybe even using OSGI) so that it loads and runs Harvester
    and other components (as sort of plug-ins)
 
@@ -15,16 +14,16 @@ b) transform SesameBenchmark into something like container or whatever
        not need certain harvesters and APIs so there would be a way to
        configure and deploy ODN to meet that criteria)
 
-c) transform existing Python proof-of-concept harvesters
+b) transform existing Python proof-of-concept harvesters
    into Java (maybe by running them in Jython or if feasible, rewriting
    then into Java)
 
-d) enhancing the Datanest CSV harvesters to be able to "re-run"
+c) enhancing the Datanest CSV harvesters to be able to "re-run"
    and process only differences - i.e. we need to make them able to
    keep ODN copy of data up-to-date with Datanest "original"
 
-e) adding more harvesters: direct harvesting of ORSR to get more data
+d) adding more harvesters: direct harvesting of ORSR to get more data
    about companies, direct harvesting of procurement portals to have
    a shot by getting more data from the scanned documents themselves, ...
 
-f) ...
+e) ...
