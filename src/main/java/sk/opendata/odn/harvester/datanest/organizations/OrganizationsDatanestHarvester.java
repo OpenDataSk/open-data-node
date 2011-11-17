@@ -1,4 +1,4 @@
-package sk.opendata.odn.harvester.datanest.organozations;
+package sk.opendata.odn.harvester.datanest.organizations;
 
 import java.util.Date;
 
