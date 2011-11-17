@@ -1,11 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>sk.opendata.sesame.test</groupId>
-	<artifactId>benchmark</artifactId>
+	<groupId>sk.opendata</groupId>
+	<artifactId>open-data-node</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>opendata-sesame-benchmark</name>
-	<description>simple benchmark of Sesame on-top of some ORSR/Datanest data to get the idea about how the Sesame might behave for our deployments</description>
+	<name>Open Data Node</name>
+	<description>proof-of-concept implementation of Open Data Node</description>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
