@@ -6,6 +6,7 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+// TODO: move stuff from here to WicketApplication and then remove this class
 public class OpenDataNode {
 	
 	private static Logger logger = LoggerFactory.getLogger(OpenDataNode.class);

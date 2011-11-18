@@ -30,9 +30,7 @@
 	            <job-name>OrganizationsDatanestHarvesterJob</job-name>
 	            <job-group>OrganizationsDatanestHarvesterGroup</job-group>
 	            <misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
-	            <!-- cron-expression>15 45 3 ? * MON-FRI</cron-expression -->
-	            <!-- debug: -->
-	            <cron-expression>3/5 * * ? * MON-FRI</cron-expression>
+	            <cron-expression>15 45 3 ? * MON-FRI</cron-expression>
 	            <time-zone>Europe/Bratislava</time-zone>
 	        </cron>
 	    </trigger>
