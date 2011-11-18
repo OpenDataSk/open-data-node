@@ -33,13 +33,23 @@ public class WicketApplication extends WebApplication
 			logger.error("scheduler exception", e);
 			// TODO is it a "good practice" to pass that also up to Wicket?
 		}
-
-		// TODO: put that into appropriate place:
-		// shut down job scheduler
-		//logger.debug("shuting down job scheduler...");
-		//scheduler.shutdown();
 	}
 	
+	/**
+	 * Destructor.
+	 */
+	@Override
+	protected void onDestroy() {
+		// shut down job scheduler
+		logger.debug("shuting down job scheduler ...");
+		try {
+			scheduler.shutdown();
+		} catch (SchedulerException e) {
+			logger.error("scheduler exception", e);
+			// TODO is it a "good practice" to pass that also up to Wicket?
+		}
+	}
+
 	/**
 	 * @see wicket.Application#getHomePage()
 	 */
