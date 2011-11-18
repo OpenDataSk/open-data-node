@@ -20,7 +20,7 @@
 	    <job>
 	        <name>OrganizationsDatanestHarvesterJob</name>
 	        <group>OrganizationsDatanestHarvesterGroup</group>
-	        <job-class>sk.opendata.odn.harvester.datanest.organozations.OrganizationsDatanestHarvester</job-class>
+	        <job-class>sk.opendata.odn.harvester.datanest.organizations.OrganizationsDatanestHarvester</job-class>
 	    </job>
 	    
 	    <trigger>

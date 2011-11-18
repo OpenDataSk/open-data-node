@@ -18,19 +18,19 @@ public class OpenDataNode {
 		// Ctrl+C or something like that
 		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
 			public void run() {
-				logger.info("shutdown hook ...");
+				logger.debug("shutdown hook ...");
 				keepRunning = false;
 			}
 		}));
 		
 		try {
 			// initialize job scheduler
-			logger.info("initializing scheduler ...");
+			logger.debug("initializing scheduler ...");
 			scheduler = StdSchedulerFactory.getDefaultScheduler();
 			scheduler.start();
 			
 			// keep running, let the scheduled jobs do their stuff
-			logger.info("running ...");
+			logger.debug("running ...");
 			while (keepRunning)
 				Thread.sleep(0);
 		} catch (SchedulerException e) {
@@ -42,7 +42,7 @@ public class OpenDataNode {
 		try {
 			// de-initialize
 			// FIXME: this portion of the code seems to never run
-			logger.info("shuting down ...");
+			logger.debug("shuting down ...");
 			scheduler.shutdown();
 		} catch (SchedulerException e) {
 			logger.error("scheduler exception", e);
