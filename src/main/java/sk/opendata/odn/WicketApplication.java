@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 public class WicketApplication extends WebApplication
 {    
 	
-	private static Logger logger = LoggerFactory.getLogger(OpenDataNode.class);
+	private static Logger logger = LoggerFactory.getLogger(WicketApplication.class);
 	
 	private Scheduler scheduler = null;
     
@@ -36,7 +36,7 @@ public class WicketApplication extends WebApplication
 	}
 	
 	/**
-	 * Destructor.
+	 * Destructor
 	 */
 	@Override
 	protected void onDestroy() {

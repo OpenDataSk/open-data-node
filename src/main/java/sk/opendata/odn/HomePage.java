@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Homepage
+ * Open Data Node "management console" homepage.
  */
 public class HomePage extends WebPage {
 

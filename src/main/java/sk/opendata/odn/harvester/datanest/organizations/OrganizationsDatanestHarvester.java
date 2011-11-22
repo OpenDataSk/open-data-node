@@ -18,7 +18,6 @@ import org.quartz.JobKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sk.opendata.odn.OpenDataNode;
 import sk.opendata.odn.model.OrganizationRecord;
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -44,7 +43,7 @@ public class OrganizationsDatanestHarvester implements Job {
 	// TODO: move that into 'data.somewhere' as it applies to our data model!!!
 	private final static String OPENDATA_DATE_FORMAT = "dd.MM.yyyy";
 	
-	private static Logger logger = LoggerFactory.getLogger(OpenDataNode.class);
+	private static Logger logger = LoggerFactory.getLogger(OrganizationsDatanestHarvester.class);
 	private final static SimpleDateFormat sdf = new SimpleDateFormat(DATANEST_DATE_FORMAT);
 	private Properties datanestProperties = null;
 	private Vector<OrganizationRecord> records = null;
