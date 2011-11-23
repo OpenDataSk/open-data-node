@@ -77,7 +77,7 @@
 			<groupId>org.openrdf.sesame</groupId>
 			<artifactId>sesame-runtime</artifactId>
 			<version>2.6.0</version>
-			<scope>test</scope>
+			<scope>runtime</scope>
 		</dependency>
 		
 		<dependency>
