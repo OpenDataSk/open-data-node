@@ -114,10 +114,8 @@ public class OrganizationsDatanestHarvester implements Job {
 			update();
 		} catch (IOException e) {
 			logger.error("IO exception", e);
-			throw new JobExecutionException(e);
 		} catch (ParseException e) {
 			logger.error("parse exception", e);
-			throw new JobExecutionException(e);
 		}
 	}
 
