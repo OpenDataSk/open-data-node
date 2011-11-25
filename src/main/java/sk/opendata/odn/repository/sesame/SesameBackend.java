@@ -167,7 +167,7 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 			// existing data from the repository before loading the new data so
 			// as to prevent old, stale data to be left in the repository (like
 			// items which were valid yesterday, but then deemed "bad" or
-			// watever and deleted).
+			// whatever and deleted).
 			// Note: Yes, that is costly and we want to fix that later on.
 			// FIXME: Implement proper "update" procedure.
 			connection.clear();
