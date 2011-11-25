@@ -33,7 +33,7 @@ public class WicketApplication extends WebApplication
 	public WicketApplication() {
 		try {
 			// initialize repository
-			sesameBackend = new SesameBackend();
+			sesameBackend = SesameBackend.getInstance();
 			
 			// initialize job scheduler
 			logger.debug("initializing job scheduler ...");
