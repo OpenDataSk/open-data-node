@@ -1,6 +1,8 @@
 package sk.opendata.odn.repository.sesame;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Hashtable;
@@ -39,6 +41,7 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 	public final static String SESAME_REPOSITORY_PROPERTIES_NAME = "/repo-sesame.properties";
 	public final static String KEY_REPO_NAMES = "sesame.repositories";
 	public final static String KEY_SESAME_DATA_DIR = "sesame.data_dir";
+	public final static String KEY_DEBUG_DUMP_RDF = "sesame.debug.dump_rdf";
 	public final static String PREFIX_KEY_REPO = "sesame.repo.";
 	public final static String SUFFIX_KEY_DATA_SUBDIR = ".data_subdir";
 	
@@ -135,6 +138,18 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 		return sesameRepos.get(repoName);
 	}
 
+	private void debugRdfDump(String repoName, String rdfData) {
+		try {
+			File dumpFile = File.createTempFile(repoName + "-", ".rdf");
+			BufferedWriter out = new BufferedWriter(new FileWriter(dumpFile));
+			out.write(rdfData);
+			out.close();
+			logger.info("RDF dump saved to file " + dumpFile);
+		} catch (IOException e) {
+			logger.error("IO exception", e);
+		}
+	}
+	
 	/**
 	 * Store given record into Sesame repository with given name.
 	 * 
@@ -178,6 +193,9 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 			logger.info("pushed " + records.getRdfData().length()
 					+ " characters of RDF into the Sesame repository '"
 					+ repoName + "'");
+			
+			if (Boolean.valueOf(srProperties.getProperty(KEY_DEBUG_DUMP_RDF)))
+				debugRdfDump(repoName, records.getRdfData());
 		} catch (RepositoryException e) {
 			logger.error("repository exception", e);
 			odnRepoException = new OdnRepositoryException(e.getMessage(), e);
