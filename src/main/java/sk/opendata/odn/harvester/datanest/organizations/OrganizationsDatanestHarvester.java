@@ -7,7 +7,6 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Properties;
 import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -18,9 +17,6 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.config.RepositoryConfigException;
 import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.quartz.JobKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,14 +30,13 @@ import au.com.bytecode.opencsv.CSVReader;
  * This class contains stuff related to scraper of Register Organizacii
  * published by Aliancia Fair-Play at http://datanest.fair-play.sk/datasets/1 .
  */
-public class OrganizationsDatanestHarvester implements Job {
+public class OrganizationsDatanestHarvester extends AbstractDatanestHarvester
+		implements Job {
 
-	public final static String DATANEST_PROPERTIES_NAME = "/datanest.properties";
 	public final static String KEY_DATANEST_ORGANIZATIONS_URL = "datanest.organizations.url";
 	public final static String KEY_DATANEST_ORGANIZATIONS_SEZAME_REPO_NAME = "datanest.organizations.sesame_repo_name";
-	public final static String KEY_DEBUG_PROCESS_ONLY_N_ITEMS = "datanest.debug.process_only_n_items";
 	
-	private final static int ATTR_INDEX_ID = 0;
+	//private final static int ATTR_INDEX_ID = 0;
 	private final static int ATTR_INDEX_NAME = 1;
 	private final static int ATTR_INDEX_SEAT = 3;
 	private final static int ATTR_INDEX_ICO = 2;
@@ -53,7 +48,6 @@ public class OrganizationsDatanestHarvester implements Job {
 	
 	private static Logger logger = LoggerFactory.getLogger(OrganizationsDatanestHarvester.class);
 	private final static SimpleDateFormat sdf = new SimpleDateFormat(DATANEST_DATE_FORMAT);
-	private Properties datanestProperties = null;
 	private Vector<OrganizationRecord> records = null;
 	private OrganizationRdfSerializer serializer = null;
 
@@ -62,8 +56,7 @@ public class OrganizationsDatanestHarvester implements Job {
 			RepositoryConfigException, RepositoryException,
 			ParserConfigurationException, TransformerConfigurationException {
 		
-		datanestProperties = new Properties();
-		datanestProperties.load(getClass().getResourceAsStream(DATANEST_PROPERTIES_NAME));
+		super();
 		
 		serializer = new OrganizationRdfSerializer(SesameBackend.getInstance(),
 				datanestProperties.getProperty(
@@ -91,7 +84,8 @@ public class OrganizationsDatanestHarvester implements Job {
 		return record;
 	}
 	
-	private void update() throws IOException, ParseException,
+	@Override
+	public void update() throws IOException, ParseException,
 			RepositoryConfigException, RepositoryException,
 			TransformerException, IllegalArgumentException, OdnRepositoryException {
 		
@@ -122,35 +116,6 @@ public class OrganizationsDatanestHarvester implements Job {
 	    
 	    // store the results
 	    serializer.store(records);
-	}
-	
-	/**
-	 * Method invoked by QUARTZ scheduler to launch this job.
-	 */
-	public void execute(JobExecutionContext context) throws JobExecutionException {
-		// TODO: implement the fetching of source data, "enhancer" and storage into the Sesame
-		JobKey jobKey = context.getJobDetail().getKey();
-		logger.info("scheduled job says: " + jobKey + " executing at " + new Date());
-		
-		// TODO: contemplate catching simply 'Exception' thus reducing the
-		// amount of repetitive 'catch' statements
-		try {
-			update();
-		} catch (IOException e) {
-			logger.error("IO exception", e);
-		} catch (ParseException e) {
-			logger.error("parse exception", e);
-		} catch (RepositoryConfigException e) {
-			logger.error("repository config exception", e);
-		} catch (RepositoryException e) {
-			logger.error("repository exception", e);
-		} catch (TransformerException e) {
-			logger.error("XML transformation exception", e);
-		} catch (IllegalArgumentException e) {
-			logger.error("illegal argument exception", e);
-		} catch (OdnRepositoryException e) {
-			logger.error("repository exception", e);
-		}
 	}
 
 }

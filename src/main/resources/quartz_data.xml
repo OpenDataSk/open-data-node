@@ -22,15 +22,37 @@
 	        <group>DatanestHarvesterGroup</group>
 	        <job-class>sk.opendata.odn.harvester.datanest.organizations.OrganizationsDatanestHarvester</job-class>
 	    </job>
+	    <job>
+	        <name>ProcurementsDatanestHarvesterJob</name>
+	        <group>DatanestHarvesterGroup</group>
+	        <job-class>sk.opendata.odn.harvester.datanest.organizations.ProcurementsDatanestHarvester</job-class>
+	    </job>
 	    
+	    <!-- TODO: Investigate whether we can sort of "reuse" same trigger
+	    definition for multiple jobs ... say if I decide that Saturday is not the best
+	    day for Datanest scraping, I would like to change just "one Datanest trigger"
+	    instead of N separate, almost identical triggers.
+	    Note: It should be sufficient to run all Datanest jobs sequentially so
+	    as to not flood them with big parallel requests. -->
 	    <trigger>
 	        <cron>
-	            <name>HarvesterTrigger</name>
-	            <group>HarvesterGroup</group>
+	            <name>OrganizationsDatanestHarvesterTrigger</name>
+	            <group>DatanestHarvesterGroup</group>
 	            <job-name>OrganizationsDatanestHarvesterJob</job-name>
 	            <job-group>DatanestHarvesterGroup</job-group>
 	            <misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 	            <cron-expression>15 45 3 ? * SAT</cron-expression>
+	            <time-zone>Europe/Bratislava</time-zone>
+	        </cron>
+	    </trigger>
+	    <trigger>
+	        <cron>
+	            <name>ProcurementsDatanestHarvesterTrigger</name>
+	            <group>DatanestHarvesterGroup</group>
+	            <job-name>ProcurementsDatanestHarvesterJob</job-name>
+	            <job-group>DatanestHarvesterGroup</job-group>
+	            <misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+	            <cron-expression>15 46 3 ? * SAT</cron-expression>
 	            <time-zone>Europe/Bratislava</time-zone>
 	        </cron>
 	    </trigger>
