@@ -54,10 +54,6 @@ public class WicketApplication extends WebApplication
 			logger.error("IO exception", e);
 			// TODO is it a "good practice" to pass that also up to Wicket?
 		}
-		
-		// TODO: initialized Sezame repozitory(-ies)
-		// a) check if they exists and if not, create them
-		// b) open connections, ...
 	}
 	
 	/**
