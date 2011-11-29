@@ -19,7 +19,7 @@
     <schedule>
 	    <job>
 	        <name>OrganizationsDatanestHarvesterJob</name>
-	        <group>OrganizationsDatanestHarvesterGroup</group>
+	        <group>DatanestHarvesterGroup</group>
 	        <job-class>sk.opendata.odn.harvester.datanest.organizations.OrganizationsDatanestHarvester</job-class>
 	    </job>
 	    
@@ -28,7 +28,7 @@
 	            <name>HarvesterTrigger</name>
 	            <group>HarvesterGroup</group>
 	            <job-name>OrganizationsDatanestHarvesterJob</job-name>
-	            <job-group>OrganizationsDatanestHarvesterGroup</job-group>
+	            <job-group>DatanestHarvesterGroup</job-group>
 	            <misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 	            <cron-expression>15 45 3 ? * SAT</cron-expression>
 	            <time-zone>Europe/Bratislava</time-zone>

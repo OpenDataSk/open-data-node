@@ -174,6 +174,10 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 			
 			connection.add(new StringReader(records.getRdfData()),
 					records.getRdfBaseURI(), RDFFormat.RDFXML);
+			
+			logger.info("pushed " + records.getRdfData().length()
+					+ " characters of RDF into the Sesame repository '"
+					+ repoName + "'");
 		} catch (RepositoryException e) {
 			logger.error("repository exception", e);
 			odnRepoException = new OdnRepositoryException(e.getMessage(), e);
