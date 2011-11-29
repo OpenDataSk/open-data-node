@@ -39,8 +39,6 @@ public class WicketApplication extends WebApplication
 			logger.debug("initializing job scheduler ...");
 			scheduler = StdSchedulerFactory.getDefaultScheduler();
 			scheduler.start();
-			
-			// TODO: we need to somehow pass the 'sesameBackend' to the scheduled jobs
 		} catch (SchedulerException e) {
 			logger.error("scheduler exception", e);
 			// TODO is it a "good practice" to pass that also up to Wicket?
