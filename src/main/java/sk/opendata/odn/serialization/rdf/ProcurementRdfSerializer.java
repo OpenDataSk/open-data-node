@@ -1,5 +1,6 @@
 package sk.opendata.odn.serialization.rdf;
 
+import java.text.DecimalFormat;
 import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -26,6 +27,8 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 	// be either nice to "guess" is correctly from some other configuration or
 	// have it in some per-ODN repository configuration
 	public final static String OPENDATA_BASE_URI = "http://opendata.sk/dataset/procurements/";
+	
+	private final static DecimalFormat priceFormat = new DecimalFormat("#.##");
 	
 	
 	/**
@@ -65,7 +68,7 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 				"opendata:xProcurementSubject", "rdf:resource",
 				record.getProcurementSubject()));
 		concept.appendChild(appendTextNode(doc, "pc:price",
-				record.getProcurementSubject()));
+				priceFormat.format(record.getPrice())));
 		concept.appendChild(appendTextNode(doc, "opendata:xCurrency",
 				record.getCurrency()));
 		concept.appendChild(appendTextNode(doc, "opendata:xIsVatIncluded",

@@ -72,6 +72,8 @@ public class ProcurementsDatanestHarvester extends AbstractDatanestHarvester
 		record.setProcurementId(row[ATTR_INDEX_PROCUREMENT_ID]);
 		record.setProcurementSubject(row[ATTR_INDEX_PROCUREMENT_SUBJECT]);
 		record.setPrice(Float.valueOf(row[ATTR_INDEX_PRICE]));
+		// TODO: "normalize" that into "SKK", "EUR", etc. using some more clever
+		// enumeration
 		record.setCurrency(row[ATTR_INDEX_CURRENCY]);
 		record.setVatIncluded(Boolean.valueOf(row[ATTR_INDEX_IS_VAT_INCLUDED]));
 		record.setCustomerIco(row[ATTR_INDEX_CUSTOMER_ICO]);
