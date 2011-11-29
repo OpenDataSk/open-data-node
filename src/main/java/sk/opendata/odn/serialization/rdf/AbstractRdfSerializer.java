@@ -105,16 +105,6 @@ public abstract class AbstractRdfSerializer<RecordType> {
 			RecordType record);
 
 	/**
-	 * Derive an OpenData.sk's ID for the given record for the construction of
-	 * unique URI for the record.
-	 * 
-	 * @param record
-	 *            record for which we need to derive OpenData.sk's ID
-	 * @return OpenData.sk's ID of the given record
-	 */
-	abstract public String getConceptRdfAbout(RecordType record);
-	
-	/**
 	 * Override this method if you need to add custom RDF NS elements to the XML
 	 * document.
 	 * 
@@ -124,6 +114,15 @@ public abstract class AbstractRdfSerializer<RecordType> {
 	public void addCustomRdfNsElements(Element rdfElement) {
 		// nothing to do if there are no custom elements needed
 	}
+	
+	/**
+	 * Derive an OpenData.sk's URI for the given record.
+	 * 
+	 * @param record
+	 *            record for which we need to derive OpenData.sk's ID
+	 * @return OpenData.sk's URI of the given record
+	 */
+	abstract public String getConceptRdfAbout(RecordType record);
 	
 	public String toRdf(Vector<RecordType> records)
 			throws TransformerException {
@@ -140,8 +139,7 @@ public abstract class AbstractRdfSerializer<RecordType> {
 		
 		for (RecordType record : records) {
 			Element concept = doc.createElement("skos:Concept");
-			concept.setAttribute("rdf:about",
-					"http://www.eea.sk/opendata/dicts/rno-%s" + getConceptRdfAbout(record));
+			concept.setAttribute("rdf:about", getConceptRdfAbout(record));
 			recordToRdf(doc, concept, record);
 			
 			rdfElement.appendChild(concept);

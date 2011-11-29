@@ -82,7 +82,7 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 	
 	@Override
 	public String getConceptRdfAbout(ProcurementRecord record) {
-		return record.getId();
+		return "http://opendata.sk/procurements/" + record.getId();
 	}
 	
 	@Override
