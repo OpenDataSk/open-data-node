@@ -22,7 +22,7 @@ public class HomePage extends WebPage {
 	private static final long serialVersionUID = 1L;
 	private static Logger logger = LoggerFactory.getLogger(HomePage.class);
 	
-	// TODO: Make it configurable or entirely re-thing this "debug feature" as
+	// TODO: Make it configurable or entirely re-think this "debug feature" as
 	// this hard-coded string have to match what is configured in
 	// quartz_data.xml .
 	public final static String DATANEST_HARVESTER_SCHEDULE_GROUP_NAME = "DatanestHarvesterGroup";
