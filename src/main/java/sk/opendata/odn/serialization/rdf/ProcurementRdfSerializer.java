@@ -26,7 +26,7 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 	// accessible over the net via that URL/URI (which is encouraged) wit would
 	// be either nice to "guess" is correctly from some other configuration or
 	// have it in some per-ODN repository configuration
-	public final static String OPENDATA_BASE_URI = "http://opendata.sk/dataset/procurements/";
+	public final static String OPENDATA_PROCUREMENTS_BASE_URI = "http://opendata.sk/dataset/procurements/";
 	
 	private final static DecimalFormat priceFormat = new DecimalFormat("#.##");
 	
@@ -94,8 +94,19 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 		
 		RdfData rdfData = new RdfData(
 				toRdf(records),
-				OPENDATA_BASE_URI);
+				OPENDATA_PROCUREMENTS_BASE_URI);
 		repository.store(repoName, rdfData);
+		
+		// "combined mirror" of the RDF statements: for the purpose of doing
+		// combined queries on top of all RDF data sets we have one special
+		// repository where we push all our RDF statements with same special
+		// base URI but differenciated by contexts (and we reuse the "original"
+		// base URI as context
+		rdfData = new RdfData(
+				toRdf(records),
+				OPENDATA_COMBINED_BASE_URI);
+		repository.store(OPENDATA_COMBINED_REPO_NAME, rdfData,
+				OPENDATA_PROCUREMENTS_BASE_URI);
 	}
 
 }

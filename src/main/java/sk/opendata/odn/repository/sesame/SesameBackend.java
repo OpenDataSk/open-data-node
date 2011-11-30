@@ -8,6 +8,8 @@ import java.io.StringReader;
 import java.util.Hashtable;
 import java.util.Properties;
 
+import org.openrdf.model.URI;
+import org.openrdf.model.ValueFactory;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
@@ -157,6 +159,9 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 	 *            name of Sesame repository to store into
 	 * @param records
 	 *            records to store (in RDF format with additional info)
+	 * @param contexts
+	 *            the context for RDF statements used for the statements in the
+	 *            repository
 	 * 
 	 * @throws IllegalArgumentException
 	 *             if repository with given name does not exists
@@ -164,7 +169,7 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 	 *             when error occurs while connecting to the Sesame repository
 	 *             or when Sesame "add" operation fails
 	 */
-	public void store(String repoName, RdfData records)
+	public void store(String repoName, RdfData records, String... contexts)
 			throws IllegalArgumentException, OdnRepositoryException {
 
 		Repository repo = getRepo(repoName);
@@ -173,6 +178,16 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 		
 		RepositoryConnection connection = null;
 		OdnRepositoryException odnRepoException = null;
+		
+		URI[] convertedContexts = null;
+		if (contexts.length > 0) {
+			ValueFactory valueFactory = repo.getValueFactory();
+			convertedContexts = new URI[contexts.length];
+			int index = 0;
+			for (String context : contexts) {
+				convertedContexts[index++] = valueFactory.createURI(context);
+			}
+		}
 		
 		try {
 			connection = repo.getConnection();
@@ -185,10 +200,23 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 			// whatever and deleted).
 			// Note: Yes, that is costly and we want to fix that later on.
 			// FIXME: Implement proper "update" procedure.
-			connection.clear();
-			
-			connection.add(new StringReader(records.getRdfData()),
-					records.getRdfBaseURI(), RDFFormat.RDFXML);
+			if (contexts.length > 0) {
+				connection.clear(convertedContexts);
+				
+				// why we duplicate the 'clear()' and 'add()' statents:
+				// 'getStatements(null, null, null, true);' is not the same as
+				// 'getStatements(null, null, null, true, (Resource)null);' -
+				// see
+				// http://www.openrdf.org/doc/sesame2/2.3.2/users/userguide.html#d0e1218
+				connection.add(new StringReader(records.getRdfData()),
+						records.getRdfBaseURI(), RDFFormat.RDFXML, convertedContexts);
+			}
+			else {
+				connection.clear();
+				
+				connection.add(new StringReader(records.getRdfData()),
+						records.getRdfBaseURI(), RDFFormat.RDFXML);
+			}
 			
 			logger.info("pushed " + records.getRdfData().length()
 					+ " characters of RDF into the Sesame repository '"

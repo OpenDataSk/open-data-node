@@ -34,6 +34,9 @@ public abstract class AbstractRdfSerializer<RecordType> {
 	public final static String NS_SKOS = "http://www.w3.org/2004/02/skos/core#";
 	public final static String NS_DC = "http://purl.org/dc/elements/1.1/";
 	public final static String NS_OPENDATA = "http://sk.eea.opendata/2011/02/opendicts";
+	
+	public final static String OPENDATA_COMBINED_REPO_NAME = "all";
+	public final static String OPENDATA_COMBINED_BASE_URI = "http://opendata.sk/dataset/all/";
 
 	public final static String ERR_CONVERSION = "unable to convert the data into RDF";
 
