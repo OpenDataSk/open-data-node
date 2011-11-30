@@ -71,7 +71,7 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 	
 	@Override
 	public String getConceptRdfAbout(OrganizationRecord record) {
-		return "http://opendata.sk/organizations/" + record.getIco();
+		return OPENDATA_ORGANIZATIONS_BASE_URI + record.getIco();
 	}
 	
 	@Override
