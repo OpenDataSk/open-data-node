@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
@@ -30,8 +29,8 @@ import au.com.bytecode.opencsv.CSVReader;
  * This class contains stuff related to scraper of Register Organizacii
  * published by Aliancia Fair-Play at http://datanest.fair-play.sk/datasets/1 .
  */
-public class OrganizationsDatanestHarvester extends AbstractDatanestHarvester
-		implements Job {
+public class OrganizationsDatanestHarvester extends
+		AbstractDatanestHarvester<OrganizationRecord> implements Job {
 
 	public final static String KEY_DATANEST_ORGANIZATIONS_URL = "datanest.organizations.url";
 	public final static String KEY_DATANEST_ORGANIZATIONS_SEZAME_REPO_NAME = "datanest.organizations.sesame_repo_name";
@@ -43,12 +42,8 @@ public class OrganizationsDatanestHarvester extends AbstractDatanestHarvester
 	private final static int ATTR_INDEX_DATE_FROM = 6;
 	private final static int ATTR_INDEX_DATE_TO = 7;
 	private final static int ATTR_INDEX_SOURCE = 13;
-
-	private final static String DATANEST_DATE_FORMAT = "yyyy-MM-dd";
 	
 	private static Logger logger = LoggerFactory.getLogger(OrganizationsDatanestHarvester.class);
-	private final static SimpleDateFormat sdf = new SimpleDateFormat(DATANEST_DATE_FORMAT);
-	private Vector<OrganizationRecord> records = null;
 	private OrganizationRdfSerializer serializer = null;
 
 	
@@ -63,7 +58,8 @@ public class OrganizationsDatanestHarvester extends AbstractDatanestHarvester
 						KEY_DATANEST_ORGANIZATIONS_SEZAME_REPO_NAME));
 	}
 	
-	private OrganizationRecord scrapOneRecord(String[] row) throws ParseException {
+	@Override
+	public OrganizationRecord scrapOneRecord(String[] row) throws ParseException {
 		OrganizationRecord record = new OrganizationRecord();
 		
 		record.setSource(row[ATTR_INDEX_SOURCE]);

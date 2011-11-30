@@ -27,6 +27,11 @@
 	        <group>DatanestHarvesterGroup</group>
 	        <job-class>sk.opendata.odn.harvester.datanest.organizations.ProcurementsDatanestHarvester</job-class>
 	    </job>
+	    <job>
+	        <name>PoliticalPartyDonationsDatanestHarvesterJob</name>
+	        <group>DatanestHarvesterGroup</group>
+	        <job-class>sk.opendata.odn.harvester.datanest.organizations.PoliticalPartyDonationsDatanestHarvester</job-class>
+	    </job>
 	    
 	    <!-- TODO: Investigate whether we can sort of "reuse" same trigger
 	    definition for multiple jobs ... say if I decide that Saturday is not the best
@@ -53,6 +58,17 @@
 	            <job-group>DatanestHarvesterGroup</job-group>
 	            <misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
 	            <cron-expression>15 46 3 ? * SAT</cron-expression>
+	            <time-zone>Europe/Bratislava</time-zone>
+	        </cron>
+	    </trigger>
+	    <trigger>
+	        <cron>
+	            <name>PoliticalPartyDonationsDatanestHarvesterTrigger</name>
+	            <group>DatanestHarvesterGroup</group>
+	            <job-name>PoliticalPartyDonationsDatanestHarvesterJob</job-name>
+	            <job-group>DatanestHarvesterGroup</job-group>
+	            <misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
+	            <cron-expression>15 47 3 ? * SAT</cron-expression>
 	            <time-zone>Europe/Bratislava</time-zone>
 	        </cron>
 	    </trigger>

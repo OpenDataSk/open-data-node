@@ -28,8 +28,8 @@ import au.com.bytecode.opencsv.CSVReader;
  * Obstarávania published by Aliancia Fair-Play at
  * http://datanest.fair-play.sk/datasets/2 .
  */
-public class ProcurementsDatanestHarvester extends AbstractDatanestHarvester
-		implements Job {
+public class ProcurementsDatanestHarvester extends
+		AbstractDatanestHarvester<ProcurementRecord> implements Job {
 
 	public final static String KEY_DATANEST_PROCUREMENTS_URL = "datanest.procurements.url";
 	public final static String KEY_DATANEST_PROCUREMENTS_SEZAME_REPO_NAME = "datanest.procurements.sesame_repo_name";
@@ -47,7 +47,6 @@ public class ProcurementsDatanestHarvester extends AbstractDatanestHarvester
 	private final static int ATTR_INDEX_SUPPLIER_ICO = 17;
 	
 	private static Logger logger = LoggerFactory.getLogger(ProcurementsDatanestHarvester.class);
-	private Vector<ProcurementRecord> records = null;
 	private ProcurementRdfSerializer serializer = null;
 
 	
@@ -62,7 +61,8 @@ public class ProcurementsDatanestHarvester extends AbstractDatanestHarvester
 						KEY_DATANEST_PROCUREMENTS_SEZAME_REPO_NAME));
 	}
 	
-	private ProcurementRecord scrapOneRecord(String[] row) throws ParseException {
+	@Override
+	public ProcurementRecord scrapOneRecord(String[] row) throws ParseException {
 		ProcurementRecord record = new ProcurementRecord();
 		
 		record.setId(row[ATTR_INDEX_ID]);

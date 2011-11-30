@@ -1,6 +1,5 @@
 package sk.opendata.odn.serialization.rdf;
 
-import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -21,15 +20,11 @@ import sk.opendata.odn.repository.sesame.RdfData;
  */
 public class OrganizationRdfSerializer extends AbstractRdfSerializer<OrganizationRecord> {
 	
-	public final static String OPENDATA_DATE_FORMAT = "dd.MM.yyyy";
 	// TODO: do we need that configurable? if we want the that RDF data
 	// accessible over the net via that URL/URI (which is encouraged) wit would
 	// be either nice to "guess" is correctly from some other configuration or
 	// have it in some per-ODN repository configuration
 	public final static String OPENDATA_ORGANIZATIONS_BASE_URI = "http://opendata.sk/dataset/organizations/";
-	
-	private final static SimpleDateFormat sdf = new SimpleDateFormat(
-			OPENDATA_DATE_FORMAT);
 	
 	/**
 	 * Initialize serializer to use given repository.

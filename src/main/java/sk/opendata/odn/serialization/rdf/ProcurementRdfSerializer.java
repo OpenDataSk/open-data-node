@@ -16,7 +16,7 @@ import sk.opendata.odn.repository.OdnRepositoryInterface;
 import sk.opendata.odn.repository.sesame.RdfData;
 
 /**
- * This class is used by a Harvester to serialize organization records into RDF
+ * This class is used by a Harvester to serialize procurement records into RDF
  * and store them in Repository.
  */
 public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementRecord> {

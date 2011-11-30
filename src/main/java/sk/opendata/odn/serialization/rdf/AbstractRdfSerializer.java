@@ -1,6 +1,7 @@
 package sk.opendata.odn.serialization.rdf;
 
 import java.io.StringWriter;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -35,10 +36,15 @@ public abstract class AbstractRdfSerializer<RecordType> {
 	public final static String NS_DC = "http://purl.org/dc/elements/1.1/";
 	public final static String NS_OPENDATA = "http://sk.eea.opendata/2011/02/opendicts";
 	
+	public final static String OPENDATA_DATE_FORMAT = "dd.MM.yyyy";
+	
 	public final static String OPENDATA_COMBINED_REPO_NAME = "all";
 	public final static String OPENDATA_COMBINED_BASE_URI = "http://opendata.sk/dataset/all/";
 
 	public final static String ERR_CONVERSION = "unable to convert the data into RDF";
+	
+	protected final static SimpleDateFormat sdf = new SimpleDateFormat(
+			OPENDATA_DATE_FORMAT);
 
 	protected OdnRepositoryInterface<RdfData> repository;
 	protected String repoName;
