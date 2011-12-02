@@ -108,7 +108,7 @@ public class PoliticalPartyDonationRdfSerializer extends AbstractRdfSerializer<P
 		concept.appendChild(appendTextNode(doc, "opendata:xGiftValue",
 				donationValueFormat.format(record.getDonationValue())));
 		concept.appendChild(appendTextNode(doc, "opendata:xGiftCurrency",
-				record.getDonationCurrency()));
+				record.getDonationCurrency().getCurrencyCode()));
 		concept.appendChild(appendTextNode(doc, "opendata:xRecipientParty",
 				record.getRecipientParty()));
 		if (record.getAcceptDate() != null) {

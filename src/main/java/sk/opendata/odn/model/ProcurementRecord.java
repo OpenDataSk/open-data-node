@@ -9,7 +9,7 @@ public class ProcurementRecord {
 	private String procurementId;
 	private String procurementSubject;
 	private float price;
-	private String currency;
+	private Currency currency;
 	private boolean isVatIncluded;
 	private String customerIco;
 	private String supplierIco;
@@ -67,10 +67,10 @@ public class ProcurementRecord {
 	public void setPrice(float price) {
 		this.price = price;
 	}
-	public String getCurrency() {
+	public Currency getCurrency() {
 		return currency;
 	}
-	public void setCurrency(String currency) {
+	public void setCurrency(Currency currency) {
 		this.currency = currency;
 	}
 	public boolean isVatIncluded() {

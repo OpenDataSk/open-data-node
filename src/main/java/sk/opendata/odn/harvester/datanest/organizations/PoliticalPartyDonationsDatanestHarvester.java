@@ -18,6 +18,7 @@ import org.quartz.Job;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import sk.opendata.odn.model.Currency;
 import sk.opendata.odn.model.PoliticalPartyDonationRecord;
 import sk.opendata.odn.repository.OdnRepositoryException;
 import sk.opendata.odn.repository.sesame.SesameBackend;
@@ -82,9 +83,8 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 		if (!row[ATTR_INDEX_DONOR_ICO].isEmpty())
 			record.setDonorIco(row[ATTR_INDEX_DONOR_ICO]);
 		record.setDonationValue(Float.valueOf(row[ATTR_INDEX_DONATION_VALUE]));
-		// TODO: "normalize" that into "SKK", "EUR", etc. using some more clever
-		// enumeration
-		record.setDonationCurrency(row[ATTR_INDEX_DONATION_CURRENCY]);
+		Currency currency = Currency.parse(row[ATTR_INDEX_DONATION_CURRENCY]);
+		record.setDonationCurrency(currency);
 		record.setDonorAddress(row[ATTR_INDEX_DONOR_ADDRESS]);
 		if (!row[ATTR_INDEX_DONOR_PSC].isEmpty())
 			record.setDonorPsc(row[ATTR_INDEX_DONOR_PSC]);

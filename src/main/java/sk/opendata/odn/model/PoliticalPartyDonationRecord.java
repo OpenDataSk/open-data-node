@@ -11,7 +11,7 @@ public class PoliticalPartyDonationRecord {
 	private String donorCompany;
 	private String donorIco;
 	private float donationValue;
-	private String donationCurrency;
+	private Currency donationCurrency;
 	private String donorAddress;
 	private String donorPsc;
 	private String donorCity;
@@ -73,10 +73,10 @@ public class PoliticalPartyDonationRecord {
 	public void setDonationValue(float donationValue) {
 		this.donationValue = donationValue;
 	}
-	public String getDonationCurrency() {
+	public Currency getDonationCurrency() {
 		return donationCurrency;
 	}
-	public void setDonationCurrency(String donationCurrency) {
+	public void setDonationCurrency(Currency donationCurrency) {
 		this.donationCurrency = donationCurrency;
 	}
 	public String getDonorAddress() {

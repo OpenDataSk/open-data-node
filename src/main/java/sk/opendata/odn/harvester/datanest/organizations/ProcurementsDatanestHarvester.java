@@ -17,6 +17,7 @@ import org.quartz.Job;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import sk.opendata.odn.model.Currency;
 import sk.opendata.odn.model.ProcurementRecord;
 import sk.opendata.odn.repository.OdnRepositoryException;
 import sk.opendata.odn.repository.sesame.SesameBackend;
@@ -72,9 +73,8 @@ public class ProcurementsDatanestHarvester extends
 		record.setProcurementId(row[ATTR_INDEX_PROCUREMENT_ID]);
 		record.setProcurementSubject(row[ATTR_INDEX_PROCUREMENT_SUBJECT]);
 		record.setPrice(Float.valueOf(row[ATTR_INDEX_PRICE]));
-		// TODO: "normalize" that into "SKK", "EUR", etc. using some more clever
-		// enumeration
-		record.setCurrency(row[ATTR_INDEX_CURRENCY]);
+		Currency currency = Currency.parse(row[ATTR_INDEX_CURRENCY]);
+		record.setCurrency(currency);
 		record.setVatIncluded(Boolean.valueOf(row[ATTR_INDEX_IS_VAT_INCLUDED]));
 		record.setCustomerIco(row[ATTR_INDEX_CUSTOMER_ICO]);
 		record.setSupplierIco(row[ATTR_INDEX_SUPPLIER_ICO]);
