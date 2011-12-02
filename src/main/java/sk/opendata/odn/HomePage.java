@@ -27,7 +27,7 @@ public class HomePage extends WebPage {
 	// quartz_data.xml .
 	public final static String DATANEST_HARVESTER_SCHEDULE_GROUP_NAME = "DatanestHarvesterGroup";
 	
-	private class ScrapControlForm extends Form {
+	private class ScrapControlForm extends Form<Void> {
 		
 		private static final long serialVersionUID = 1L;
 
