@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Properties;
 import java.util.Vector;
 
 import javax.xml.transform.TransformerException;
@@ -18,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sk.opendata.odn.repository.OdnRepositoryException;
+import sk.opendata.odn.utils.ApplicationProperties;
 
 /**
  * Stuff common to all Datanest harvesters.
@@ -35,13 +35,12 @@ public abstract class AbstractDatanestHarvester<RecordType> {
 	private static Logger logger = LoggerFactory.getLogger(AbstractDatanestHarvester.class);
 	protected final static SimpleDateFormat sdf = new SimpleDateFormat(DATANEST_DATE_FORMAT);
 	
-	protected Properties datanestProperties = null;
+	protected ApplicationProperties datanestProperties = null;
 	protected Vector<RecordType> records = null;
 	
 	
 	public AbstractDatanestHarvester() throws IOException {
-		datanestProperties = new Properties();
-		datanestProperties.load(getClass().getResourceAsStream(DATANEST_PROPERTIES_NAME));
+		datanestProperties = new ApplicationProperties(DATANEST_PROPERTIES_NAME);
 	}
 	
 	abstract public RecordType scrapOneRecord(String[] row) throws ParseException;

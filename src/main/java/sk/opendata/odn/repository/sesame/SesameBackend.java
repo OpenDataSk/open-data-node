@@ -6,7 +6,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.Hashtable;
-import java.util.Properties;
 
 import org.openrdf.model.URI;
 import org.openrdf.model.ValueFactory;
@@ -23,6 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import sk.opendata.odn.repository.OdnRepositoryException;
 import sk.opendata.odn.repository.OdnRepositoryInterface;
+import sk.opendata.odn.utils.ApplicationProperties;
 
 /**
  * Sesame backend/repository for Open Data Node.
@@ -48,7 +48,7 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 	public final static String SUFFIX_KEY_DATA_SUBDIR = ".data_subdir";
 	
 	private static Logger logger = LoggerFactory.getLogger(SesameBackend.class);
-	private Properties srProperties = null;
+	private ApplicationProperties srProperties = null;
 	private File sesameDataDir = null;
 //	private RepositoryManager repositoryManager = null;
 	private Hashtable<String, Repository> sesameRepos = null;
@@ -58,8 +58,7 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 	
 	private SesameBackend() throws IOException, RepositoryConfigException, RepositoryException {
 		// load properties
-		srProperties = new Properties();
-		srProperties.load(getClass().getResourceAsStream(SESAME_REPOSITORY_PROPERTIES_NAME));
+		srProperties = new ApplicationProperties(SESAME_REPOSITORY_PROPERTIES_NAME);
 		
 		sesameDataDir = new File(srProperties.getProperty(KEY_SESAME_DATA_DIR));
 		initDataDir(sesameDataDir);
