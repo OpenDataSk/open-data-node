@@ -36,8 +36,9 @@ public class ProcurementsDatanestHarvester extends
 	public final static String KEY_DATANEST_PROCUREMENTS_URL = "datanest.procurements.url";
 	public final static String KEY_DATANEST_PROCUREMENTS_SEZAME_REPO_NAME = "datanest.procurements.sesame_repo_name";
 	
-	public final static String SC_MISSING_CURRENCY = "currency missing";
-	public final static String SC_MISSING_CURRENCY_FOR_NON_ZERO_PRICE = "currency missing (for price which is non-zero)";
+	public final static String SC_MISSING_CURRENCY = "missing currency";
+	public final static String SC_MISSING_CURRENCY_FOR_NON_ZERO_PRICE = "missing currency (for price which is non-zero)";
+	public final static String SC_UNKNOWN_CURRENCY = "unknown currency";
 	
 	private final static int ATTR_INDEX_ID = 0;
 	private final static int ATTR_INDEX_NOTE = 5;
@@ -77,18 +78,26 @@ public class ProcurementsDatanestHarvester extends
 		record.setProcurementId(row[ATTR_INDEX_PROCUREMENT_ID]);
 		record.setProcurementSubject(row[ATTR_INDEX_PROCUREMENT_SUBJECT]);
 		record.setPrice(Float.valueOf(row[ATTR_INDEX_PRICE]));
+		
 		if (!row[ATTR_INDEX_CURRENCY].isEmpty()) {
-			// sometimes the currency is not filled in the source (so far only
-			// for cases where the price was 0)
-			Currency currency = Currency.parse(row[ATTR_INDEX_CURRENCY]);
-			record.setCurrency(currency);
+			try {
+				Currency currency = Currency.parse(row[ATTR_INDEX_CURRENCY]);
+				record.setCurrency(currency);
+			}
+			catch (IllegalArgumentException e) {
+				// unknown currencies
+				record.addScrapNote(SC_UNKNOWN_CURRENCY);
+			}
 		}
 		else {
+			// sometimes the currency is not filled in the source (so far only
+			// for cases where the price was 0)
 			if (record.getPrice() == 0)
 				record.addScrapNote(SC_MISSING_CURRENCY);
 			else
 				record.addScrapNote(SC_MISSING_CURRENCY_FOR_NON_ZERO_PRICE);
 		}
+		
 		record.setVatIncluded(Boolean.valueOf(row[ATTR_INDEX_IS_VAT_INCLUDED]));
 		record.setCustomerIco(row[ATTR_INDEX_CUSTOMER_ICO]);
 		record.setSupplierIco(row[ATTR_INDEX_SUPPLIER_ICO]);
