@@ -82,7 +82,9 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 			record.setDonorCompany(row[ATTR_INDEX_DONOR_COMPANY]);
 		if (!row[ATTR_INDEX_DONOR_ICO].isEmpty())
 			record.setDonorIco(row[ATTR_INDEX_DONOR_ICO]);
-		record.setDonationValue(Float.valueOf(row[ATTR_INDEX_DONATION_VALUE]));
+		// FIXME: We're getting "java.lang.NumberFormatException: empty String" here ...
+		if (!row[ATTR_INDEX_DONATION_VALUE].isEmpty())
+			record.setDonationValue(Float.valueOf(row[ATTR_INDEX_DONATION_VALUE]));
 		Currency currency = Currency.parse(row[ATTR_INDEX_DONATION_CURRENCY]);
 		record.setDonationCurrency(currency);
 		record.setDonorAddress(row[ATTR_INDEX_DONOR_ADDRESS]);
