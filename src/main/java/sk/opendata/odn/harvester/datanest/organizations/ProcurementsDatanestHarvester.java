@@ -74,8 +74,12 @@ public class ProcurementsDatanestHarvester extends
 		record.setProcurementId(row[ATTR_INDEX_PROCUREMENT_ID]);
 		record.setProcurementSubject(row[ATTR_INDEX_PROCUREMENT_SUBJECT]);
 		record.setPrice(Float.valueOf(row[ATTR_INDEX_PRICE]));
-		Currency currency = Currency.parse(row[ATTR_INDEX_CURRENCY]);
-		record.setCurrency(currency);
+		if (!row[ATTR_INDEX_CURRENCY].isEmpty()) {
+			// sometimes the currency is not filled in the source (so far only
+			// for cases where the price was 0)
+			Currency currency = Currency.parse(row[ATTR_INDEX_CURRENCY]);
+			record.setCurrency(currency);
+		}
 		record.setVatIncluded(Boolean.valueOf(row[ATTR_INDEX_IS_VAT_INCLUDED]));
 		record.setCustomerIco(row[ATTR_INDEX_CUSTOMER_ICO]);
 		record.setSupplierIco(row[ATTR_INDEX_SUPPLIER_ICO]);

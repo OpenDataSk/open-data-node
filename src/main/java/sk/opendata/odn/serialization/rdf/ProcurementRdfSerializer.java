@@ -69,8 +69,11 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 				record.getProcurementSubject()));
 		concept.appendChild(appendTextNode(doc, "pc:price",
 				priceFormat.format(record.getPrice())));
-		concept.appendChild(appendTextNode(doc, "opendata:xCurrency",
-				record.getCurrency().getCurrencyCode()));
+		// sometimes the currency is not filled in the source (so far only for
+		// cases where the price was 0)
+		if (record.getCurrency() != null)
+			concept.appendChild(appendTextNode(doc, "opendata:xCurrency",
+					record.getCurrency().getCurrencyCode()));
 		concept.appendChild(appendTextNode(doc, "opendata:xIsVatIncluded",
 				Boolean.toString(record.isVatIncluded())));
 		// TODO: use 'opendata:ico' child inside 'pc:buyerProfile' instead
