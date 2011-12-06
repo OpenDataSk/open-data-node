@@ -50,8 +50,7 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 	public void recordToRdf(Document doc, Element concept, OrganizationRecord record) {
 	    concept.appendChild(appendTextNode(doc, "skos:prefLabel", record.getName()));
 	    concept.appendChild(appendResourceNode(doc, "dc:source", "rdf:resource", record.getSource()));
-	    // FIXME: That's NOT always the case with records from Datanest!!!
-	    concept.appendChild(appendTextNode(doc, "dc:type", "nonprofit"));
+	    concept.appendChild(appendTextNode(doc, "dc:type", record.getLegalForm()));
 	    if (record.getDateFrom() != null) {
 	    	String dateFrom = sdf.format(record.getDateFrom());
 	        concept.appendChild(appendTextNode(doc, "opendata:dateFrom", dateFrom));

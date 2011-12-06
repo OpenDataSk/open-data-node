@@ -38,6 +38,7 @@ public class OrganizationsDatanestHarvester extends
 	//private final static int ATTR_INDEX_ID = 0;
 	protected final static int ATTR_INDEX_NAME = 1;
 	protected final static int ATTR_INDEX_SEAT = 3;
+	protected final static int ATTR_INDEX_LEGAL_FORM = 4;
 	protected final static int ATTR_INDEX_ICO = 2;
 	protected final static int ATTR_INDEX_DATE_FROM = 6;
 	protected final static int ATTR_INDEX_DATE_TO = 7;
@@ -64,6 +65,7 @@ public class OrganizationsDatanestHarvester extends
 		
 		record.setSource(row[ATTR_INDEX_SOURCE]);
 		record.setName(StringEscapeUtils.escapeXml(row[ATTR_INDEX_NAME]));
+		record.setLegalForm(row[ATTR_INDEX_LEGAL_FORM]);
 		record.setSeat(row[ATTR_INDEX_SEAT]);
 		record.setIco(row[ATTR_INDEX_ICO]);
 		

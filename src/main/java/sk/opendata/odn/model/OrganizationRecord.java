@@ -5,6 +5,7 @@ import java.util.Date;
 public class OrganizationRecord {
 	private String source;
 	private String name;
+	private String legalForm;	// TODO: consider making it an enumeration, to easily catch errors and to ease categorization
 	private String seat;
 	private String ico;
 	private Date dateFrom;
@@ -22,6 +23,12 @@ public class OrganizationRecord {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public String getLegalForm() {
+		return legalForm;
+	}
+	public void setLegalForm(String legalForm) {
+		this.legalForm = legalForm;
 	}
 	public String getSeat() {
 		return seat;
