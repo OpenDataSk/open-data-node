@@ -5,7 +5,6 @@ import java.io.IOException;
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.config.RepositoryConfigException;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
@@ -41,12 +40,6 @@ public class WicketApplication extends WebApplication
 			scheduler.start();
 		} catch (SchedulerException e) {
 			logger.error("scheduler exception", e);
-			// TODO is it a "good practice" to pass that also up to Wicket?
-		} catch (RepositoryConfigException e) {
-			logger.error("repository config exception", e);
-			// TODO is it a "good practice" to pass that also up to Wicket?
-		} catch (RepositoryException e) {
-			logger.error("repository exception", e);
 			// TODO is it a "good practice" to pass that also up to Wicket?
 		} catch (IOException e) {
 			logger.error("IO exception", e);

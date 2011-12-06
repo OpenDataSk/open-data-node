@@ -12,11 +12,9 @@ import org.openrdf.model.ValueFactory;
 import org.openrdf.repository.Repository;
 import org.openrdf.repository.RepositoryConnection;
 import org.openrdf.repository.RepositoryException;
-import org.openrdf.repository.config.RepositoryConfigException;
-import org.openrdf.repository.sail.SailRepository;
+import org.openrdf.repository.http.HTTPRepository;
 import org.openrdf.rio.RDFFormat;
 import org.openrdf.rio.RDFParseException;
-import org.openrdf.sail.nativerdf.NativeStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,111 +30,97 @@ import sk.opendata.odn.utils.ApplicationProperties;
  * <ul>
  * <li>in Open Data Node architecture, this (this class) is a repository</li>
  * <li>to achieve this, we're using multiple "Sesame repositories"</li>
- * <li>so we have a little problem with "repository" being a little bit confusing
- *   (Open Data Node repository consists of one or more Sesame repositories)</li>
+ * <li>so we have a little problem with "repository" being a little bit
+ * confusing (Open Data Node repository consists of one or more Sesame
+ * repositories)</li>
  * <li>so, to avoid some of the confusion, this class is called "back-end"
- *   instead of "repository"</li>
- * </ul> 
+ * instead of "repository"</li>
+ * </ul>
  */
 public class SesameBackend implements OdnRepositoryInterface<RdfData> {
-	
+
 	public final static String SESAME_REPOSITORY_PROPERTIES_NAME = "/repo-sesame.properties";
-	public final static String KEY_REPO_NAMES = "sesame.repositories";
-	public final static String KEY_SESAME_DATA_DIR = "sesame.data_dir";
 	public final static String KEY_DEBUG_DUMP_RDF = "sesame.debug.dump_rdf";
 	public final static String PREFIX_KEY_REPO = "sesame.repo.";
-	public final static String SUFFIX_KEY_DATA_SUBDIR = ".data_subdir";
-	
+	public final static String SUFFIX_KEY_SERVER = ".server";
+	public final static String SUFFIX_KEY_ID = ".id";
+
 	private static Logger logger = LoggerFactory.getLogger(SesameBackend.class);
 	private ApplicationProperties srProperties = null;
-	private File sesameDataDir = null;
-//	private RepositoryManager repositoryManager = null;
-	private Hashtable<String, Repository> sesameRepos = null;
-	
+	private Hashtable<String, HTTPRepository> sesameRepos = null;
+
 	private static SesameBackend instance = null;
-	
-	
-	private SesameBackend() throws IOException, RepositoryConfigException, RepositoryException {
+
+	/**
+	 * Initialize Sesame back-end.
+	 * 
+	 * @throws IOException
+	 *             when error occurs while loading properties
+	 */
+	private SesameBackend() throws IOException {
 		// load properties
-		srProperties = ApplicationProperties.getInstance(SESAME_REPOSITORY_PROPERTIES_NAME);
-		
-		sesameDataDir = new File(srProperties.getProperty(KEY_SESAME_DATA_DIR));
-		initDataDir(sesameDataDir);
-		
-		// initialize repository manager
-//		repositoryManager = new LocalRepositoryManager(sesameDataDir);
-		
+		srProperties = ApplicationProperties
+				.getInstance(SESAME_REPOSITORY_PROPERTIES_NAME);
+
 		// initialize repositories
-		sesameRepos = new Hashtable<String, Repository>();
-		String repositories = srProperties.getProperty(KEY_REPO_NAMES);
-		for (String repoName : repositories.split(",")) {
-			logger.debug("initializeing repository " + repoName);
-			initRepo(repoName);
-		}
+		sesameRepos = new Hashtable<String, HTTPRepository>();
 	}
-	
-	public static SesameBackend getInstance() throws RepositoryConfigException,
-			RepositoryException, IOException {
-		
+
+	/**
+	 * Get the instance of Sesame back-end singleton.
+	 * 
+	 * @return instance of Sesame backend
+	 * @throws IOException
+	 *             when error occurs while loading properties
+	 */
+	public static SesameBackend getInstance() throws IOException {
+
 		if (instance == null)
 			instance = new SesameBackend();
-		
+
 		return instance;
 	}
-	
-	/**
-	 * Make sure that the directory we're going to use as store for Sesame repositories
-	 * does exists and is usable.
-	 * 
-	 * @param dataDir directory we want to store the Sesame repositories into
-	 */
-	public void initDataDir(File dataDir) {
-		if (!dataDir.exists()) {
-			if (!dataDir.mkdir())
-				throw new IllegalArgumentException("failed to create directory"
-						+ dataDir.toString());
-		}
-		else {
-			if (!dataDir.isDirectory())
-				throw new IllegalArgumentException(dataDir.toString()
-						+ " already exists but is not a directory");
-			if (!dataDir.canRead() || !dataDir.canWrite())
-				throw new IllegalArgumentException(dataDir.toString()
-						+ " not both readable and writable");
-		}
-	}
-	
-//	private boolean repoExists(File repoDataDir) throws RepositoryConfigException, RepositoryException {
-//		Collection<Repository> repos = repositoryManager.getAllRepositories();
-//		
-//		for (Repository repo : repos)
-//			if (repoDataDir.equals(repo.getDataDir().getAbsolutePath()))
-//				return true;
-//		
-//		return false;
-//	}
-	
-	public void initRepo(String repoName) throws RepositoryConfigException,
-			RepositoryException {
 
-		String repoSubDir = srProperties.getProperty(PREFIX_KEY_REPO + repoName
-				+ SUFFIX_KEY_DATA_SUBDIR);
-		File repoDataDir = new File(sesameDataDir, repoSubDir);
-		
-//		if (repoExists(repoDataDir))
-//			// nothing to initialize, just proceed
-//			return;
-		
+	/**
+	 * Initialize repository with given name.
+	 * 
+	 * Note: Do not confuse repository name (which is internal to the Open Data
+	 * Node and is used in as key in our repository properties) and Sesame
+	 * repository ID (which is relevant to the Sesame installation and can be
+	 * found in our properties as value).
+	 * 
+	 * @param repoName
+	 *            repository name
+	 * @return instance of HTTP
+	 * @throws RepositoryException
+	 *             when initialization fails
+	 */
+	private HTTPRepository initRepo(String repoName) throws RepositoryException {
+
+		String repoServer = srProperties.getProperty(PREFIX_KEY_REPO + repoName
+				+ SUFFIX_KEY_SERVER);
+		String repoID = srProperties.getProperty(PREFIX_KEY_REPO + repoName
+				+ SUFFIX_KEY_ID);
+
 		// TODO: indexes and other configuration parameters (as needed)
-		Repository repo = new SailRepository(new NativeStore(repoDataDir));
+		HTTPRepository repo = new HTTPRepository(repoServer, repoID);
 		repo.initialize();
-		
+
 		sesameRepos.put(repoName, repo);
-		logger.info("repository '" + repoName + "' initialized (" + repoDataDir + ")");
+		logger.info("repository '" + repoName + "' initialized ('" + repoServer
+				+ "', '" + repoID + "')");
+
+		return repo;
 	}
-	
-	public Repository getRepo(String repoName) {
-		return sesameRepos.get(repoName);
+
+	public HTTPRepository getRepo(String repoName) throws RepositoryException {
+
+		HTTPRepository repo = sesameRepos.get(repoName);
+
+		if (repo == null)
+			repo = initRepo(repoName);
+
+		return repo;
 	}
 
 	private void debugRdfDump(String repoName, String rdfData) {
@@ -150,7 +134,7 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 			logger.error("IO exception", e);
 		}
 	}
-	
+
 	/**
 	 * Store given record into Sesame repository with given name.
 	 * 
@@ -167,28 +151,32 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 	 * @throws OdnRepositoryException
 	 *             when error occurs while connecting to the Sesame repository
 	 *             or when Sesame "add" operation fails
+	 * @throws RepositoryException
+	 *             when initialization fails
 	 */
 	public void store(String repoName, RdfData records, String... contexts)
 			throws IllegalArgumentException, OdnRepositoryException {
 
-		Repository repo = getRepo(repoName);
-		if (repo == null)
-			throw new IllegalArgumentException(repoName + " does not exists");
-		
-		RepositoryConnection connection = null;
 		OdnRepositoryException odnRepoException = null;
-		
-		URI[] convertedContexts = null;
-		if (contexts.length > 0) {
-			ValueFactory valueFactory = repo.getValueFactory();
-			convertedContexts = new URI[contexts.length];
-			int index = 0;
-			for (String context : contexts) {
-				convertedContexts[index++] = valueFactory.createURI(context);
-			}
-		}
-		
+		RepositoryConnection connection = null;
+
 		try {
+			HTTPRepository repo = getRepo(repoName);
+			if (repo == null)
+				throw new IllegalArgumentException(repoName
+						+ " does not exists");
+
+			URI[] convertedContexts = null;
+			if (contexts.length > 0) {
+				ValueFactory valueFactory = repo.getValueFactory();
+				convertedContexts = new URI[contexts.length];
+				int index = 0;
+				for (String context : contexts) {
+					convertedContexts[index++] = valueFactory
+							.createURI(context);
+				}
+			}
+
 			connection = repo.getConnection();
 
 			// As of now, the "update" consist of fresh "whole at once" copy of
@@ -201,26 +189,26 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 			// FIXME: Implement proper "update" procedure.
 			if (contexts.length > 0) {
 				connection.clear(convertedContexts);
-				
+
 				// why we duplicate the 'clear()' and 'add()' statents:
 				// 'getStatements(null, null, null, true);' is not the same as
 				// 'getStatements(null, null, null, true, (Resource)null);' -
 				// see
 				// http://www.openrdf.org/doc/sesame2/2.3.2/users/userguide.html#d0e1218
 				connection.add(new StringReader(records.getRdfData()),
-						records.getRdfBaseURI(), RDFFormat.RDFXML, convertedContexts);
-			}
-			else {
+						records.getRdfBaseURI(), RDFFormat.RDFXML,
+						convertedContexts);
+			} else {
 				connection.clear();
-				
+
 				connection.add(new StringReader(records.getRdfData()),
 						records.getRdfBaseURI(), RDFFormat.RDFXML);
 			}
-			
+
 			logger.info("pushed " + records.getRdfData().length()
 					+ " characters of RDF into the Sesame repository '"
 					+ repoName + "'");
-			
+
 			if (Boolean.valueOf(srProperties.getProperty(KEY_DEBUG_DUMP_RDF)))
 				debugRdfDump(repoName, records.getRdfData());
 		} catch (RepositoryException e) {
@@ -232,23 +220,23 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 		} catch (IOException e) {
 			logger.error("IO exception", e);
 			odnRepoException = new OdnRepositoryException(e.getMessage(), e);
-		}
-		finally {
+		} finally {
 			if (connection != null)
 				try {
 					connection.close();
 				} catch (RepositoryException e) {
-					logger.error("repository exception in 'finally' statement", e);
+					logger.error("repository exception in 'finally' statement",
+							e);
 				}
 		}
-		
+
 		if (odnRepoException != null)
 			throw odnRepoException;
 	}
-	
+
 	public void shutDown() throws RepositoryException {
 		for (Repository repo : sesameRepos.values())
 			repo.shutDown();
 	}
-	
+
 }
