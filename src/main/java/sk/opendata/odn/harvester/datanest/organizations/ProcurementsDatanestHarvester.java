@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -107,7 +108,14 @@ public class ProcurementsDatanestHarvester extends
 		String[] row;
 		int debugProcessOnlyNItems = Integer.valueOf(datanestProperties.getProperty(KEY_DEBUG_PROCESS_ONLY_N_ITEMS));
 	    while ((row = csvReader.readNext()) != null) {
-	        records.add(scrapOneRecord(row));
+	    	try {
+		        records.add(scrapOneRecord(row));
+	    	}
+	    	catch (IllegalArgumentException e) {
+				logger.warn("illegal argument exception", e);
+				logger.warn("skipping following record: "
+						+ Arrays.deepToString(row));
+	    	}
 	        
 	        if (debugProcessOnlyNItems > 0 &&
 	        		records.size() > debugProcessOnlyNItems)
