@@ -38,7 +38,7 @@ public class ProcurementsDatanestHarvester extends
 	
 	public final static String SC_MISSING_CURRENCY = "missing currency";
 	public final static String SC_MISSING_CURRENCY_FOR_NON_ZERO_PRICE = "missing currency (for price which is non-zero)";
-	public final static String SC_UNKNOWN_CURRENCY = "unknown currency";
+	public final static String SC_UNKNOWN_CURRENCY = "unknown currency: ";
 	
 	private final static int ATTR_INDEX_ID = 0;
 	private final static int ATTR_INDEX_NOTE = 5;
@@ -86,7 +86,7 @@ public class ProcurementsDatanestHarvester extends
 			}
 			catch (IllegalArgumentException e) {
 				// unknown currencies
-				record.addScrapNote(SC_UNKNOWN_CURRENCY);
+				record.addScrapNote(SC_UNKNOWN_CURRENCY + row[ATTR_INDEX_CURRENCY]);
 			}
 		}
 		else {
