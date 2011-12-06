@@ -8,12 +8,8 @@
 	<name>Open Data Node</name>
 	<description>proof-of-concept implementation of Open Data Node</description>
 
-	<!-- TODO
-		<organization>
-		<name>company name</name>
-		<url>company url</url>
-		</organization>
-	-->
+	<!-- TODO <organization> <name>company name</name> <url>company url</url> 
+		</organization> -->
 	<url>http://utopia.sk/wiki/pages/viewpage.action?pageId=7077901</url>
 
 	<dependencies>
@@ -22,13 +18,8 @@
 			<artifactId>wicket</artifactId>
 			<version>${wicket.version}</version>
 		</dependency>
-		<!-- OPTIONAL 
-			<dependency>
-			<groupId>org.apache.wicket</groupId>
-			<artifactId>wicket-extensions</artifactId>
-			<version>${wicket.version}</version>
-			</dependency>
-		-->
+		<!-- OPTIONAL <dependency> <groupId>org.apache.wicket</groupId> <artifactId>wicket-extensions</artifactId> 
+			<version>${wicket.version}</version> </dependency> -->
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -72,14 +63,20 @@
 			<version>0.3.0</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.openrdf.sesame</groupId>
 			<artifactId>sesame-runtime</artifactId>
-			<version>2.6.0</version>
+			<version>${sesame.version}</version>
 			<scope>runtime</scope>
 		</dependency>
-		
+		<dependency>
+			<groupId>org.openrdf.sesame</groupId>
+			<artifactId>sesame-sail-nativerdf</artifactId>
+			<version>${sesame.version}</version>
+			<scope>test</scope>
+		</dependency>
+
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-io</artifactId>
@@ -95,7 +92,7 @@
 			<artifactId>quartz-jboss</artifactId>
 			<version>${quartz.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>net.sf.opencsv</groupId>
 			<artifactId>opencsv</artifactId>
@@ -158,6 +155,7 @@
 	<properties>
 		<jetty.version>6.1.4</jetty.version>
 		<quartz.version>2.1.0</quartz.version>
+		<sesame.version>2.6.0</sesame.version>
 		<wicket.version>1.4.6</wicket.version>
 	</properties>
 
