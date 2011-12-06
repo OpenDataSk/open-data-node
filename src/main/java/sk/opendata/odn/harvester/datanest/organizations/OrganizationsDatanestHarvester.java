@@ -36,12 +36,12 @@ public class OrganizationsDatanestHarvester extends
 	public final static String KEY_DATANEST_ORGANIZATIONS_SEZAME_REPO_NAME = "datanest.organizations.sesame_repo_name";
 	
 	//private final static int ATTR_INDEX_ID = 0;
-	private final static int ATTR_INDEX_NAME = 1;
-	private final static int ATTR_INDEX_SEAT = 3;
-	private final static int ATTR_INDEX_ICO = 2;
-	private final static int ATTR_INDEX_DATE_FROM = 6;
-	private final static int ATTR_INDEX_DATE_TO = 7;
-	private final static int ATTR_INDEX_SOURCE = 13;
+	protected final static int ATTR_INDEX_NAME = 1;
+	protected final static int ATTR_INDEX_SEAT = 3;
+	protected final static int ATTR_INDEX_ICO = 2;
+	protected final static int ATTR_INDEX_DATE_FROM = 6;
+	protected final static int ATTR_INDEX_DATE_TO = 7;
+	protected final static int ATTR_INDEX_SOURCE = 13;
 	
 	private static Logger logger = LoggerFactory.getLogger(OrganizationsDatanestHarvester.class);
 	private OrganizationRdfSerializer serializer = null;
