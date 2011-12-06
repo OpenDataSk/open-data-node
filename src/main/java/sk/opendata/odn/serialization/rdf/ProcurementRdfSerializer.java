@@ -23,8 +23,8 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 	
 	public final static String NS_PROCUREMENT = "http://opendata.cz/vocabulary/procurement.rdf#";
 	// TODO: do we need that configurable? if we want the that RDF data
-	// accessible over the net via that URL/URI (which is encouraged) wit would
-	// be either nice to "guess" is correctly from some other configuration or
+	// accessible over the net via that URL/URI (which is encouraged) it would
+	// be either nice to "guess" it correctly from some other configuration or
 	// have it in some per-ODN repository configuration
 	public final static String OPENDATA_PROCUREMENTS_BASE_URI = "http://opendata.sk/dataset/procurements/";
 	
