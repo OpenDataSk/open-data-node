@@ -40,7 +40,7 @@ public abstract class AbstractDatanestHarvester<RecordType> {
 	
 	
 	public AbstractDatanestHarvester() throws IOException {
-		datanestProperties = new ApplicationProperties(DATANEST_PROPERTIES_NAME);
+		datanestProperties = ApplicationProperties.getInstance(DATANEST_PROPERTIES_NAME);
 	}
 	
 	abstract public RecordType scrapOneRecord(String[] row) throws ParseException;

@@ -58,7 +58,7 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 	
 	private SesameBackend() throws IOException, RepositoryConfigException, RepositoryException {
 		// load properties
-		srProperties = new ApplicationProperties(SESAME_REPOSITORY_PROPERTIES_NAME);
+		srProperties = ApplicationProperties.getInstance(SESAME_REPOSITORY_PROPERTIES_NAME);
 		
 		sesameDataDir = new File(srProperties.getProperty(KEY_SESAME_DATA_DIR));
 		initDataDir(sesameDataDir);

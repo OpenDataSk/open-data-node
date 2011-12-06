@@ -3,6 +3,7 @@ package sk.opendata.odn.utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Hashtable;
 import java.util.Properties;
 
 import org.slf4j.Logger;
@@ -17,10 +18,32 @@ public class ApplicationProperties extends Properties {
 	public final String ODN_PROPERTY_SUBDIR = ".odn";
 	
 	private static Logger logger = LoggerFactory.getLogger(AbstractDatanestHarvester.class);
+	private static Hashtable<String, ApplicationProperties> instances = new Hashtable<String, ApplicationProperties>();
 	
+	private ApplicationProperties(String propertiesFileName) throws IOException {
+		super();
+		
+		// load the default properties from the bundle
+		this.load(getClass().getResourceAsStream(propertiesFileName));
+		logger.info("loaded default properties from '" + propertiesFileName + "' from the bundle");
+		
+		// load the properties from the user home directory and - if found and
+		// properly loaded - use them to override properties from the bundle
+		File homeSubdirFn = new File(System.getProperty("user.home"),
+				ODN_PROPERTY_SUBDIR);
+		File overrideFn = new File(homeSubdirFn, propertiesFileName);
+		if (overrideFn.exists() && overrideFn.isFile() && overrideFn.canRead()) {
+			FileInputStream in = new FileInputStream(overrideFn);
+			Properties overrides = new Properties();
+			overrides.load(in);
+			
+			this.putAll(overrides);
+			logger.info("user properties loaded from '" + overrideFn.getAbsolutePath() + "'");
+		}
+	}
 	
 	/**
-	 * Load properties from given file name.
+	 * Load properties from given file name. Properties are loaded only once from one unique file name.
 	 * 
 	 * Properties load procedure:
 	 * 
@@ -53,26 +76,15 @@ public class ApplicationProperties extends Properties {
 	 * @throws IOException
 	 *             when loading of the properties from bundle or file fails
 	 */
-	public ApplicationProperties(String propertiesFileName) throws IOException {
-		super();
+	public static ApplicationProperties getInstance(String propertiesFileName) throws IOException {
+		ApplicationProperties ap = instances.get(propertiesFileName);
 		
-		// load the default properties from the bundle
-		this.load(getClass().getResourceAsStream(propertiesFileName));
-		logger.info("loaded default properties from '" + propertiesFileName + "' from the bundle");
-		
-		// load the properties from the user home directory and - if found and
-		// properly loaded - use them to override properties from the bundle
-		File homeSubdirFn = new File(System.getProperty("user.home"),
-				ODN_PROPERTY_SUBDIR);
-		File overrideFn = new File(homeSubdirFn, propertiesFileName);
-		if (overrideFn.exists() && overrideFn.isFile() && overrideFn.canRead()) {
-			FileInputStream in = new FileInputStream(overrideFn);
-			Properties overrides = new Properties();
-			overrides.load(in);
-			
-			this.putAll(overrides);
-			logger.info("user properties loaded from '" + overrideFn.getAbsolutePath() + "'");
+		if (ap == null) {
+			ap = new ApplicationProperties(propertiesFileName);
+			instances.put(propertiesFileName, ap);
 		}
+		
+		return ap;
 	}
 
 }
