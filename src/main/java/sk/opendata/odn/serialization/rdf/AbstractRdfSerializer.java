@@ -34,7 +34,7 @@ public abstract class AbstractRdfSerializer<RecordType> {
 	public final static String NS_RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 	public final static String NS_SKOS = "http://www.w3.org/2004/02/skos/core#";
 	public final static String NS_DC = "http://purl.org/dc/elements/1.1/";
-	public final static String NS_OPENDATA = "http://sk.eea.opendata/2011/02/opendicts";
+	public final static String NS_OPENDATA = "http://sk.eea.opendata/2011/02/opendicts#";
 	
 	public final static String OPENDATA_DATE_FORMAT = "dd.MM.yyyy";
 	
