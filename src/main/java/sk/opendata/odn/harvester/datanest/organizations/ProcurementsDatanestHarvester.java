@@ -36,6 +36,9 @@ public class ProcurementsDatanestHarvester extends
 	public final static String KEY_DATANEST_PROCUREMENTS_URL = "datanest.procurements.url";
 	public final static String KEY_DATANEST_PROCUREMENTS_SEZAME_REPO_NAME = "datanest.procurements.sesame_repo_name";
 	
+	public final static String SC_MISSING_CURRENCY = "currency missing";
+	public final static String SC_MISSING_CURRENCY_FOR_NON_ZERO_PRICE = "currency missing (for price which is non-zero)";
+	
 	private final static int ATTR_INDEX_ID = 0;
 	private final static int ATTR_INDEX_NOTE = 5;
 	private final static int ATTR_INDEX_YEAR = 6;
@@ -79,6 +82,12 @@ public class ProcurementsDatanestHarvester extends
 			// for cases where the price was 0)
 			Currency currency = Currency.parse(row[ATTR_INDEX_CURRENCY]);
 			record.setCurrency(currency);
+		}
+		else {
+			if (record.getPrice() == 0)
+				record.addScrapNote(SC_MISSING_CURRENCY);
+			else
+				record.addScrapNote(SC_MISSING_CURRENCY_FOR_NON_ZERO_PRICE);
 		}
 		record.setVatIncluded(Boolean.valueOf(row[ATTR_INDEX_IS_VAT_INCLUDED]));
 		record.setCustomerIco(row[ATTR_INDEX_CUSTOMER_ICO]);

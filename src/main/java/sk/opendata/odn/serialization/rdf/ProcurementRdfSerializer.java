@@ -84,6 +84,10 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 		concept.appendChild(appendResourceNode(doc,
 				"opendata:xSupplierIco", "rdf:resource",
 				record.getSupplierIco()));
+		
+		for (String scrapNote : record.getScrapNotes())
+			concept.appendChild(appendTextNode(doc, "opendata:xScrapNote",
+					scrapNote));
 	}
 	
 	@Override

@@ -1,5 +1,7 @@
 package sk.opendata.odn.model;
 
+import java.util.Vector;
+
 
 public class ProcurementRecord {
 	private String id;
@@ -13,6 +15,7 @@ public class ProcurementRecord {
 	private boolean isVatIncluded;
 	private String customerIco;
 	private String supplierIco;
+	private Vector<String> scrapNotes = new Vector<String>();
 	// TODO: rest of the items: customer company address, ... which was not
 	// deemed useful now BUT might become handy later on (like in
 	// crowdsourcing, having multiple items will help determine and correct
@@ -90,5 +93,18 @@ public class ProcurementRecord {
 	}
 	public void setSupplierIco(String supplierIco) {
 		this.supplierIco = supplierIco;
+	}
+	
+	public Vector<String> getScrapNotes() {
+		return this.scrapNotes;
+	}
+	/**
+	 * Append given scrap note to the list (Vector) of scrap notes.
+	 * @param scrapNote scrap note to add
+	 * @return what 'Vector.add()' returned
+	 * @see java.util.Vector.add()
+	 */
+	public boolean addScrapNote(String scrapNote) {
+		return this.scrapNotes.add(scrapNote);
 	}
 }
