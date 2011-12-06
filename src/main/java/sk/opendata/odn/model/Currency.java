@@ -14,8 +14,10 @@ import java.util.Map;
  * </ul>
  */
 public enum Currency {
+	CZK("CZK", "Kč"),
 	EUR("EUR", "€"),
-	SKK("SKK", "Sk");
+	SKK("SKK", "Sk"),
+	USD("USD", "$");
 
 	private String currencyCode;	// ISO 4217 - see http://en.wikipedia.org/wiki/ISO_4217
 	private String currencySign;	// see http://en.wikipedia.org/wiki/Currency_sign
