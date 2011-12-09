@@ -14,16 +14,12 @@ a) transform SesameBenchmark into something like container or whatever
        not need certain harvesters and APIs so there would be a way to
        configure and deploy ODN to meet that criteria)
 
-b) transform existing Python proof-of-concept harvesters
-   into Java (maybe by running them in Jython or if feasible, rewriting
-   then into Java)
-
-c) enhancing the Datanest CSV harvesters to be able to "re-run"
+b) enhancing the Datanest CSV harvesters to be able to "re-run"
    and process only differences - i.e. we need to make them able to
    keep ODN copy of data up-to-date with Datanest "original"
 
-d) adding more harvesters: direct harvesting of ORSR to get more data
+c) adding more harvesters: direct harvesting of ORSR to get more data
    about companies, direct harvesting of procurement portals to have
    a shot by getting more data from the scanned documents themselves, ...
 
-e) ...
+d) ...
