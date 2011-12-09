@@ -80,30 +80,22 @@ public class PoliticalPartyDonationRdfSerializer extends AbstractRdfSerializer<P
 		// organizations and people repository so the main point twill be the URI,
 		// subsequent data will be useful for clean-up when proper link could not
 		// be found automatically
-		Element donorPerson = doc.createElement("opendata:xDonorPerson");
-		Element donorCompany = doc.createElement("opendata:xDonorCompany");
-		
 		if (record.getDonorName() != null)
-			donorPerson.appendChild(appendTextNode(doc, "opendata:xName",
+			concept.appendChild(appendTextNode(doc, "opendata:xDonorName",
 					record.getDonorName()));
 		if (record.getDonorSurname() != null)
-			donorPerson.appendChild(appendTextNode(doc, "opendata:xSurname",
+			concept.appendChild(appendTextNode(doc, "opendata:xDonorSurname",
 					record.getDonorSurname()));
 		if (record.getDonorTitle() != null)
-			donorPerson.appendChild(appendTextNode(doc, "opendata:xTitle",
+			concept.appendChild(appendTextNode(doc, "opendata:xDonorTitle",
 					record.getDonorTitle()));
 		if (record.getDonorCompany() != null)
-			donorCompany.appendChild(appendTextNode(doc, "opendata:xName",
+			concept.appendChild(appendTextNode(doc, "opendata:xDonorCompanyName",
 					record.getDonorCompany()));
 		if (record.getDonorIco() != null)
-			donorCompany.appendChild(appendTextNode(doc, "opendata:ico",
+			concept.appendChild(appendTextNode(doc, "opendata:xDonorIco",
 					record.getDonorIco()));
 		// TODO: adresa, mesto a PSC darcu
-		
-		if (donorPerson.hasChildNodes())
-			concept.appendChild(donorPerson);
-		if (donorCompany.hasChildNodes())
-			concept.appendChild(donorCompany);
 		
 		concept.appendChild(appendTextNode(doc, "opendata:xGiftValue",
 				donationValueFormat.format(record.getDonationValue())));
