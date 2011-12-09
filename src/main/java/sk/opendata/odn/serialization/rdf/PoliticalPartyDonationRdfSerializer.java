@@ -135,8 +135,9 @@ public class PoliticalPartyDonationRdfSerializer extends AbstractRdfSerializer<P
 		rdfData = new RdfData(
 				toRdf(records),
 				OPENDATA_COMBINED_BASE_URI);
-		repository.store(OPENDATA_COMBINED_REPO_NAME, rdfData,
-				OPENDATA_PPD_BASE_URI);
+		// FIXME: Contexts temporarily disabled - see FIXME note about ugly workaround in 'SesameBackend.store()'.
+		repository.store(OPENDATA_COMBINED_REPO_NAME, rdfData/*,
+				OPENDATA_PPD_BASE_URI*/);
 	}
 
 }

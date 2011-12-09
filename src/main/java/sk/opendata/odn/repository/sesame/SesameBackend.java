@@ -190,7 +190,7 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 			if (contexts.length > 0) {
 				connection.clear(convertedContexts);
 
-				// why we duplicate the 'clear()' and 'add()' statents:
+				// why we duplicate the 'clear()' and 'add()' statements:
 				// 'getStatements(null, null, null, true);' is not the same as
 				// 'getStatements(null, null, null, true, (Resource)null);' -
 				// see
@@ -199,7 +199,16 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 						records.getRdfBaseURI(), RDFFormat.RDFXML,
 						convertedContexts);
 			} else {
-				connection.clear();
+				// CRUDE HACK, FIXME: If we use contexts for the "all"
+				// repository to distinguish statements in terms of where they
+				// came from so that we can do a proper clean-up before
+				// "update", I'm then not able yet to make a proper query on top
+				// of statements from different contexts. Thus for now I'm not
+				// using contexts and for "all" repository I'm not doing the
+				// automatic clean-up, which means that "Clean" needs to be done
+				// on the repo manually!!!
+				if (!repoName.equals("all"))
+					connection.clear();
 
 				connection.add(new StringReader(records.getRdfData()),
 						records.getRdfBaseURI(), RDFFormat.RDFXML);
