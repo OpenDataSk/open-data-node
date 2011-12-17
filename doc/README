@@ -49,8 +49,3 @@ Expected results:
 
 <http://opendata.sk/dataset/procurements/28991> "17703956" <http://opendata.sk/dataset/political_party_donations/1222>
 ...
-
-
-FIXME: Work if I take RDF dumps from scrapers and carefully load them into
-my Sesame without contexts. But does not work on ohio.in.eea.sk with RDF loaded
-by this ODN. Seems like xSupplierIco is always "0" there. => Investigate and fix.
