@@ -1,15 +1,16 @@
-This is a proof-of-concept of Open Data Node created by copying
-and modifying 'benchmark' project. What needs to be done to
-enhance this "copy" further:
+This is a proof-of-concept implementation of Open Data Node
+(http://opendata.sk/liferay/open-data-node).
 
-a) transform SesameBenchmark into something like container or whatever
-   (maybe even using OSGI) so that it loads and runs Harvester
-   and other components (as sort of plug-ins)
+Things to do:
+
+a) transform the existing application into something like container
+   or whatever (maybe even using OSGI) so that it loads and runs
+   Harvester and other components (as sort of plug-ins)
 
    i) at first, we need to only split the code into appropriate
       classes and packages, all in one project
 
-   ii) later we can thing about making it configurable so that ODN
+   ii) later we can think about making it configurable so that ODN
        can be deployed in varying configurations (like somebody does
        not need certain harvesters and APIs so there would be a way to
        configure and deploy ODN to meet that criteria)
