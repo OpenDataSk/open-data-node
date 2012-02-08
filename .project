@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>benchmark</name>
+	<name>open-data-node</name>
 	<comment>simple benchmark of Sesame on-top of some ORSR/Datanest data to get the idea about how the Sesame might behave for our deployments. NO_M2ECLIPSE_SUPPORT: Project files created with the maven-eclipse-plugin are not supported in M2Eclipse.</comment>
 	<projects>
 	</projects>
