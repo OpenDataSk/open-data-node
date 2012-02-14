@@ -21,6 +21,7 @@ package sk.opendata.odn.serialization.rdf;
 
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -118,7 +119,7 @@ public abstract class AbstractRdfSerializer<RecordType> {
 	}
 
 	/**
-	 * Serialize into RDF one given record and store the result in given
+	 * Serialize one given record into RDF and store the result in given
 	 * 'concept' (which in turn is in given 'doc').
 	 * 
 	 * @param doc
@@ -129,8 +130,7 @@ public abstract class AbstractRdfSerializer<RecordType> {
 	 * @param record
 	 *            record to serialize into RDF
 	 */
-	// TODO: maybe rename to 'serializeRecord()' to match naming in 'AbstractSolrSerializer'
-	public abstract void recordToRdf(Document doc, Element concept,
+	public abstract void serializeRecord(Document doc, Element concept,
 			RecordType record);
 
 	/**
@@ -153,7 +153,7 @@ public abstract class AbstractRdfSerializer<RecordType> {
 	 */
 	abstract public String getConceptRdfAbout(RecordType record);
 	
-	public String toRdf(Vector<RecordType> records)
+	public String serialize(List<RecordType> records)
 			throws TransformerException {
 		
 		Document doc = docBuilder.newDocument();
@@ -169,7 +169,7 @@ public abstract class AbstractRdfSerializer<RecordType> {
 		for (RecordType record : records) {
 			Element concept = doc.createElement("skos:Concept");
 			concept.setAttribute("rdf:about", getConceptRdfAbout(record));
-			recordToRdf(doc, concept, record);
+			serializeRecord(doc, concept, record);
 			
 			rdfElement.appendChild(concept);
 		}

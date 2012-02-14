@@ -53,17 +53,20 @@ public abstract class AbstractSolrSerializer<RecordType> {
 	}
 
 	/**
-	 * Serialize into SOLR all given records and return them in the list.
+	 * Serialize all given records into beans for SOLR.
 	 * 
 	 * @param records
 	 *            list of records as harvested
+	 *
 	 * @return list of records suitable to be pushed into SOLR
+	 *
 	 * @throws IllegalAccessException if serialization into SOLR bean fails
 	 * @throws InvocationTargetException if serialization into SOLR bean fails
 	 * @throws NoSuchMethodException if serialization into SOLR bean fails
 	 */
-	public abstract List<SolrItem> serializeRecords(List<RecordType> records)
-			throws IllegalAccessException, InvocationTargetException, NoSuchMethodException;
+	public abstract List<SolrItem> serialize(List<RecordType> records)
+			throws IllegalAccessException, InvocationTargetException,
+			NoSuchMethodException;
 
 	/**
 	 * Serialize and store given organization record.

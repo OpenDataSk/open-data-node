@@ -48,7 +48,10 @@ public class OrganizationSolrSerializer extends AbstractSolrSerializer<Organizat
 	}
 	
 	@Override
-	public List<SolrItem> serializeRecords(List<OrganizationRecord> records) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+	public List<SolrItem> serialize(List<OrganizationRecord> records)
+			throws IllegalAccessException, InvocationTargetException,
+			NoSuchMethodException {
+
 		Vector<SolrItem> solrItems = new Vector<SolrItem>(records.size());
 		for (OrganizationRecord or : records) {
 			SolrItem solrItem = SolrItem.createSolrItem(or);
@@ -63,7 +66,7 @@ public class OrganizationSolrSerializer extends AbstractSolrSerializer<Organizat
 			throws IllegalArgumentException, OdnRepositoryException,
 			IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		
-		repository.store("XXX", serializeRecords(records));
+		repository.store("XXX", serialize(records));
 	}
 
 }

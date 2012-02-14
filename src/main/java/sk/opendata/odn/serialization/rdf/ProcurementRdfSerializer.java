@@ -76,7 +76,7 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 	}
 	
 	@Override
-	public void recordToRdf(Document doc, Element concept, ProcurementRecord record) {
+	public void serializeRecord(Document doc, Element concept, ProcurementRecord record) {
 		// TODO: verify, that it is indeed a form of unique name identifying
 		// single procurement
 	    concept.appendChild(appendTextNode(doc, "skos:prefLabel", record.getProcurementId()));
@@ -116,8 +116,11 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 	public void store(Vector<ProcurementRecord> records)
 			throws TransformerException, IllegalArgumentException, OdnRepositoryException {
 		
+		// TODO: We're calling 'serialize(records)' twice. They are supposed to
+		// produce same results => call it only once and reuse it twice.
+		
 		RdfData rdfData = new RdfData(
-				toRdf(records),
+				serialize(records),
 				OPENDATA_PROCUREMENTS_BASE_URI);
 		repository.store(repoName, rdfData);
 		
@@ -127,7 +130,7 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 		// base URI but differenciated by contexts (and we reuse the "original"
 		// base URI as context
 		rdfData = new RdfData(
-				toRdf(records),
+				serialize(records),
 				OPENDATA_COMBINED_BASE_URI);
 		// FIXME: Contexts temporarily disabled - see FIXME note about ugly workaround in 'SesameBackend.store()'.
 		repository.store(OPENDATA_COMBINED_REPO_NAME, rdfData /*,
