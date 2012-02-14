@@ -42,14 +42,10 @@ public abstract class AbstractSolrSerializer<RecordType> {
 	 * 
 	 * @param repository
 	 *            repository to use for storage of record
-	 * @param name
-	 *            XXX name of the storage/back-end to store into
 	 */
-	public AbstractSolrSerializer(OdnRepositoryInterface<List<SolrItem>> repository,
-			String name) {
+	public AbstractSolrSerializer(OdnRepositoryInterface<List<SolrItem>> repository) {
 
 		this.repository = repository;
-		// XXX this.repoName = name;
 	}
 
 	/**

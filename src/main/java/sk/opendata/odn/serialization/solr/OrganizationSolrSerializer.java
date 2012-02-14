@@ -38,13 +38,10 @@ public class OrganizationSolrSerializer extends AbstractSolrSerializer<Organizat
 	 * 
 	 * @param repository
 	 *            repository to use for storage of record
-	 * @param name
-	 *            name of the storage/back-end to store into
 	 */
-	public OrganizationSolrSerializer(OdnRepositoryInterface<List<SolrItem>> repository,
-			String name) {
+	public OrganizationSolrSerializer(OdnRepositoryInterface<List<SolrItem>> repository) {
 	
-		super(repository, name);
+		super(repository);
 	}
 	
 	@Override

@@ -81,8 +81,7 @@ public class OrganizationsDatanestHarvester extends
 				datanestProperties.getProperty(
 						KEY_DATANEST_ORGANIZATIONS_SEZAME_REPO_NAME));
 		
-		solrSerializer = new OrganizationSolrSerializer(
-				SolrBackend.getInstance(), "XXX");
+		solrSerializer = new OrganizationSolrSerializer(SolrBackend.getInstance());
 	}
 	
 	@Override
