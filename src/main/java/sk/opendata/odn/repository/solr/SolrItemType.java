@@ -18,6 +18,13 @@
 
 package sk.opendata.odn.repository.solr;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import sk.opendata.odn.model.OrganizationRecord;
+import sk.opendata.odn.model.PoliticalPartyDonationRecord;
+import sk.opendata.odn.model.ProcurementRecord;
+
 /**
  * SOLR item type, used to distinguish between "data sets" stored
  * in one SOLR index.
@@ -28,4 +35,32 @@ public enum SolrItemType {
 	ORGANIZATION_RECORD,
 	POLITICAL_PARTY_DONATION_RECORD,
 	PROCUREMENT_RECORD;
+
+	private final static Map<Class<?>, SolrItemType> lookup = new HashMap<Class<?>, SolrItemType>();
+	
+	
+	static {
+		lookup.put(OrganizationRecord.class, ORGANIZATION_RECORD);
+		lookup.put(PoliticalPartyDonationRecord.class, POLITICAL_PARTY_DONATION_RECORD);
+		lookup.put(ProcurementRecord.class, PROCUREMENT_RECORD);
+	}
+	
+	
+	/**
+	 * Determine record type for given class.
+	 * 
+	 * @param recordClass
+	 *            class of the record
+	 * @return enum value corresponding to given record
+	 * @throws IllegalArgumentException
+	 *             when given record is not known
+	 */
+	public static SolrItemType getType(Class<?> recordClass) throws IllegalArgumentException {
+		SolrItemType result = lookup.get(recordClass);
+		
+		if (result == null)
+			throw new IllegalArgumentException(recordClass.getCanonicalName());
+		
+		return result;
+	}
 }

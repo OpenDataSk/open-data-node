@@ -20,7 +20,8 @@ package sk.opendata.odn.model;
 
 import java.util.Date;
 
-public class OrganizationRecord {
+public class OrganizationRecord extends AbstractRecord {
+	private String datanestId;	// TODO: consider making it an Integer
 	private String source;
 	private String name;
 	private String legalForm;	// TODO: consider making it an enumeration, to easily catch errors and to ease categorization
@@ -30,6 +31,12 @@ public class OrganizationRecord {
 	private Date dateTo;
 	
 	
+	public String getDatanestId() {
+		return datanestId;
+	}
+	public void setDatanestId(String datanestId) {
+		this.datanestId = datanestId;
+	}
 	public String getSource() {
 		return source;
 	}

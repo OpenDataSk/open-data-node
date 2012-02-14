@@ -27,9 +27,7 @@ import org.apache.solr.client.solrj.beans.Field;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sk.opendata.odn.model.OrganizationRecord;
-import sk.opendata.odn.model.PoliticalPartyDonationRecord;
-import sk.opendata.odn.model.ProcurementRecord;
+import sk.opendata.odn.model.AbstractRecord;
 
 /**
  * We're storing multiple harvested data sets in one SOLR index (see
@@ -78,12 +76,7 @@ public class SolrItem {
 	
 
 	/**
-	 * Create SOLR item from given record, with given type and ID.
-	 * 
-	 * TODO: Make this more general (i.e., auto-determine the type from given
-	 * class plus make some order with the IDs for various records), get rid of
-	 * other public versions and make this public instead. Try not making a
-	 * woodoo out of it.
+	 * Create SOLR item from given record.
 	 * 
 	 * @param source
 	 *            record - source of data
@@ -101,79 +94,15 @@ public class SolrItem {
 	 * @throws NoSuchMethodException
 	 *             if {@code PropertyUtils.copyProperties()} fails
 	 */
-	private static SolrItem createSolrItem(Object source, SolrItemType type,
-			String id) throws IllegalAccessException,
-			InvocationTargetException, NoSuchMethodException {
+	public static SolrItem createSolrItem(AbstractRecord source)
+			throws IllegalAccessException, InvocationTargetException,
+			NoSuchMethodException {
 
 		SolrItem solrItem = new SolrItem();
 		PropertyUtils.copyProperties(solrItem, source);
-		solrItem.type = type;
-		solrItem.id = id;
+		solrItem.type = SolrItemType.getType(source.getClass());
+		solrItem.id = source.getId();
 		return solrItem;
-	}
-	
-	/**
-	 * Create SOLR item from given organization record.
-	 * 
-	 * @param or
-	 *            organization record
-	 * @return SOLR item
-	 * @throws IllegalAccessException
-	 *             if {@code PropertyUtils.copyProperties()} fails
-	 * @throws InvocationTargetException
-	 *             if {@code PropertyUtils.copyProperties()} fails
-	 * @throws NoSuchMethodException 
-	 *             if {@code PropertyUtils.copyProperties()} fails
-	 */
-	public static SolrItem createSolrItem(OrganizationRecord or)
-			throws IllegalAccessException, InvocationTargetException,
-			NoSuchMethodException {
-
-		return createSolrItem(or,
-				SolrItemType.ORGANIZATION_RECORD,
-				"XXX_orgRec_" + or.getIco());
-	}
-
-	/**
-	 * Create SOLR item from given political party donation record.
-	 * 
-	 * @param ppdr political party donation record
-	 * @return SOLR item
-	 * @throws IllegalAccessException
-	 *             if {@code PropertyUtils.copyProperties()} fails
-	 * @throws InvocationTargetException
-	 *             if {@code PropertyUtils.copyProperties()} fails
-	 * @throws NoSuchMethodException 
-	 *             if {@code PropertyUtils.copyProperties()} fails
-	 */
-	public static SolrItem createSolrItem(PoliticalPartyDonationRecord ppdr)
-			throws IllegalAccessException, InvocationTargetException,
-			NoSuchMethodException {
-
-		return createSolrItem(ppdr,
-				SolrItemType.POLITICAL_PARTY_DONATION_RECORD,
-				"XXX_ppdRec_" + ppdr.getId());
-	}
-
-	/**
-	 * Create SOLR item from given procurement record.
-	 * 
-	 * @param pr procurement record
-	 * @return SOLR item
-	 * @throws IllegalAccessException
-	 *             if {@code PropertyUtils.copyProperties()} fails
-	 * @throws InvocationTargetException
-	 *             if {@code PropertyUtils.copyProperties()} fails
-	 * @throws NoSuchMethodException 
-	 *             if {@code PropertyUtils.copyProperties()} fails
-	 */
-	public static SolrItem createSolrItem(ProcurementRecord pr)
-			throws IllegalAccessException, InvocationTargetException,
-			NoSuchMethodException {
-
-		return createSolrItem(pr,
-				SolrItemType.PROCUREMENT_RECORD,
-				"XXX_procurementRec_" + pr.getId());
 	}
 	
 	

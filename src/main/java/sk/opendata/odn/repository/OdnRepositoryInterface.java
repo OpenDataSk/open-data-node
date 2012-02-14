@@ -34,7 +34,8 @@ public interface OdnRepositoryInterface<RecordType> {
 	 * {@code name} defines which one to store into.
 	 * 
 	 * @param name
-	 *            name of the store/back-end to store into
+	 *            name of the store/back-end to store into (TODO: name is not
+	 *            "back-end neutral" => move it into "records")
 	 * @param records
 	 *            record to store
 	 * @param contexts

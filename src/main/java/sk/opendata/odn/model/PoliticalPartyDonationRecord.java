@@ -21,8 +21,8 @@ package sk.opendata.odn.model;
 import java.util.Date;
 
 
-public class PoliticalPartyDonationRecord {
-	private String id;
+public class PoliticalPartyDonationRecord extends AbstractRecord {
+	private String datanestId;
 	private String donorName;
 	private String donorSurname;
 	private String donorTitle;
@@ -49,11 +49,11 @@ public class PoliticalPartyDonationRecord {
 	// search queries with stuff like
 	// 'if EUR then price > 10; if SKK then price > 300'
 	
-	public String getId() {
-		return id;
+	public String getDatanestId() {
+		return datanestId;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setDatanestId(String datanestId) {
+		this.datanestId = datanestId;
 	}
 	public String getDonorName() {
 		return donorName;

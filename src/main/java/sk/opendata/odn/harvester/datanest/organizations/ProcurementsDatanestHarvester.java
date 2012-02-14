@@ -89,7 +89,8 @@ public class ProcurementsDatanestHarvester extends
 	public ProcurementRecord scrapOneRecord(String[] row) throws ParseException {
 		ProcurementRecord record = new ProcurementRecord();
 		
-		record.setId(row[ATTR_INDEX_ID]);
+		record.setId("procurement_" + row[ATTR_INDEX_ID]);
+		record.setDatanestId(row[ATTR_INDEX_ID]);
 		record.setNote(row[ATTR_INDEX_NOTE]);
 		record.setYear(row[ATTR_INDEX_YEAR]);
 		record.setBulletinId(row[ATTR_INDEX_BULLETIN_ID]);
@@ -120,7 +121,7 @@ public class ProcurementsDatanestHarvester extends
 		record.setCustomerIco(row[ATTR_INDEX_CUSTOMER_ICO]);
 		record.setSupplierIco(row[ATTR_INDEX_SUPPLIER_ICO]);
 		
-		logger.debug("scrapped record of: " + record.getId());
+		logger.debug("scrapped record of: " + record.getDatanestId());
 		
 		return record;
 	}

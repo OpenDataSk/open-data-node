@@ -22,6 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Vector;
 
+import sk.opendata.odn.model.AbstractRecord;
 import sk.opendata.odn.repository.OdnRepositoryException;
 import sk.opendata.odn.repository.OdnRepositoryInterface;
 import sk.opendata.odn.repository.solr.SolrItem;
@@ -32,7 +33,7 @@ import sk.opendata.odn.repository.solr.SolrItem;
  * @param <RecordType>
  *            type of individual record which will be converted to SOLR bean
  */
-public abstract class AbstractSolrSerializer<RecordType> {
+public abstract class AbstractSolrSerializer<RecordType extends AbstractRecord> {
 
 	protected OdnRepositoryInterface<List<SolrItem>> repository;
 
@@ -60,9 +61,18 @@ public abstract class AbstractSolrSerializer<RecordType> {
 	 * @throws InvocationTargetException if serialization into SOLR bean fails
 	 * @throws NoSuchMethodException if serialization into SOLR bean fails
 	 */
-	public abstract List<SolrItem> serialize(List<RecordType> records)
+	public List<SolrItem> serialize(List<RecordType> records)
 			throws IllegalAccessException, InvocationTargetException,
-			NoSuchMethodException;
+			NoSuchMethodException {
+		
+		Vector<SolrItem> solrItems = new Vector<SolrItem>(records.size());
+		for (RecordType record : records) {
+			SolrItem solrItem = SolrItem.createSolrItem(record);
+			solrItems.add(solrItem);
+		}
+		
+		return solrItems;
+	}
 
 	/**
 	 * Serialize and store given organization record.
@@ -82,7 +92,10 @@ public abstract class AbstractSolrSerializer<RecordType> {
 	 * @throws NoSuchMethodException 
 	 *             if {@code PropertyUtils.copyProperties()} fails
 	 */
-	public abstract void store(Vector<RecordType> records)
+	public void store(Vector<RecordType> records)
 			throws IllegalArgumentException, OdnRepositoryException,
-			IllegalAccessException, InvocationTargetException, NoSuchMethodException;
+			IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+		
+		repository.store("XXX", serialize(records));
+	}
 }

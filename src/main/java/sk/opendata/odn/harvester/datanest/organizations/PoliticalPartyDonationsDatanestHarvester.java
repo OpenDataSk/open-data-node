@@ -89,7 +89,8 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 	public PoliticalPartyDonationRecord scrapOneRecord(String[] row) throws ParseException {
 		PoliticalPartyDonationRecord record = new PoliticalPartyDonationRecord();
 		
-		record.setId(row[ATTR_INDEX_ID]);
+		record.setId("donation_" + row[ATTR_INDEX_ID]);
+		record.setDatanestId(row[ATTR_INDEX_ID]);
 		if (!row[ATTR_INDEX_DONOR_NAME].isEmpty())
 			record.setDonorName(row[ATTR_INDEX_DONOR_NAME]);
 		if (!row[ATTR_INDEX_DONOR_SURNAME].isEmpty())
@@ -118,7 +119,7 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 		if (!row[ATTR_INDEX_NOTE].isEmpty())
 			record.setNote(row[ATTR_INDEX_NOTE]);
 		
-		logger.debug("scrapped record of: " + record.getId());
+		logger.debug("scrapped record of: " + record.getDatanestId());
 		
 		return record;
 	}

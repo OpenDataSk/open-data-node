@@ -18,12 +18,9 @@
 
 package sk.opendata.odn.serialization.solr;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-import java.util.Vector;
 
 import sk.opendata.odn.model.OrganizationRecord;
-import sk.opendata.odn.repository.OdnRepositoryException;
 import sk.opendata.odn.repository.OdnRepositoryInterface;
 import sk.opendata.odn.repository.solr.SolrItem;
 
@@ -42,28 +39,6 @@ public class OrganizationSolrSerializer extends AbstractSolrSerializer<Organizat
 	public OrganizationSolrSerializer(OdnRepositoryInterface<List<SolrItem>> repository) {
 	
 		super(repository);
-	}
-	
-	@Override
-	public List<SolrItem> serialize(List<OrganizationRecord> records)
-			throws IllegalAccessException, InvocationTargetException,
-			NoSuchMethodException {
-
-		Vector<SolrItem> solrItems = new Vector<SolrItem>(records.size());
-		for (OrganizationRecord or : records) {
-			SolrItem solrItem = SolrItem.createSolrItem(or);
-			solrItems.add(solrItem);
-		}
-		
-		return solrItems;
-	}
-	
-	@Override
-	public void store(Vector<OrganizationRecord> records)
-			throws IllegalArgumentException, OdnRepositoryException,
-			IllegalAccessException, InvocationTargetException, NoSuchMethodException {
-		
-		repository.store("XXX", serialize(records));
 	}
 
 }

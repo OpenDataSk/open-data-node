@@ -21,8 +21,8 @@ package sk.opendata.odn.model;
 import java.util.Vector;
 
 
-public class ProcurementRecord {
-	private String id;
+public class ProcurementRecord extends AbstractRecord {
+	private String datanestId;
 	private String note;
 	private String year;
 	private String bulletinId;
@@ -46,11 +46,11 @@ public class ProcurementRecord {
 	// 'if EUR then price > 10; if SKK then price > 300' 
 	
 	
-	public String getId() {
-		return id;
+	public String getDatanestId() {
+		return datanestId;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setDatanestId(String datanestId) {
+		this.datanestId = datanestId;
 	}
 	public String getNote() {
 		return note;
