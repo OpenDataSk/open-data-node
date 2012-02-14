@@ -23,8 +23,13 @@
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.5.8</version>
+			<version>${slf4j.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
@@ -73,6 +78,18 @@
 			<groupId>org.openrdf.sesame</groupId>
 			<artifactId>sesame-runtime</artifactId>
 			<version>${sesame.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.8.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.solr</groupId>
+			<artifactId>solr-solrj</artifactId>
+			<version>${solr.version}</version>
 		</dependency>
 
 		<dependency>
@@ -154,6 +171,8 @@
 		<jetty.version>6.1.4</jetty.version>
 		<quartz.version>2.1.0</quartz.version>
 		<sesame.version>2.6.0</sesame.version>
+		<slf4j.version>1.6.1</slf4j.version>
+		<solr.version>3.5.0</solr.version>
 		<wicket.version>1.4.6</wicket.version>
 	</properties>
 

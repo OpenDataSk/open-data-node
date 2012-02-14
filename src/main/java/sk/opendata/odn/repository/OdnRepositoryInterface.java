@@ -35,18 +35,19 @@ public interface OdnRepositoryInterface<RecordType> {
 	 * 
 	 * @param name
 	 *            name of the store/back-end to store into
-	 * @param record
+	 * @param records
 	 *            record to store
 	 * @param contexts
 	 *            the context for RDF statements used for the statements in the
-	 *            repository
+	 *            repository (TODO: should be moved to 'records' so as to make the
+	 *            Repository API "clean" and "back-end neutral")
 	 * 
 	 * @throws IllegalArgumentException
 	 *             when some of the given arguments is not valid
 	 * @throws OdnRepositoryException
 	 *             when storage operation fails
 	 */
-	public void store(String name, RecordType record, String... contexts)
+	public void store(String name, RecordType records, String... contexts)
 			throws IllegalArgumentException, OdnRepositoryException;
 
 }

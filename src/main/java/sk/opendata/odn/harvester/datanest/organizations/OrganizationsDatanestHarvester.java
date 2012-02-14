@@ -21,6 +21,7 @@ package sk.opendata.odn.harvester.datanest.organizations;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.Date;
@@ -40,7 +41,9 @@ import org.slf4j.LoggerFactory;
 import sk.opendata.odn.model.OrganizationRecord;
 import sk.opendata.odn.repository.OdnRepositoryException;
 import sk.opendata.odn.repository.sesame.SesameBackend;
+import sk.opendata.odn.repository.solr.SolrBackend;
 import sk.opendata.odn.serialization.rdf.OrganizationRdfSerializer;
+import sk.opendata.odn.serialization.solr.OrganizationSolrSerializer;
 import au.com.bytecode.opencsv.CSVReader;
 
 /**
@@ -63,7 +66,9 @@ public class OrganizationsDatanestHarvester extends
 	protected final static int ATTR_INDEX_SOURCE = 13;
 	
 	private static Logger logger = LoggerFactory.getLogger(OrganizationsDatanestHarvester.class);
-	private OrganizationRdfSerializer serializer = null;
+	// TODO: transform that into list of serializers
+	private OrganizationRdfSerializer rdfSerializer = null;
+	private OrganizationSolrSerializer solrSerializer = null;
 
 	
 	public OrganizationsDatanestHarvester() throws IOException,
@@ -72,9 +77,12 @@ public class OrganizationsDatanestHarvester extends
 		
 		super();
 		
-		serializer = new OrganizationRdfSerializer(SesameBackend.getInstance(),
+		rdfSerializer = new OrganizationRdfSerializer(SesameBackend.getInstance(),
 				datanestProperties.getProperty(
 						KEY_DATANEST_ORGANIZATIONS_SEZAME_REPO_NAME));
+		
+		solrSerializer = new OrganizationSolrSerializer(
+				SolrBackend.getInstance(), "XXX");
 	}
 	
 	@Override
@@ -103,7 +111,9 @@ public class OrganizationsDatanestHarvester extends
 	@Override
 	public void update() throws IOException, ParseException,
 			RepositoryConfigException, RepositoryException,
-			TransformerException, IllegalArgumentException, OdnRepositoryException {
+			TransformerException, IllegalArgumentException,
+			OdnRepositoryException, IllegalAccessException,
+			InvocationTargetException, NoSuchMethodException {
 		
 		URL csvUrl = new URL(datanestProperties.getProperty(KEY_DATANEST_ORGANIZATIONS_URL));
 		logger.debug("going to load data from " + csvUrl.toExternalForm());
@@ -131,7 +141,8 @@ public class OrganizationsDatanestHarvester extends
 	    }
 	    
 	    // store the results
-	    serializer.store(records);
+	    rdfSerializer.store(records);
+	    solrSerializer.store(records);
 	}
 
 }

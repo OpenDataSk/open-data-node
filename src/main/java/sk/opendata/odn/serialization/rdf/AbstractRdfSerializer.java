@@ -129,6 +129,7 @@ public abstract class AbstractRdfSerializer<RecordType> {
 	 * @param record
 	 *            record to serialize into RDF
 	 */
+	// TODO: maybe rename to 'serializeRecord()' to match naming in 'AbstractSolrSerializer'
 	public abstract void recordToRdf(Document doc, Element concept,
 			RecordType record);
 

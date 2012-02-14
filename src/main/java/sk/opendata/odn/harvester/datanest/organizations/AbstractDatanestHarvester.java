@@ -19,6 +19,7 @@
 package sk.opendata.odn.harvester.datanest.organizations;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -63,10 +64,13 @@ public abstract class AbstractDatanestHarvester<RecordType> {
 	
 	abstract public RecordType scrapOneRecord(String[] row) throws ParseException;
 	
+	// TODO: rework so that repo-soecific exceptions are NOt thrown here,
+	// they are supposed to be re-thrown inside OdnRepositoryException
 	public abstract void update() throws IOException, ParseException,
 			RepositoryConfigException, RepositoryException,
 			TransformerException, IllegalArgumentException,
-			OdnRepositoryException;
+			OdnRepositoryException, IllegalAccessException,
+			InvocationTargetException, NoSuchMethodException;
 	
 	/**
 	 * Method invoked by QUARTZ scheduler to launch this job.
@@ -94,6 +98,12 @@ public abstract class AbstractDatanestHarvester<RecordType> {
 			logger.error("illegal argument exception", e);
 		} catch (OdnRepositoryException e) {
 			logger.error("repository exception", e);
+		} catch (IllegalAccessException e) {
+			logger.error("illegal access exception", e);
+		} catch (InvocationTargetException e) {
+			logger.error("invocation target exception", e);
+		} catch (NoSuchMethodException e) {
+			logger.error("no such method exception", e);
 		}
 	}
 }
