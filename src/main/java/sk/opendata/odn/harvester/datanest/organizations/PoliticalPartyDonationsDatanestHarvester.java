@@ -29,7 +29,6 @@ import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
 
 import org.openrdf.repository.RepositoryException;
 import org.openrdf.repository.config.RepositoryConfigException;
@@ -41,6 +40,7 @@ import sk.opendata.odn.model.Currency;
 import sk.opendata.odn.model.PoliticalPartyDonationRecord;
 import sk.opendata.odn.repository.OdnRepositoryException;
 import sk.opendata.odn.repository.sesame.SesameBackend;
+import sk.opendata.odn.serialization.OdnSerializationException;
 import sk.opendata.odn.serialization.rdf.PoliticalPartyDonationRdfSerializer;
 import au.com.bytecode.opencsv.CSVReader;
 
@@ -126,7 +126,8 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 	}
 	
 	@Override
-	public void update() throws OdnHarvesterException, OdnRepositoryException {
+	public void update() throws OdnHarvesterException,
+			OdnSerializationException, OdnRepositoryException {
 		
 		OdnHarvesterException odnHarvestgerException = null;
 		
@@ -170,12 +171,6 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
 		} catch (ParseException e) {
 			logger.error("parse exception", e);
-			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
-		} catch (IllegalArgumentException e) {
-			logger.error("illegal argument exception", e);
-			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
-		} catch (TransformerException e) {
-			logger.error("transformer exception", e);
 			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
 		}
 

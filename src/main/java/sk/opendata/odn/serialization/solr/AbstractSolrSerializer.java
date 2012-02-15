@@ -18,7 +18,6 @@
 
 package sk.opendata.odn.serialization.solr;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Vector;
 
@@ -26,6 +25,7 @@ import sk.opendata.odn.model.AbstractRecord;
 import sk.opendata.odn.repository.OdnRepositoryException;
 import sk.opendata.odn.repository.OdnRepositoryInterface;
 import sk.opendata.odn.repository.solr.SolrItem;
+import sk.opendata.odn.serialization.OdnSerializationException;
 
 /**
  * Stuff common to all OpenData.sk SOLR serializers.
@@ -57,13 +57,11 @@ public abstract class AbstractSolrSerializer<RecordType extends AbstractRecord> 
 	 *
 	 * @return list of records suitable to be pushed into SOLR
 	 *
-	 * @throws IllegalAccessException if serialization into SOLR bean fails
-	 * @throws InvocationTargetException if serialization into SOLR bean fails
-	 * @throws NoSuchMethodException if serialization into SOLR bean fails
+	 * @throws OdnSerializationException
+	 *             when conversion into SOLR beans fails
 	 */
 	public List<SolrItem> serialize(List<RecordType> records)
-			throws IllegalAccessException, InvocationTargetException,
-			NoSuchMethodException {
+			throws OdnSerializationException {
 		
 		Vector<SolrItem> solrItems = new Vector<SolrItem>(records.size());
 		for (RecordType record : records) {
@@ -80,21 +78,13 @@ public abstract class AbstractSolrSerializer<RecordType extends AbstractRecord> 
 	 * @param records
 	 *            list of organization records to serialize and store
 	 * 
-	 * TODO: redo the exception list as appropriate
 	 * @throws OdnRepositoryException
 	 *             when we fail to store given data into repository
-	 * @throws IllegalArgumentException
-	 *             if repository with given name does not exists
-	 * @throws IllegalAccessException
-	 *             if {@code BeanUtils.copyProperties()} fails
-	 * @throws InvocationTargetException
-	 *             if {@code BeanUtils.copyProperties()} fails
-	 * @throws NoSuchMethodException 
-	 *             if {@code PropertyUtils.copyProperties()} fails
+	 * @throws OdnSerializationException
+	 *             when conversion into SOLR beans fails
 	 */
 	public void store(Vector<RecordType> records)
-			throws IllegalArgumentException, OdnRepositoryException,
-			IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+			throws OdnSerializationException, OdnRepositoryException {
 		
 		repository.store(serialize(records));
 	}

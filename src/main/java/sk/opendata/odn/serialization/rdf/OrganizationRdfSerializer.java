@@ -23,7 +23,6 @@ import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -32,6 +31,7 @@ import sk.opendata.odn.model.OrganizationRecord;
 import sk.opendata.odn.repository.OdnRepositoryException;
 import sk.opendata.odn.repository.OdnRepositoryInterface;
 import sk.opendata.odn.repository.sesame.RdfData;
+import sk.opendata.odn.serialization.OdnSerializationException;
 
 /**
  * This class is used by a Harvester to serialize organization records into RDF
@@ -89,7 +89,8 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 	
 	@Override
 	public void store(Vector<OrganizationRecord> records)
-			throws TransformerException, IllegalArgumentException, OdnRepositoryException {
+			throws IllegalArgumentException, OdnSerializationException,
+			OdnRepositoryException {
 		
 		// TODO: We're calling 'serialize(records)' twice. They are supposed to
 		// produce same results => call it only once and reuse it twice.

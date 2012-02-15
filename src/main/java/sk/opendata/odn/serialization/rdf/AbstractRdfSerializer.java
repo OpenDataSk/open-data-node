@@ -42,6 +42,7 @@ import org.w3c.dom.Text;
 import sk.opendata.odn.repository.OdnRepositoryException;
 import sk.opendata.odn.repository.OdnRepositoryInterface;
 import sk.opendata.odn.repository.sesame.RdfData;
+import sk.opendata.odn.serialization.OdnSerializationException;
 
 /**
  * Stuff common to all OpenData.sk RDF serializers.
@@ -154,7 +155,7 @@ public abstract class AbstractRdfSerializer<RecordType> {
 	abstract public String getConceptRdfAbout(RecordType record);
 	
 	public String serialize(List<RecordType> records)
-			throws TransformerException {
+			throws OdnSerializationException {
 		
 		Document doc = docBuilder.newDocument();
 		
@@ -177,7 +178,11 @@ public abstract class AbstractRdfSerializer<RecordType> {
 		StringWriter sw = new StringWriter();
         StreamResult result = new StreamResult(sw);
         DOMSource source = new DOMSource(doc);
-        transformer.transform(source, result);
+        try {
+			transformer.transform(source, result);
+		} catch (TransformerException e) {
+			throw new OdnSerializationException(e.getMessage(), e);
+		}
         
 		return sw.toString();
 	}
@@ -188,14 +193,14 @@ public abstract class AbstractRdfSerializer<RecordType> {
 	 * @param records
 	 *            list of organization records to serialize and store
 	 * 
-	 * @throws TransformerException
+	 * @throws IllegalArgumentException
+	 *             if repository with given name does not exists
+	 * @throws OdnSerializationException
 	 *             when conversion into RDF fails
 	 * @throws OdnRepositoryException
 	 *             when we fail to store given data into repository
-	 * @throws IllegalArgumentException
-	 *             if repository with given name does not exists
 	 */
 	public abstract void store(Vector<RecordType> records)
-			throws TransformerException, IllegalArgumentException,
+			throws IllegalArgumentException, OdnSerializationException,
 			OdnRepositoryException;
 }

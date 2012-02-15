@@ -31,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sk.opendata.odn.repository.OdnRepositoryException;
+import sk.opendata.odn.serialization.OdnSerializationException;
 import sk.opendata.odn.utils.ApplicationProperties;
 
 /**
@@ -59,13 +60,13 @@ public abstract class AbstractDatanestHarvester<RecordType> {
 	
 	abstract public RecordType scrapOneRecord(String[] row) throws ParseException;
 	
-	public abstract void update() throws OdnHarvesterException, OdnRepositoryException;
+	public abstract void update() throws OdnHarvesterException,
+			OdnSerializationException, OdnRepositoryException;
 	
 	/**
 	 * Method invoked by QUARTZ scheduler to launch this job.
 	 */
 	public void execute(JobExecutionContext context) throws JobExecutionException {
-		// TODO: implement the fetching of source data, "enhancer" and storage into the Sesame
 		JobKey jobKey = context.getJobDetail().getKey();
 		logger.info("scheduled job says: " + jobKey + " executing at " + new Date());
 		
@@ -73,6 +74,8 @@ public abstract class AbstractDatanestHarvester<RecordType> {
 			update();
 		} catch (OdnHarvesterException e) {
 			logger.error("harvester exception", e);
+		} catch (OdnSerializationException e) {
+			logger.error("serialization exception", e);
 		} catch (OdnRepositoryException e) {
 			logger.error("repository exception", e);
 		}

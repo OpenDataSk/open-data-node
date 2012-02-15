@@ -21,7 +21,6 @@ package sk.opendata.odn.harvester.datanest.organizations;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
@@ -30,7 +29,6 @@ import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.openrdf.repository.RepositoryException;
@@ -43,6 +41,7 @@ import sk.opendata.odn.model.OrganizationRecord;
 import sk.opendata.odn.repository.OdnRepositoryException;
 import sk.opendata.odn.repository.sesame.SesameBackend;
 import sk.opendata.odn.repository.solr.SolrBackend;
+import sk.opendata.odn.serialization.OdnSerializationException;
 import sk.opendata.odn.serialization.rdf.OrganizationRdfSerializer;
 import sk.opendata.odn.serialization.solr.OrganizationSolrSerializer;
 import au.com.bytecode.opencsv.CSVReader;
@@ -111,7 +110,8 @@ public class OrganizationsDatanestHarvester extends
 	}
 	
 	@Override
-	public void update() throws OdnHarvesterException, OdnRepositoryException {
+	public void update() throws OdnHarvesterException,
+			OdnSerializationException, OdnRepositoryException {
 		
 		OdnHarvesterException odnHarvestgerException = null;
 		
@@ -159,18 +159,6 @@ public class OrganizationsDatanestHarvester extends
 			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
 		} catch (IllegalArgumentException e) {
 			logger.error("illegal argument exception", e);
-			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
-		} catch (TransformerException e) {
-			logger.error("transformer exception", e);
-			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
-		} catch (IllegalAccessException e) {
-			logger.error("illegal access exception", e);
-			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
-		} catch (InvocationTargetException e) {
-			logger.error("invocation target exception", e);
-			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
-		} catch (NoSuchMethodException e) {
-			logger.error("no such method exception", e);
 			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
 		}
 

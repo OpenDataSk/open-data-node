@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sk.opendata.odn.model.AbstractRecord;
+import sk.opendata.odn.serialization.OdnSerializationException;
 
 /**
  * We're storing multiple harvested data sets in one SOLR index (see
@@ -87,21 +88,30 @@ public class SolrItem {
 	 * 
 	 * @return SOLR item created from given data
 	 * 
-	 * @throws IllegalAccessException
-	 *             if {@code PropertyUtils.copyProperties()} fails
-	 * @throws InvocationTargetException
-	 *             if {@code PropertyUtils.copyProperties()} fails
-	 * @throws NoSuchMethodException
-	 *             if {@code PropertyUtils.copyProperties()} fails
+	 * @throws OdnSerializationException
+	 *             when conversion into SOLR beans fails
 	 */
 	public static SolrItem createSolrItem(AbstractRecord source)
-			throws IllegalAccessException, InvocationTargetException,
-			NoSuchMethodException {
+			throws OdnSerializationException {
 
-		SolrItem solrItem = new SolrItem();
-		PropertyUtils.copyProperties(solrItem, source);
-		solrItem.type = SolrItemType.getType(source.getClass());
-		solrItem.id = source.getId();
+		SolrItem solrItem = null;
+		
+		try {
+			solrItem = new SolrItem();
+			PropertyUtils.copyProperties(solrItem, source);
+			solrItem.type = SolrItemType.getType(source.getClass());
+			solrItem.id = source.getId();
+		} catch (IllegalAccessException e) {
+			logger.error("illegal access exception", e);
+			throw new OdnSerializationException(e.getMessage(), e);
+		} catch (InvocationTargetException e) {
+			logger.error("invocation target exception", e);
+			throw new OdnSerializationException(e.getMessage(), e);
+		} catch (NoSuchMethodException e) {
+			logger.error("no such method exception", e);
+			throw new OdnSerializationException(e.getMessage(), e);
+		}
+		
 		return solrItem;
 	}
 	
