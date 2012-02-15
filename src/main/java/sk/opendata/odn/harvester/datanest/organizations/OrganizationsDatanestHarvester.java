@@ -41,7 +41,6 @@ import sk.opendata.odn.model.OrganizationRecord;
 import sk.opendata.odn.repository.OdnRepositoryException;
 import sk.opendata.odn.repository.sesame.SesameBackend;
 import sk.opendata.odn.repository.solr.SolrBackend;
-import sk.opendata.odn.serialization.AbstractSerializer;
 import sk.opendata.odn.serialization.OdnSerializationException;
 import sk.opendata.odn.serialization.rdf.OrganizationRdfSerializer;
 import sk.opendata.odn.serialization.solr.OrganizationSolrSerializer;
@@ -67,8 +66,6 @@ public class OrganizationsDatanestHarvester extends
 	protected final static int ATTR_INDEX_SOURCE = 13;
 	
 	private static Logger logger = LoggerFactory.getLogger(OrganizationsDatanestHarvester.class);
-	
-	private Vector<AbstractSerializer<OrganizationRecord, ?, ?>> serializers = null;
 
 	
 	public OrganizationsDatanestHarvester() throws IOException,
@@ -76,8 +73,6 @@ public class OrganizationsDatanestHarvester extends
 			ParserConfigurationException, TransformerConfigurationException {
 		
 		super();
-		
-		serializers = new Vector<AbstractSerializer<OrganizationRecord, ?, ?>>();
 		
 		OrganizationRdfSerializer rdfSerializer = new OrganizationRdfSerializer(
 				SesameBackend.getInstance(),
@@ -148,8 +143,7 @@ public class OrganizationsDatanestHarvester extends
 		    }
 		    
 		    // store the results
-		    for (AbstractSerializer<OrganizationRecord, ?, ?> serializer : serializers)
-		    	serializer.store(records);
+		    store(records);
 		    
 		// TODO: If there wont be any more specialized error handling here
 		// in the future, try catching only 'Exception' to simplify the

@@ -72,7 +72,6 @@ public class ProcurementsDatanestHarvester extends
 	private final static int ATTR_INDEX_SUPPLIER_ICO = 17;
 	
 	private static Logger logger = LoggerFactory.getLogger(ProcurementsDatanestHarvester.class);
-	private ProcurementRdfSerializer serializer = null;
 
 	
 	public ProcurementsDatanestHarvester() throws IOException,
@@ -81,9 +80,11 @@ public class ProcurementsDatanestHarvester extends
 		
 		super();
 		
-		serializer = new ProcurementRdfSerializer(SesameBackend.getInstance(),
-				datanestProperties.getProperty(
-						KEY_DATANEST_PROCUREMENTS_SEZAME_REPO_NAME));
+		ProcurementRdfSerializer rdfSerializer = new ProcurementRdfSerializer(
+				SesameBackend.getInstance(),
+				datanestProperties
+						.getProperty(KEY_DATANEST_PROCUREMENTS_SEZAME_REPO_NAME));
+		serializers.add(rdfSerializer);
 	}
 	
 	@Override
@@ -170,7 +171,7 @@ public class ProcurementsDatanestHarvester extends
 		    }
 		    
 		    // store the results
-		    serializer.store(records);
+		    store(records);
 		    
 		// TODO: If there wont be any more specialized error handling here
 		// in the future, try catching only 'Exception' to simplify the

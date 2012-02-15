@@ -71,7 +71,6 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 	private final static int ATTR_INDEX_NOTE = 14;
 	
 	private static Logger logger = LoggerFactory.getLogger(PoliticalPartyDonationsDatanestHarvester.class);
-	private PoliticalPartyDonationRdfSerializer serializer = null;
 
 	
 	public PoliticalPartyDonationsDatanestHarvester() throws IOException,
@@ -80,10 +79,11 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 		
 		super();
 		
-		serializer = new PoliticalPartyDonationRdfSerializer(
+		PoliticalPartyDonationRdfSerializer rdfSerializer = new PoliticalPartyDonationRdfSerializer(
 				SesameBackend.getInstance(),
 				datanestProperties
 						.getProperty(KEY_DATANEST_PPD_SEZAME_REPO_NAME));
+		serializers.add(rdfSerializer);
 	}
 	
 	@Override
@@ -158,7 +158,7 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 		    }
 		    
 		    // store the results
-		    serializer.store(records);
+		    store(records);
 		    
 		// TODO: If there wont be any more specialized error handling here
 		// in the future, try catching only 'Exception' to simplify the

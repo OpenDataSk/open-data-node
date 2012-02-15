@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
+import java.util.Vector;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -30,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sk.opendata.odn.repository.OdnRepositoryException;
+import sk.opendata.odn.serialization.AbstractSerializer;
 import sk.opendata.odn.serialization.OdnSerializationException;
 import sk.opendata.odn.utils.ApplicationProperties;
 
@@ -50,16 +53,40 @@ public abstract class AbstractDatanestHarvester<RecordType> {
 	protected final static SimpleDateFormat sdf = new SimpleDateFormat(DATANEST_DATE_FORMAT);
 	
 	protected ApplicationProperties datanestProperties = null;
+	protected Vector<AbstractSerializer<RecordType, ?, ?>> serializers = null;
 	
 	
 	public AbstractDatanestHarvester() throws IOException {
 		datanestProperties = ApplicationProperties.getInstance(DATANEST_PROPERTIES_NAME);
+		
+		serializers = new Vector<AbstractSerializer<RecordType, ?, ?>>();
 	}
 	
 	abstract public RecordType scrapOneRecord(String[] row) throws ParseException;
 	
 	public abstract void update() throws OdnHarvesterException,
 			OdnSerializationException, OdnRepositoryException;
+	
+	/**
+	 * Loop through all serializer and pass given records to them. Serializers
+	 * will serialize the records and store them.
+	 * 
+	 * @param records
+	 *            list of records to serialize and store
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if repository with given name does not exists
+	 * @throws OdnSerializationException
+	 *             when serialization fails
+	 * @throws OdnRepositoryException
+	 *             when we fail to store given data into repository
+	 */
+	protected void store(List<RecordType> records) throws IllegalArgumentException,
+			OdnSerializationException, OdnRepositoryException {
+	    
+		for (AbstractSerializer<RecordType, ?, ?> serializer : serializers)
+	    	serializer.store(records);
+	}
 	
 	/**
 	 * Method invoked by QUARTZ scheduler to launch this job.
