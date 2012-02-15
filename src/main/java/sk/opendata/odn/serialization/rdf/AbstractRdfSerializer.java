@@ -38,6 +38,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
+import sk.opendata.odn.model.AbstractRecord;
 import sk.opendata.odn.repository.OdnRepositoryInterface;
 import sk.opendata.odn.repository.sesame.RdfData;
 import sk.opendata.odn.serialization.AbstractSerializer;
@@ -49,7 +50,7 @@ import sk.opendata.odn.serialization.OdnSerializationException;
  * @param <RecordType>
  *            type of individual record which will be converted to RDF
  */
-public abstract class AbstractRdfSerializer<RecordType> extends
+public abstract class AbstractRdfSerializer<RecordType extends AbstractRecord> extends
 		AbstractSerializer<RecordType, String, RdfData> {
 
 	public final static String NS_RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
