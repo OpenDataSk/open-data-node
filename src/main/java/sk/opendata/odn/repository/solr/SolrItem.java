@@ -28,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sk.opendata.odn.model.AbstractRecord;
+import sk.opendata.odn.model.Currency;
 import sk.opendata.odn.serialization.OdnSerializationException;
 
 /**
@@ -74,6 +75,37 @@ public class SolrItem {
 	private Date dateFrom;
 	@Field("date_to_dt")
 	private Date dateTo;
+	// "political party donation record" fields: should match what is available
+	// in 'PoliticalPartyDonationRecord' and we need only those fields which are
+	// going to be used in SOLR index
+	// note: for now, to avoid changing schema, we're taking advantage of
+	// dynamic field definitions.
+	@Field("donor_name_s")
+	private String donorName;
+	@Field("donor_surname_s")
+	private String donorSurname;
+	@Field("donor_company_s")
+	private String donorCompany;
+	@Field("donor_ico_s")
+	private String donorIco;
+	@Field("donation_value_f")
+	private float donationValue;
+	@Field("donation_currency_s")
+	private Currency donationCurrency;
+	@Field("donor_address_s")
+	private String donorAddress;
+	@Field("donor_psc_s")
+	private String donorPsc;
+	@Field("donor_city_s")
+	private String donorCity;
+	@Field("recipient_party_s")
+	private String recipientParty;
+	@Field("year_s")
+	private String year;
+	@Field("accept_date_dt")
+	private Date acceptDate;
+	@Field("note_s")
+	private String note;
 	
 
 	/**
@@ -201,6 +233,136 @@ public class SolrItem {
 
 	public void setDateTo(Date dateTo) {
 		this.dateTo = dateTo;
+	}
+
+
+	public String getDonorName() {
+		return donorName;
+	}
+
+
+	public void setDonorName(String donorName) {
+		this.donorName = donorName;
+	}
+
+
+	public String getDonorSurname() {
+		return donorSurname;
+	}
+
+
+	public void setDonorSurname(String donorSurname) {
+		this.donorSurname = donorSurname;
+	}
+
+
+	public String getDonorCompany() {
+		return donorCompany;
+	}
+
+
+	public void setDonorCompany(String donorCompany) {
+		this.donorCompany = donorCompany;
+	}
+
+
+	public String getDonorIco() {
+		return donorIco;
+	}
+
+
+	public void setDonorIco(String donorIco) {
+		this.donorIco = donorIco;
+	}
+
+
+	public float getDonationValue() {
+		return donationValue;
+	}
+
+
+	public void setDonationValue(float donationValue) {
+		this.donationValue = donationValue;
+	}
+
+
+	public Currency getDonationCurrency() {
+		return donationCurrency;
+	}
+
+
+	public void setDonationCurrency(Currency donationCurrency) {
+		this.donationCurrency = donationCurrency;
+	}
+
+
+	public String getDonorAddress() {
+		return donorAddress;
+	}
+
+
+	public void setDonorAddress(String donorAddress) {
+		this.donorAddress = donorAddress;
+	}
+
+
+	public String getDonorPsc() {
+		return donorPsc;
+	}
+
+
+	public void setDonorPsc(String donorPsc) {
+		this.donorPsc = donorPsc;
+	}
+
+
+	public String getDonorCity() {
+		return donorCity;
+	}
+
+
+	public void setDonorCity(String donorCity) {
+		this.donorCity = donorCity;
+	}
+
+
+	public String getRecipientParty() {
+		return recipientParty;
+	}
+
+
+	public void setRecipientParty(String recipientParty) {
+		this.recipientParty = recipientParty;
+	}
+
+
+	public String getYear() {
+		return year;
+	}
+
+
+	public void setYear(String year) {
+		this.year = year;
+	}
+
+
+	public Date getAcceptDate() {
+		return acceptDate;
+	}
+
+
+	public void setAcceptDate(Date acceptDate) {
+		this.acceptDate = acceptDate;
+	}
+
+
+	public String getNote() {
+		return note;
+	}
+
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 }
