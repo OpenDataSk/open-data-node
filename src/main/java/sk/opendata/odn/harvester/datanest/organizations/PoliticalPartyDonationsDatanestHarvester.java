@@ -40,10 +40,8 @@ import sk.opendata.odn.model.Currency;
 import sk.opendata.odn.model.PoliticalPartyDonationRecord;
 import sk.opendata.odn.repository.OdnRepositoryException;
 import sk.opendata.odn.repository.sesame.SesameBackend;
-import sk.opendata.odn.repository.solr.SolrBackend;
 import sk.opendata.odn.serialization.OdnSerializationException;
 import sk.opendata.odn.serialization.rdf.PoliticalPartyDonationRdfSerializer;
-import sk.opendata.odn.serialization.solr.SolrSerializer;
 import au.com.bytecode.opencsv.CSVReader;
 
 /**
@@ -86,10 +84,6 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 				datanestProperties
 						.getProperty(KEY_DATANEST_PPD_SEZAME_REPO_NAME));
 		serializers.add(rdfSerializer);
-
-		SolrSerializer<PoliticalPartyDonationRecord> solrSerializer = new SolrSerializer<PoliticalPartyDonationRecord>(
-				SolrBackend.getInstance());
-		serializers.add(solrSerializer);
 	}
 	
 	@Override
