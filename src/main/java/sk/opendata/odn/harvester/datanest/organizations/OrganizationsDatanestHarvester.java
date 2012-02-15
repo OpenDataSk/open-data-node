@@ -22,6 +22,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.Date;
@@ -110,40 +111,71 @@ public class OrganizationsDatanestHarvester extends
 	}
 	
 	@Override
-	public void update() throws IOException, ParseException,
-			RepositoryConfigException, RepositoryException,
-			TransformerException, IllegalArgumentException,
-			OdnRepositoryException, IllegalAccessException,
-			InvocationTargetException, NoSuchMethodException {
+	public void update() throws OdnHarvesterException, OdnRepositoryException {
 		
-		URL csvUrl = new URL(datanestProperties.getProperty(KEY_DATANEST_ORGANIZATIONS_URL));
-		logger.debug("going to load data from " + csvUrl.toExternalForm());
+		OdnHarvesterException odnHarvestgerException = null;
 		
-		// "open" the CSV dump
-		CSVReader csvReader = new CSVReader(
-				new BufferedReader(
-						new InputStreamReader(
-								csvUrl.openStream())));
-	    
-		records = new Vector<OrganizationRecord>();
-		
-		// TODO: check the header - for now we simply skip it
-		csvReader.readNext();
-		
-		// read the rows
-		String[] row;
-		int debugProcessOnlyNItems = Integer.valueOf(datanestProperties.getProperty(KEY_DEBUG_PROCESS_ONLY_N_ITEMS));
-	    while ((row = csvReader.readNext()) != null) {
-	        records.add(scrapOneRecord(row));
-	        
-	        if (debugProcessOnlyNItems > 0 &&
-	        		records.size() > debugProcessOnlyNItems)
-	        	break;
-	    }
-	    
-	    // store the results
-	    rdfSerializer.store(records);
-	    solrSerializer.store(records);
+		try {
+			URL csvUrl = new URL(datanestProperties.getProperty(KEY_DATANEST_ORGANIZATIONS_URL));
+			logger.debug("going to load data from " + csvUrl.toExternalForm());
+			
+			// "open" the CSV dump
+			CSVReader csvReader = new CSVReader(
+					new BufferedReader(
+							new InputStreamReader(
+									csvUrl.openStream())));
+		    
+			records = new Vector<OrganizationRecord>();
+			
+			// TODO: check the header - for now we simply skip it
+			csvReader.readNext();
+			
+			// read the rows
+			String[] row;
+			int debugProcessOnlyNItems = Integer.valueOf(datanestProperties.getProperty(KEY_DEBUG_PROCESS_ONLY_N_ITEMS));
+		    while ((row = csvReader.readNext()) != null) {
+		        records.add(scrapOneRecord(row));
+		        
+		        if (debugProcessOnlyNItems > 0 &&
+		        		records.size() > debugProcessOnlyNItems)
+		        	break;
+		    }
+		    
+		    // store the results
+		    rdfSerializer.store(records);
+		    solrSerializer.store(records);
+		    
+		// TODO: If there wont be any more specialized error handling here
+		// in the future, try catching only 'Exception' to simplify the
+		// code.
+		} catch (MalformedURLException e) {
+			logger.error("malformed URL exception", e);
+			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
+		} catch (IOException e) {
+			logger.error("IO exception", e);
+			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
+		} catch (ParseException e) {
+			logger.error("parse exception", e);
+			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
+		} catch (IllegalArgumentException e) {
+			logger.error("illegal argument exception", e);
+			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
+		} catch (TransformerException e) {
+			logger.error("transformer exception", e);
+			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
+		} catch (IllegalAccessException e) {
+			logger.error("illegal access exception", e);
+			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
+		} catch (InvocationTargetException e) {
+			logger.error("invocation target exception", e);
+			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
+		} catch (NoSuchMethodException e) {
+			logger.error("no such method exception", e);
+			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
+		}
+
+		if (odnHarvestgerException != null)
+			throw odnHarvestgerException;
 	}
 
 }

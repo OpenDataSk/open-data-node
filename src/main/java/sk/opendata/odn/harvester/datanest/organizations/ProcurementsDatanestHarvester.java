@@ -21,6 +21,7 @@ package sk.opendata.odn.harvester.datanest.organizations;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.Arrays;
@@ -127,44 +128,68 @@ public class ProcurementsDatanestHarvester extends
 	}
 	
 	@Override
-	public void update() throws IOException, ParseException,
-			RepositoryConfigException, RepositoryException,
-			TransformerException, IllegalArgumentException, OdnRepositoryException {
+	public void update() throws OdnHarvesterException, OdnRepositoryException {
 		
-		URL csvUrl = new URL(datanestProperties.getProperty(KEY_DATANEST_PROCUREMENTS_URL));
-		logger.debug("going to load data from " + csvUrl.toExternalForm());
+		OdnHarvesterException odnHarvestgerException = null;
 		
-		// "open" the CSV dump
-		CSVReader csvReader = new CSVReader(
-				new BufferedReader(
-						new InputStreamReader(
-								csvUrl.openStream())));
-	    
-		records = new Vector<ProcurementRecord>();
-		
-		// TODO: check the header - for now we simply skip it
-		csvReader.readNext();
-		
-		// read the rows
-		String[] row;
-		int debugProcessOnlyNItems = Integer.valueOf(datanestProperties.getProperty(KEY_DEBUG_PROCESS_ONLY_N_ITEMS));
-	    while ((row = csvReader.readNext()) != null) {
-	    	try {
-		        records.add(scrapOneRecord(row));
-	    	}
-	    	catch (IllegalArgumentException e) {
-				logger.warn("illegal argument exception", e);
-				logger.warn("skipping following record: "
-						+ Arrays.deepToString(row));
-	    	}
-	        
-	        if (debugProcessOnlyNItems > 0 &&
-	        		records.size() > debugProcessOnlyNItems)
-	        	break;
-	    }
-	    
-	    // store the results
-	    serializer.store(records);
+		try {
+			URL csvUrl = new URL(datanestProperties.getProperty(KEY_DATANEST_PROCUREMENTS_URL));
+			logger.debug("going to load data from " + csvUrl.toExternalForm());
+			
+			// "open" the CSV dump
+			CSVReader csvReader = new CSVReader(
+					new BufferedReader(
+							new InputStreamReader(
+									csvUrl.openStream())));
+		    
+			records = new Vector<ProcurementRecord>();
+			
+			// TODO: check the header - for now we simply skip it
+			csvReader.readNext();
+			
+			// read the rows
+			String[] row;
+			int debugProcessOnlyNItems = Integer.valueOf(datanestProperties.getProperty(KEY_DEBUG_PROCESS_ONLY_N_ITEMS));
+		    while ((row = csvReader.readNext()) != null) {
+		    	try {
+			        records.add(scrapOneRecord(row));
+		    	}
+		    	catch (IllegalArgumentException e) {
+					logger.warn("illegal argument exception", e);
+					logger.warn("skipping following record: "
+							+ Arrays.deepToString(row));
+		    	} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		        
+		        if (debugProcessOnlyNItems > 0 &&
+		        		records.size() > debugProcessOnlyNItems)
+		        	break;
+		    }
+		    
+		    // store the results
+		    serializer.store(records);
+		    
+		// TODO: If there wont be any more specialized error handling here
+		// in the future, try catching only 'Exception' to simplify the
+		// code.
+		} catch (MalformedURLException e) {
+			logger.error("malformed URL exception", e);
+			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
+		} catch (IOException e) {
+			logger.error("IO exception", e);
+			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
+		} catch (IllegalArgumentException e) {
+			logger.error("illegal argument exception", e);
+			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
+		} catch (TransformerException e) {
+			logger.error("transformer exception", e);
+			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
+		}
+
+		if (odnHarvestgerException != null)
+			throw odnHarvestgerException;
 	}
 
 }
