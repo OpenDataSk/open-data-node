@@ -134,8 +134,11 @@ public class SolrBackend implements OdnRepositoryInterface<List<SolrItem>> {
 			// items which were valid yesterday, but then deemed "bad" or
 			// whatever and deleted).
 			// Note: Yes, that is costly and we want to fix that later on.
-			// FIXME: Implement proper "update" procedure.
-			solrServer.deleteByQuery( "*:*" );	// CAUTION: deletes everything!
+			// FIXME: Implement proper "update" procedure. For now disabled as
+			// we're pushing multiple data sets into one index meaning that if
+			// we left this here, insertion of 2nd data set will mean deletion
+			// of 1st etc. Workaround: Clean the index manualy if necessary.
+			//solrServer.deleteByQuery("*:*");	// CAUTION: deletes everything!
 			
 			solrServer.addBeans(records);
 			solrServer.commit();
