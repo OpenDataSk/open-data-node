@@ -96,6 +96,6 @@ public abstract class AbstractSolrSerializer<RecordType extends AbstractRecord> 
 			throws IllegalArgumentException, OdnRepositoryException,
 			IllegalAccessException, InvocationTargetException, NoSuchMethodException {
 		
-		repository.store("XXX", serialize(records));
+		repository.store(serialize(records));
 	}
 }

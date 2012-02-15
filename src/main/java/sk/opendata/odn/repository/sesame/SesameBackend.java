@@ -156,13 +156,8 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 	/**
 	 * Store given record into Sesame repository with given name.
 	 * 
-	 * @param repoName
-	 *            name of Sesame repository to store into
 	 * @param records
 	 *            records to store (in RDF format with additional info)
-	 * @param contexts
-	 *            the context for RDF statements used for the statements in the
-	 *            repository
 	 * 
 	 * @throws IllegalArgumentException
 	 *             if repository with given name does not exists
@@ -173,20 +168,22 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 	 *             when initialization fails
 	 */
 	@Override
-	public void store(String repoName, RdfData records, String... contexts)
+	public void store(RdfData records)
 			throws IllegalArgumentException, OdnRepositoryException {
 
 		OdnRepositoryException odnRepoException = null;
 		RepositoryConnection connection = null;
 
 		try {
+			String repoName = records.getRepoName();
 			HTTPRepository repo = getRepo(repoName);
 			if (repo == null)
 				throw new IllegalArgumentException(repoName
 						+ " does not exists");
 
 			URI[] convertedContexts = null;
-			if (contexts.length > 0) {
+			String[] contexts = records.getRdfContexts();
+			if (contexts != null && contexts.length > 0) {
 				ValueFactory valueFactory = repo.getValueFactory();
 				convertedContexts = new URI[contexts.length];
 				int index = 0;
@@ -206,7 +203,7 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 			// whatever and deleted).
 			// Note: Yes, that is costly and we want to fix that later on.
 			// FIXME: Implement proper "update" procedure.
-			if (contexts.length > 0) {
+			if (contexts != null && contexts.length > 0) {
 				connection.clear(convertedContexts);
 
 				// why we duplicate the 'clear()' and 'add()' statements:

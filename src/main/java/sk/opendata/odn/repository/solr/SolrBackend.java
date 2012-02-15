@@ -109,14 +109,8 @@ public class SolrBackend implements OdnRepositoryInterface<List<SolrItem>> {
 	/**
 	 * Store given record into SOLR index with given name.
 	 * 
-	 * @param repoName
-	 *            name of XXX SOLR index XXX to store into
 	 * @param records
 	 *            records to store (as beans)
-	 * @param contexts
-	 *            the XXX context for XML statements XXX used for the statements in the
-	 *            repository (TODO: should be moved to 'records' so as to make the
-	 *            Repository API "clean" and "back-end neutral")
 	 * 
 	 * @throws IllegalArgumentException
 	 *             if repository with given name does not exists
@@ -127,7 +121,7 @@ public class SolrBackend implements OdnRepositoryInterface<List<SolrItem>> {
 	 *             when initialization fails
 	 */
 	@Override
-	public void store(String name, List<SolrItem> records, String... contexts)
+	public void store(List<SolrItem> records)
 			throws IllegalArgumentException, OdnRepositoryException {
 		
 		OdnRepositoryException odnRepoException = null;

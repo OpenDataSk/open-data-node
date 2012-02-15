@@ -23,13 +23,39 @@ package sk.opendata.odn.repository.sesame;
  * Sesame repository.
  */
 public class RdfData {
-	String rdfData;
-	String rdfBaseURI;
+	private String repoName;
 	
-	public RdfData(String rdfData, String rdfBaseURI) {
-		super();
+	private String rdfData;
+	private String rdfBaseURI;
+	private String[] rdfContexts;
+	
+	/**
+	 * Construct contained holding data necessary to perform storage operation.
+	 * 
+	 * @param repoName
+	 *            name of the Sesame repository to store into
+	 * @param rdfData
+	 *            RDF data to store
+	 * @param rdfBaseURI
+	 *            base URI of the RDF data
+	 * @param rdfContexts
+	 *            context(s) of the RDF data, {@code null} means "no context"
+	 */
+	public RdfData(String repoName, String rdfData, String rdfBaseURI,
+			String[] rdfContexts) {
+		
+		this.repoName = repoName;
 		this.rdfData = rdfData;
 		this.rdfBaseURI = rdfBaseURI;
+		this.rdfContexts = rdfContexts;
+	}
+
+	public String getRepoName() {
+		return repoName;
+	}
+
+	public void setRepoName(String repoName) {
+		this.repoName = repoName;
 	}
 
 	public String getRdfData() {
@@ -46,5 +72,13 @@ public class RdfData {
 
 	public void setRdfBaseURI(String rdfBaseURI) {
 		this.rdfBaseURI = rdfBaseURI;
+	}
+
+	public String[] getRdfContexts() {
+		return rdfContexts;
+	}
+
+	public void setRdfContexts(String[] rdfContexts) {
+		this.rdfContexts = rdfContexts;
 	}
 }

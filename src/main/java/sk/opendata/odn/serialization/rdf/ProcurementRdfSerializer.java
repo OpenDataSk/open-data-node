@@ -120,21 +120,24 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 		// produce same results => call it only once and reuse it twice.
 		
 		RdfData rdfData = new RdfData(
+				repoName,
 				serialize(records),
-				OPENDATA_PROCUREMENTS_BASE_URI);
-		repository.store(repoName, rdfData);
+				OPENDATA_PROCUREMENTS_BASE_URI,
+				null);
+		repository.store(rdfData);
 		
 		// "combined mirror" of the RDF statements: for the purpose of doing
 		// combined queries on top of all RDF data sets we have one special
 		// repository where we push all our RDF statements with same special
 		// base URI but differenciated by contexts (and we reuse the "original"
 		// base URI as context
-		rdfData = new RdfData(
-				serialize(records),
-				OPENDATA_COMBINED_BASE_URI);
 		// FIXME: Contexts temporarily disabled - see FIXME note about ugly workaround in 'SesameBackend.store()'.
-		repository.store(OPENDATA_COMBINED_REPO_NAME, rdfData /*,
-				OPENDATA_PROCUREMENTS_BASE_URI*/);
+		rdfData = new RdfData(
+				OPENDATA_COMBINED_REPO_NAME,
+				serialize(records),
+				OPENDATA_COMBINED_BASE_URI,
+				/*OPENDATA_PROCUREMENTS_BASE_URI*/ null);
+		repository.store(rdfData);
 	}
 
 }

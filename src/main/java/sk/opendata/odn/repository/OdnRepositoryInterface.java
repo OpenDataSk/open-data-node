@@ -33,22 +33,15 @@ public interface OdnRepositoryInterface<RecordType> {
 	 * Essentially, a repository can use multiple storages/back-ends so the
 	 * {@code name} defines which one to store into.
 	 * 
-	 * @param name
-	 *            name of the store/back-end to store into (TODO: name is not
-	 *            "back-end neutral" => move it into "records")
 	 * @param records
 	 *            record to store
-	 * @param contexts
-	 *            the context for RDF statements used for the statements in the
-	 *            repository (TODO: should be moved to 'records' so as to make the
-	 *            Repository API "clean" and "back-end neutral")
 	 * 
 	 * @throws IllegalArgumentException
 	 *             when some of the given arguments is not valid
 	 * @throws OdnRepositoryException
 	 *             when storage operation fails
 	 */
-	public void store(String name, RecordType records, String... contexts)
+	public void store(RecordType records)
 			throws IllegalArgumentException, OdnRepositoryException;
 
 }
