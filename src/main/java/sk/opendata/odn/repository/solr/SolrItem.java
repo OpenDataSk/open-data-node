@@ -61,8 +61,6 @@ public class SolrItem {
 	// used in SOLR index
 	// note: for now, to avoid changing schema, we're taking advantage of
 	// dynamic field definitions.
-	@Field("source_s")
-	private String source;
 	@Field("name_s")
 	private String name;
 	@Field("legal_form_s")
@@ -200,14 +198,6 @@ public class SolrItem {
 
 	public void setType(SolrItemType type) {
 		this.type = type;
-	}
-
-	public String getSource() {
-		return source;
-	}
-
-	public void setSource(String source) {
-		this.source = source;
 	}
 
 	public String getName() {
