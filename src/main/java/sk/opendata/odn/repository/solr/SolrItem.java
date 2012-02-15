@@ -106,6 +106,29 @@ public class SolrItem {
 	private Date acceptDate;
 	@Field("note_s")
 	private String note;
+	// "procurement record" fields: should match what is available in
+	// 'ProcurementRecord' and we need only those fields which are going to be
+	// used in SOLR index
+	// note: for now, to avoid changing schema, we're taking advantage of
+	// dynamic field definitions.
+	//private String note;	- same name as field in PoliticalPartyDonationRecord
+	//private String year;	- same name as field in PoliticalPartyDonationRecord
+	@Field("bulletin_id_s")
+	private String bulletinId;
+	@Field("procurement_id_s")
+	private String procurementId;
+	@Field("procurement_subject_s")
+	private String procurementSubject;
+	@Field("price_f")
+	private float price;
+	@Field("currency_s")
+	private Currency currency;
+	@Field("vat_included_b")
+	private boolean isVatIncluded;
+	@Field("customer_ico_s")
+	private String customerIco;
+	@Field("supplier_ico_s")
+	private String supplierIco;
 	
 
 	/**
@@ -235,41 +258,33 @@ public class SolrItem {
 		this.dateTo = dateTo;
 	}
 
-
 	public String getDonorName() {
 		return donorName;
 	}
-
 
 	public void setDonorName(String donorName) {
 		this.donorName = donorName;
 	}
 
-
 	public String getDonorSurname() {
 		return donorSurname;
 	}
-
 
 	public void setDonorSurname(String donorSurname) {
 		this.donorSurname = donorSurname;
 	}
 
-
 	public String getDonorCompany() {
 		return donorCompany;
 	}
-
 
 	public void setDonorCompany(String donorCompany) {
 		this.donorCompany = donorCompany;
 	}
 
-
 	public String getDonorIco() {
 		return donorIco;
 	}
-
 
 	public void setDonorIco(String donorIco) {
 		this.donorIco = donorIco;
@@ -280,89 +295,136 @@ public class SolrItem {
 		return donationValue;
 	}
 
-
 	public void setDonationValue(float donationValue) {
 		this.donationValue = donationValue;
 	}
-
 
 	public Currency getDonationCurrency() {
 		return donationCurrency;
 	}
 
-
 	public void setDonationCurrency(Currency donationCurrency) {
 		this.donationCurrency = donationCurrency;
 	}
-
 
 	public String getDonorAddress() {
 		return donorAddress;
 	}
 
-
 	public void setDonorAddress(String donorAddress) {
 		this.donorAddress = donorAddress;
 	}
-
 
 	public String getDonorPsc() {
 		return donorPsc;
 	}
 
-
 	public void setDonorPsc(String donorPsc) {
 		this.donorPsc = donorPsc;
 	}
-
 
 	public String getDonorCity() {
 		return donorCity;
 	}
 
-
 	public void setDonorCity(String donorCity) {
 		this.donorCity = donorCity;
 	}
-
 
 	public String getRecipientParty() {
 		return recipientParty;
 	}
 
-
 	public void setRecipientParty(String recipientParty) {
 		this.recipientParty = recipientParty;
 	}
-
 
 	public String getYear() {
 		return year;
 	}
 
-
 	public void setYear(String year) {
 		this.year = year;
 	}
-
 
 	public Date getAcceptDate() {
 		return acceptDate;
 	}
 
-
 	public void setAcceptDate(Date acceptDate) {
 		this.acceptDate = acceptDate;
 	}
-
 
 	public String getNote() {
 		return note;
 	}
 
-
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	public String getBulletinId() {
+		return bulletinId;
+	}
+
+	public void setBulletinId(String bulletinId) {
+		this.bulletinId = bulletinId;
+	}
+
+	public String getProcurementId() {
+		return procurementId;
+	}
+
+	public void setProcurementId(String procurementId) {
+		this.procurementId = procurementId;
+	}
+
+	public String getProcurementSubject() {
+		return procurementSubject;
+	}
+
+	public void setProcurementSubject(String procurementSubject) {
+		this.procurementSubject = procurementSubject;
+	}
+
+	public float getPrice() {
+		return price;
+	}
+
+	public void setPrice(float price) {
+		this.price = price;
+	}
+
+	public Currency getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(Currency currency) {
+		this.currency = currency;
+	}
+
+	public boolean isVatIncluded() {
+		return isVatIncluded;
+	}
+
+	public void setVatIncluded(boolean isVatIncluded) {
+		this.isVatIncluded = isVatIncluded;
+	}
+
+	public String getCustomerIco() {
+		return customerIco;
+	}
+
+	public void setCustomerIco(String customerIco) {
+		this.customerIco = customerIco;
+	}
+
+	public String getSupplierIco() {
+		return supplierIco;
+	}
+
+	public void setSupplierIco(String supplierIco) {
+		this.supplierIco = supplierIco;
 	}
 
 }
