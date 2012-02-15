@@ -22,7 +22,6 @@ package sk.opendata.odn.serialization.rdf;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.Vector;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -39,9 +38,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
-import sk.opendata.odn.repository.OdnRepositoryException;
 import sk.opendata.odn.repository.OdnRepositoryInterface;
 import sk.opendata.odn.repository.sesame.RdfData;
+import sk.opendata.odn.serialization.AbstractSerializer;
 import sk.opendata.odn.serialization.OdnSerializationException;
 
 /**
@@ -50,7 +49,8 @@ import sk.opendata.odn.serialization.OdnSerializationException;
  * @param <RecordType>
  *            type of individual record which will be converted to RDF
  */
-public abstract class AbstractRdfSerializer<RecordType> {
+public abstract class AbstractRdfSerializer<RecordType> extends
+		AbstractSerializer<RecordType, String, RdfData> {
 
 	public final static String NS_RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 	public final static String NS_SKOS = "http://www.w3.org/2004/02/skos/core#";
@@ -67,7 +67,6 @@ public abstract class AbstractRdfSerializer<RecordType> {
 	protected final static SimpleDateFormat sdf = new SimpleDateFormat(
 			OPENDATA_DATE_FORMAT);
 
-	protected OdnRepositoryInterface<RdfData> repository;
 	protected String repoName;
 
 	protected DocumentBuilder docBuilder;
@@ -81,16 +80,19 @@ public abstract class AbstractRdfSerializer<RecordType> {
 	 * @param name
 	 *            name of the storage/back-end to store into
 	 * 
+	 * @throws IllegalArgumentException
+	 *             if repository is {@code null}
 	 * @throws ParserConfigurationException
 	 *             when XML document builder fails to initialize
 	 * @throws TransformerConfigurationException
 	 *             when XML document transformer fails to initialize
 	 */
 	public AbstractRdfSerializer(OdnRepositoryInterface<RdfData> repository,
-			String name) throws ParserConfigurationException,
-			TransformerConfigurationException {
+			String name) throws IllegalArgumentException,
+			ParserConfigurationException, TransformerConfigurationException {
 
-		this.repository = repository;
+		super(repository);
+		
 		this.repoName = name;
 
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
@@ -154,6 +156,7 @@ public abstract class AbstractRdfSerializer<RecordType> {
 	 */
 	abstract public String getConceptRdfAbout(RecordType record);
 	
+	@Override
 	public String serialize(List<RecordType> records)
 			throws OdnSerializationException {
 		
@@ -186,21 +189,4 @@ public abstract class AbstractRdfSerializer<RecordType> {
         
 		return sw.toString();
 	}
-
-	/**
-	 * Serialize and store given organization record.
-	 * 
-	 * @param records
-	 *            list of organization records to serialize and store
-	 * 
-	 * @throws IllegalArgumentException
-	 *             if repository with given name does not exists
-	 * @throws OdnSerializationException
-	 *             when conversion into RDF fails
-	 * @throws OdnRepositoryException
-	 *             when we fail to store given data into repository
-	 */
-	public abstract void store(Vector<RecordType> records)
-			throws IllegalArgumentException, OdnSerializationException,
-			OdnRepositoryException;
 }

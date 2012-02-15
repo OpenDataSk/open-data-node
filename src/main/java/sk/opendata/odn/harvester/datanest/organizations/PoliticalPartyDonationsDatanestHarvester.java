@@ -141,7 +141,7 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 							new InputStreamReader(
 									csvUrl.openStream())));
 		    
-			records = new Vector<PoliticalPartyDonationRecord>();
+			Vector<PoliticalPartyDonationRecord> records = new Vector<PoliticalPartyDonationRecord>();
 			
 			// TODO: check the header - for now we simply skip it
 			csvReader.readNext();

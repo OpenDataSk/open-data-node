@@ -143,7 +143,7 @@ public class ProcurementsDatanestHarvester extends
 							new InputStreamReader(
 									csvUrl.openStream())));
 		    
-			records = new Vector<ProcurementRecord>();
+			Vector<ProcurementRecord> records = new Vector<ProcurementRecord>();
 			
 			// TODO: check the header - for now we simply skip it
 			csvReader.readNext();

@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Vector;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -51,7 +50,6 @@ public abstract class AbstractDatanestHarvester<RecordType> {
 	protected final static SimpleDateFormat sdf = new SimpleDateFormat(DATANEST_DATE_FORMAT);
 	
 	protected ApplicationProperties datanestProperties = null;
-	protected Vector<RecordType> records = null;
 	
 	
 	public AbstractDatanestHarvester() throws IOException {

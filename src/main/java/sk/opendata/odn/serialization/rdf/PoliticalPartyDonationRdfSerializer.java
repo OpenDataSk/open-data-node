@@ -20,7 +20,7 @@
 package sk.opendata.odn.serialization.rdf;
 
 import java.text.DecimalFormat;
-import java.util.Vector;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
@@ -56,13 +56,16 @@ public class PoliticalPartyDonationRdfSerializer extends AbstractRdfSerializer<P
 	 * @param name
 	 *            name of the storage/back-end to store into
 	 * 
+	 * @throws IllegalArgumentException
+	 *             if repository is {@code null}
 	 * @throws ParserConfigurationException
 	 *             when XML document builder fails to initialize
 	 * @throws TransformerConfigurationException
 	 *             when XML document transformer fails to initialize
 	 */
-	public PoliticalPartyDonationRdfSerializer(OdnRepositoryInterface<RdfData> repository,
-			String name) throws ParserConfigurationException,
+	public PoliticalPartyDonationRdfSerializer(
+			OdnRepositoryInterface<RdfData> repository, String name)
+			throws IllegalArgumentException, ParserConfigurationException,
 			TransformerConfigurationException {
 	
 		super(repository, name);
@@ -138,7 +141,7 @@ public class PoliticalPartyDonationRdfSerializer extends AbstractRdfSerializer<P
 	}
 	
 	@Override
-	public void store(Vector<PoliticalPartyDonationRecord> records)
+	public void store(List<PoliticalPartyDonationRecord> records)
 			throws IllegalArgumentException, OdnSerializationException,
 			OdnRepositoryException {
 		
@@ -150,7 +153,7 @@ public class PoliticalPartyDonationRdfSerializer extends AbstractRdfSerializer<P
 				serialize(records),
 				OPENDATA_PPD_BASE_URI,
 				null);
-		repository.store(rdfData);
+		getRepository().store(rdfData);
 		
 		// "combined mirror" of the RDF statements: for the purpose of doing
 		// combined queries on top of all RDF data sets we have one special
@@ -163,7 +166,7 @@ public class PoliticalPartyDonationRdfSerializer extends AbstractRdfSerializer<P
 				serialize(records),
 				OPENDATA_COMBINED_BASE_URI,
 				/*OPENDATA_PPD_BASE_URI*/ null);
-		repository.store(rdfData);
+		getRepository().store(rdfData);
 	}
 
 }

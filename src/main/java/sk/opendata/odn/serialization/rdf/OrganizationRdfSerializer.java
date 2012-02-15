@@ -19,7 +19,7 @@
 
 package sk.opendata.odn.serialization.rdf;
 
-import java.util.Vector;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
@@ -53,13 +53,16 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 	 * @param name
 	 *            name of the storage/back-end to store into
 	 * 
+	 * @throws IllegalArgumentException
+	 *             if repository is {@code null}
 	 * @throws ParserConfigurationException
 	 *             when XML document builder fails to initialize
 	 * @throws TransformerConfigurationException
 	 *             when XML document transformer fails to initialize
 	 */
-	public OrganizationRdfSerializer(OdnRepositoryInterface<RdfData> repository,
-			String name) throws ParserConfigurationException,
+	public OrganizationRdfSerializer(
+			OdnRepositoryInterface<RdfData> repository, String name)
+			throws IllegalArgumentException, ParserConfigurationException,
 			TransformerConfigurationException {
 	
 		super(repository, name);
@@ -88,7 +91,7 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 	}
 	
 	@Override
-	public void store(Vector<OrganizationRecord> records)
+	public void store(List<OrganizationRecord> records)
 			throws IllegalArgumentException, OdnSerializationException,
 			OdnRepositoryException {
 		
@@ -100,7 +103,7 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 				serialize(records),
 				OPENDATA_ORGANIZATIONS_BASE_URI,
 				null);
-		repository.store(rdfData);
+		getRepository().store(rdfData);
 		
 		// "combined mirror" of the RDF statements: for the purpose of doing
 		// combined queries on top of all RDF data sets we have one special
@@ -113,7 +116,7 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 				serialize(records),
 				OPENDATA_COMBINED_BASE_URI,
 				/*OPENDATA_ORGANIZATIONS_BASE_URI*/ null);
-		repository.store(rdfData);
+		getRepository().store(rdfData);
 	}
 
 }

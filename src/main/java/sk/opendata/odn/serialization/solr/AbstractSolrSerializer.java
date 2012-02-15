@@ -25,6 +25,7 @@ import sk.opendata.odn.model.AbstractRecord;
 import sk.opendata.odn.repository.OdnRepositoryException;
 import sk.opendata.odn.repository.OdnRepositoryInterface;
 import sk.opendata.odn.repository.solr.SolrItem;
+import sk.opendata.odn.serialization.AbstractSerializer;
 import sk.opendata.odn.serialization.OdnSerializationException;
 
 /**
@@ -33,20 +34,23 @@ import sk.opendata.odn.serialization.OdnSerializationException;
  * @param <RecordType>
  *            type of individual record which will be converted to SOLR bean
  */
-public abstract class AbstractSolrSerializer<RecordType extends AbstractRecord> {
+public abstract class AbstractSolrSerializer<RecordType extends AbstractRecord>
+		extends AbstractSerializer<RecordType, List<SolrItem>, List<SolrItem>> {
 
-	protected OdnRepositoryInterface<List<SolrItem>> repository;
-
-	
 	/**
 	 * Initialize serializer to use given repository.
 	 * 
 	 * @param repository
 	 *            repository to use for storage of record
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if repository is {@code null}
 	 */
-	public AbstractSolrSerializer(OdnRepositoryInterface<List<SolrItem>> repository) {
-
-		this.repository = repository;
+	public AbstractSolrSerializer(
+			OdnRepositoryInterface<List<SolrItem>> repository)
+			throws IllegalArgumentException {
+		
+		super(repository);
 	}
 
 	/**
@@ -60,6 +64,7 @@ public abstract class AbstractSolrSerializer<RecordType extends AbstractRecord> 
 	 * @throws OdnSerializationException
 	 *             when conversion into SOLR beans fails
 	 */
+	@Override
 	public List<SolrItem> serialize(List<RecordType> records)
 			throws OdnSerializationException {
 		
@@ -83,9 +88,9 @@ public abstract class AbstractSolrSerializer<RecordType extends AbstractRecord> 
 	 * @throws OdnSerializationException
 	 *             when conversion into SOLR beans fails
 	 */
-	public void store(Vector<RecordType> records)
+	public void store(List<RecordType> records)
 			throws OdnSerializationException, OdnRepositoryException {
 		
-		repository.store(serialize(records));
+		getRepository().store(serialize(records));
 	}
 }

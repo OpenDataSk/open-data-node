@@ -20,7 +20,7 @@
 package sk.opendata.odn.serialization.rdf;
 
 import java.text.DecimalFormat;
-import java.util.Vector;
+import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
@@ -58,14 +58,16 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 	 * @param name
 	 *            name of the storage/back-end to store into
 	 * 
+	 * @throws IllegalArgumentException
+	 *             if repository is {@code null}
 	 * @throws ParserConfigurationException
 	 *             when XML document builder fails to initialize
 	 * @throws TransformerConfigurationException
 	 *             when XML document transformer fails to initialize
 	 */
 	public ProcurementRdfSerializer(OdnRepositoryInterface<RdfData> repository,
-			String name) throws ParserConfigurationException,
-			TransformerConfigurationException {
+			String name) throws IllegalArgumentException,
+			ParserConfigurationException, TransformerConfigurationException {
 	
 		super(repository, name);
 	}
@@ -113,7 +115,7 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 	}
 	
 	@Override
-	public void store(Vector<ProcurementRecord> records)
+	public void store(List<ProcurementRecord> records)
 			throws IllegalArgumentException, OdnSerializationException,
 			OdnRepositoryException {
 		
@@ -125,7 +127,7 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 				serialize(records),
 				OPENDATA_PROCUREMENTS_BASE_URI,
 				null);
-		repository.store(rdfData);
+		getRepository().store(rdfData);
 		
 		// "combined mirror" of the RDF statements: for the purpose of doing
 		// combined queries on top of all RDF data sets we have one special
@@ -138,7 +140,7 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 				serialize(records),
 				OPENDATA_COMBINED_BASE_URI,
 				/*OPENDATA_PROCUREMENTS_BASE_URI*/ null);
-		repository.store(rdfData);
+		getRepository().store(rdfData);
 	}
 
 }

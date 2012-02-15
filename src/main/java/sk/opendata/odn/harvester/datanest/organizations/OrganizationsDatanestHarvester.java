@@ -41,6 +41,7 @@ import sk.opendata.odn.model.OrganizationRecord;
 import sk.opendata.odn.repository.OdnRepositoryException;
 import sk.opendata.odn.repository.sesame.SesameBackend;
 import sk.opendata.odn.repository.solr.SolrBackend;
+import sk.opendata.odn.serialization.AbstractSerializer;
 import sk.opendata.odn.serialization.OdnSerializationException;
 import sk.opendata.odn.serialization.rdf.OrganizationRdfSerializer;
 import sk.opendata.odn.serialization.solr.OrganizationSolrSerializer;
@@ -66,9 +67,8 @@ public class OrganizationsDatanestHarvester extends
 	protected final static int ATTR_INDEX_SOURCE = 13;
 	
 	private static Logger logger = LoggerFactory.getLogger(OrganizationsDatanestHarvester.class);
-	// TODO: transform that into list of serializers
-	private OrganizationRdfSerializer rdfSerializer = null;
-	private OrganizationSolrSerializer solrSerializer = null;
+	
+	private Vector<AbstractSerializer<OrganizationRecord, ?, ?>> serializers = null;
 
 	
 	public OrganizationsDatanestHarvester() throws IOException,
@@ -77,11 +77,17 @@ public class OrganizationsDatanestHarvester extends
 		
 		super();
 		
-		rdfSerializer = new OrganizationRdfSerializer(SesameBackend.getInstance(),
-				datanestProperties.getProperty(
-						KEY_DATANEST_ORGANIZATIONS_SEZAME_REPO_NAME));
+		serializers = new Vector<AbstractSerializer<OrganizationRecord, ?, ?>>();
 		
-		solrSerializer = new OrganizationSolrSerializer(SolrBackend.getInstance());
+		OrganizationRdfSerializer rdfSerializer = new OrganizationRdfSerializer(
+				SesameBackend.getInstance(),
+				datanestProperties
+						.getProperty(KEY_DATANEST_ORGANIZATIONS_SEZAME_REPO_NAME));
+		serializers.add(rdfSerializer);
+
+		OrganizationSolrSerializer solrSerializer = new OrganizationSolrSerializer(
+				SolrBackend.getInstance());
+		serializers.add(solrSerializer);
 	}
 	
 	@Override
@@ -125,7 +131,7 @@ public class OrganizationsDatanestHarvester extends
 							new InputStreamReader(
 									csvUrl.openStream())));
 		    
-			records = new Vector<OrganizationRecord>();
+			Vector<OrganizationRecord> records = new Vector<OrganizationRecord>();
 			
 			// TODO: check the header - for now we simply skip it
 			csvReader.readNext();
@@ -142,8 +148,8 @@ public class OrganizationsDatanestHarvester extends
 		    }
 		    
 		    // store the results
-		    rdfSerializer.store(records);
-		    solrSerializer.store(records);
+		    for (AbstractSerializer<OrganizationRecord, ?, ?> serializer : serializers)
+		    	serializer.store(records);
 		    
 		// TODO: If there wont be any more specialized error handling here
 		// in the future, try catching only 'Exception' to simplify the
