@@ -25,11 +25,7 @@ along with Open Data Node.  If not, see <http://www.gnu.org/licenses/>.
 Things to do:
 -------------
 
-a) SOLR back-end: Store harvested data also in SOLR. The question
-   is whether to have multiple indexes (one index per data set) or
-   just one index. To achieve similar capabilities as with RDF, one index
-   would be desirable, other option being "MultiCore" - see
-   http://wiki.apache.org/solr/MultipleIndexes .
+a) SOLR back-end: Store harvested data also in SOLR.
 
 b) transform the existing application into something like container
    or whatever (maybe even using OSGI) so that it loads and runs
