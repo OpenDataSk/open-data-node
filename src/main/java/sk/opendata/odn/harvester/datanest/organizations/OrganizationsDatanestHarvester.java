@@ -43,7 +43,7 @@ import sk.opendata.odn.repository.sesame.SesameBackend;
 import sk.opendata.odn.repository.solr.SolrBackend;
 import sk.opendata.odn.serialization.OdnSerializationException;
 import sk.opendata.odn.serialization.rdf.OrganizationRdfSerializer;
-import sk.opendata.odn.serialization.solr.OrganizationSolrSerializer;
+import sk.opendata.odn.serialization.solr.SolrSerializer;
 import au.com.bytecode.opencsv.CSVReader;
 
 /**
@@ -80,7 +80,7 @@ public class OrganizationsDatanestHarvester extends
 						.getProperty(KEY_DATANEST_ORGANIZATIONS_SEZAME_REPO_NAME));
 		serializers.add(rdfSerializer);
 
-		OrganizationSolrSerializer solrSerializer = new OrganizationSolrSerializer(
+		SolrSerializer<OrganizationRecord> solrSerializer = new SolrSerializer<OrganizationRecord>(
 				SolrBackend.getInstance());
 		serializers.add(solrSerializer);
 	}

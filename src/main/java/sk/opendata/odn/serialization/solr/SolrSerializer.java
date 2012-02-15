@@ -29,14 +29,15 @@ import sk.opendata.odn.serialization.AbstractSerializer;
 import sk.opendata.odn.serialization.OdnSerializationException;
 
 /**
- * Stuff common to all OpenData.sk SOLR serializers.
+ * This class is used by a Harvester to serialize organization records into beans
+ * intended to be added to SOLR and store them in Repository.
  * 
  * @param <RecordType>
  *            type of individual record which will be converted to SOLR bean
  */
-public abstract class AbstractSolrSerializer<RecordType extends AbstractRecord>
-		extends AbstractSerializer<RecordType, List<SolrItem>, List<SolrItem>> {
-
+public class SolrSerializer<RecordType extends AbstractRecord> extends
+		AbstractSerializer<RecordType, List<SolrItem>, List<SolrItem>> {
+	
 	/**
 	 * Initialize serializer to use given repository.
 	 * 
@@ -46,10 +47,9 @@ public abstract class AbstractSolrSerializer<RecordType extends AbstractRecord>
 	 * @throws IllegalArgumentException
 	 *             if repository is {@code null}
 	 */
-	public AbstractSolrSerializer(
-			OdnRepositoryInterface<List<SolrItem>> repository)
+	public SolrSerializer(OdnRepositoryInterface<List<SolrItem>> repository)
 			throws IllegalArgumentException {
-		
+	
 		super(repository);
 	}
 
