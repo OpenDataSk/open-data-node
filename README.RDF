@@ -1,0 +1,40 @@
+About RDF:
+----------
+
+Quoting from http://www.w3.org/RDF/ :
+
+"RDF is a standard model for data interchange on the Web. RDF has features that
+facilitate data merging even if the underlying schemas differ, and it
+specifically supports the evolution of schemas over time without requiring all
+the data consumers to be changed. "
+
+Existing proof-of-concept implementation supports Sesame (http://www.openrdf.org/)
+as a back-end thus allowing searches on-top of multiple data sets.
+
+
+Example SPARQL query:
+---------------------
+
+What companies are both giving donations to political parties and participating
+in public procurement?
+
+Go to http://ohio.in.eea.sk:8080/openrdf-workbench/repositories/datanest-combined/query
+and submit following query:
+
+PREFIX dc:<http://purl.org/dc/elements/1.1/>
+PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX opendata:<http://sk.eea.opendata/2011/02/opendicts#>
+PREFIX procurement:<http://opendata.cz/vocabulary/procurement.rdf#>
+PREFIX skos:<http://www.w3.org/2004/02/skos/core#>
+PREFIX pc:<http://opendata.cz/vocabulary/procurement.rdf#>
+SELECT *
+WHERE {
+  ?supplier opendata:xSupplierIco ?suspectIco .
+  ?donor opendata:xDonorIco ?suspectIco .
+}
+
+
+Expected results:
+
+<http://opendata.sk/dataset/procurements/28991> "17703956" <http://opendata.sk/dataset/political_party_donations/1222>
+...
