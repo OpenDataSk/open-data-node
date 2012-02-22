@@ -185,9 +185,6 @@ public class ProcurementsDatanestHarvester extends
 		} catch (IOException e) {
 			logger.error("IO exception", e);
 			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
-		} catch (IllegalArgumentException e) {
-			logger.error("illegal argument exception", e);
-			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
 		}
 
 		if (odnHarvestgerException != null)

@@ -24,6 +24,7 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Vector;
 
@@ -135,7 +136,14 @@ public class OrganizationsDatanestHarvester extends
 			String[] row;
 			int debugProcessOnlyNItems = Integer.valueOf(datanestProperties.getProperty(KEY_DEBUG_PROCESS_ONLY_N_ITEMS));
 		    while ((row = csvReader.readNext()) != null) {
-		        records.add(scrapOneRecord(row));
+		    	try {
+			        records.add(scrapOneRecord(row));
+		    	}
+		    	catch (ParseException e) {
+					logger.warn("parse exception", e);
+					logger.warn("skipping following record: "
+							+ Arrays.deepToString(row));
+				}
 		        
 		        if (debugProcessOnlyNItems > 0 &&
 		        		records.size() > debugProcessOnlyNItems)
@@ -153,12 +161,6 @@ public class OrganizationsDatanestHarvester extends
 			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
 		} catch (IOException e) {
 			logger.error("IO exception", e);
-			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
-		} catch (ParseException e) {
-			logger.error("parse exception", e);
-			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
-		} catch (IllegalArgumentException e) {
-			logger.error("illegal argument exception", e);
 			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
 		}
 
