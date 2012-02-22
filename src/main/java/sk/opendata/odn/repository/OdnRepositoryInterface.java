@@ -43,5 +43,11 @@ public interface OdnRepositoryInterface<RecordType> {
 	 */
 	public void store(RecordType records)
 			throws IllegalArgumentException, OdnRepositoryException;
+	
+	/**
+	 * Shut down repository.
+	 * @throws OdnRepositoryException when some error occurs during shutdown
+	 */
+	public void shutDown() throws OdnRepositoryException;
 
 }

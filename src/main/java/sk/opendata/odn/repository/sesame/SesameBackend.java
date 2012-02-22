@@ -259,9 +259,27 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 			throw odnRepoException;
 	}
 
-	public void shutDown() throws RepositoryException {
-		for (Repository repo : sesameRepos.values())
-			repo.shutDown();
+	@Override
+	public void shutDown() throws OdnRepositoryException {
+		RepositoryException repoException = null;
+		
+		for (Repository repo : sesameRepos.values()) {
+			// we're going to attempt to shut down all Sesame repositories 
+			try {
+				repo.shutDown();
+			} catch (RepositoryException e) {
+				logger.error("repository exception", e);
+				// we're going to re-throw first exception we encounter
+				if (repoException == null)
+					repoException = e;
+			}
+		}
+		
+		sesameRepos = null;
+		instance = null;
+		
+		if (repoException != null)
+			throw new OdnRepositoryException(repoException.getMessage(), repoException);
 	}
 
 }

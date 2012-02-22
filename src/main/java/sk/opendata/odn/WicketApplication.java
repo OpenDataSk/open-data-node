@@ -22,14 +22,15 @@ import java.io.IOException;
 
 import org.apache.wicket.Page;
 import org.apache.wicket.protocol.http.WebApplication;
-import org.openrdf.repository.RepositoryException;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import sk.opendata.odn.repository.OdnRepositoryException;
 import sk.opendata.odn.repository.sesame.SesameBackend;
+import sk.opendata.odn.repository.solr.SolrBackend;
 
 /**
  * Open Data Mode "management console" ... sort of.
@@ -42,6 +43,7 @@ public class WicketApplication extends WebApplication
 	private static Logger logger = LoggerFactory.getLogger(WicketApplication.class);
 	
 	private SesameBackend sesameBackend = null;
+	private SolrBackend solrBackend = null;
 	private Scheduler scheduler = null;
     
 	/**
@@ -49,8 +51,9 @@ public class WicketApplication extends WebApplication
      */
 	public WicketApplication() {
 		try {
-			// initialize repository
+			// initialize repositories
 			sesameBackend = SesameBackend.getInstance();
+			solrBackend = SolrBackend.getInstance();
 			
 			// initialize job scheduler
 			logger.debug("initializing job scheduler ...");
@@ -75,10 +78,11 @@ public class WicketApplication extends WebApplication
 		try {
 			scheduler.shutdown();
 			sesameBackend.shutDown();
+			solrBackend.shutDown();
 		} catch (SchedulerException e) {
 			logger.error("scheduler exception", e);
 			// TODO is it a "good practice" to pass that also up to Wicket?
-		} catch (RepositoryException e) {
+		} catch (OdnRepositoryException e) {
 			logger.error("repository exception", e);
 			// TODO is it a "good practice" to pass that also up to Wicket?
 		}

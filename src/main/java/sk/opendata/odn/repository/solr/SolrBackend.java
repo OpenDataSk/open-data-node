@@ -154,18 +154,16 @@ public class SolrBackend implements OdnRepositoryInterface<List<SolrItem>> {
 		} catch (IOException e) {
 			logger.error("SOLR server exception", e);
 			odnRepoException = new OdnRepositoryException(e.getMessage(), e);
-//		} finally {
-//			if (connection != null)
-//				try {
-//					connection.close();
-//				} catch (RepositoryException e) {
-//					logger.error("repository exception in 'finally' statement",
-//							e);
-//				}
 		}
 
 		if (odnRepoException != null)
 			throw odnRepoException;
+	}
+
+	@Override
+	public void shutDown() throws OdnRepositoryException {
+		solrServer = null;
+		instance = null;
 	}
 
 }
