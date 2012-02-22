@@ -162,13 +162,10 @@ public class ProcurementsDatanestHarvester extends
 		    	try {
 			        records.add(scrapOneRecord(row));
 		    	}
-		    	catch (IllegalArgumentException e) {
-					logger.warn("illegal argument exception", e);
+		    	catch (ParseException e) {
+					logger.warn("parse exception", e);
 					logger.warn("skipping following record: "
 							+ Arrays.deepToString(row));
-		    	} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
 		        
 		        if (debugProcessOnlyNItems > 0 &&
