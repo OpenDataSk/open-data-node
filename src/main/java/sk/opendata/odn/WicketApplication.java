@@ -31,6 +31,8 @@ import org.slf4j.LoggerFactory;
 import sk.opendata.odn.repository.OdnRepositoryException;
 import sk.opendata.odn.repository.sesame.SesameBackend;
 import sk.opendata.odn.repository.solr.SolrBackend;
+import sk.opendata.odn.ui.AdminHomePage;
+import sk.opendata.odn.ui.HomePage;
 
 /**
  * Open Data Mode "management console" ... sort of.
@@ -51,6 +53,9 @@ public class WicketApplication extends WebApplication
      */
 	public WicketApplication() {
 		try {
+			// initialize friendly URLs for certain pages
+			mountBookmarkablePage("admin", AdminHomePage.class);
+			
 			// initialize repositories
 			sesameBackend = SesameBackend.getInstance();
 			solrBackend = SolrBackend.getInstance();
