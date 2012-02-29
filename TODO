@@ -3,15 +3,26 @@ Things to do (a.k.a. "road map"):
 
 a) some simple GUI for full-text searching using SOLR
 
-b) enhancing the Datanest CSV harvesters to be able to "re-run"
+   1) for organizations:
+      searching using name and surname, organization name or ICO
+      facets: sro, no, ...
+
+   2) ...
+
+b) GUI for "advanced search" using SOLR syntax with some "prepared examples"
+   (in a form of link: after link is clicked, search term is filled in and
+   search results are updated - each field and data type should be covered, like
+   "zakladne imanie: from 10 to 100 €" etc.)
+
+c) enhancing the Datanest CSV harvesters to be able to "re-run"
    and process only differences - i.e. we need to make them able to
    keep ODN copy of data up-to-date with Datanest "original"
 
-c) adding more harvesters: direct harvesting of ORSR to get more data
+d) adding more harvesters: direct harvesting of ORSR to get more data
    about companies, direct harvesting of procurement portals to have
    a shot by getting more data from the scanned documents themselves, ...
 
-d) transform the existing application into something like container
+e) transform the existing application into something like container
    or whatever (maybe even using OSGI) so that it loads and runs
    Harvester and other components (as sort of plug-ins)
 
@@ -23,4 +34,4 @@ d) transform the existing application into something like container
        not need certain harvesters and APIs so there would be a way to
        configure and deploy ODN to meet that criteria)
 
-e) ...
+f) ...
