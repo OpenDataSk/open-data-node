@@ -22,6 +22,8 @@ import junit.framework.TestCase;
 
 import org.apache.wicket.util.tester.WicketTester;
 
+import sk.opendata.odn.ui.HomePage;
+
 /**
  * Simple test using the WicketTester
  */
