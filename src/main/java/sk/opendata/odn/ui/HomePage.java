@@ -18,9 +18,15 @@
 
 package sk.opendata.odn.ui;
 
+import java.io.IOException;
+
+import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebPage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import sk.opendata.odn.ui.panel.ResultPanel;
 import sk.opendata.odn.ui.panel.SearchBox;
 
 /**
@@ -29,7 +35,9 @@ import sk.opendata.odn.ui.panel.SearchBox;
 public class HomePage extends WebPage {
 
 	private static final long serialVersionUID = 1L;
-	//private static Logger logger = LoggerFactory.getLogger(HomePage.class);
+	private static Logger logger = LoggerFactory.getLogger(HomePage.class);
+	
+	private ResultPanel resultPanel = null;
 	
 
     /**
@@ -39,16 +47,27 @@ public class HomePage extends WebPage {
 	 *            Page parameters
 	 */
     public HomePage(final PageParameters parameters) {
-    	String query = parameters.getString("q", "");
+    	final String query = parameters.getString("q", "").trim();
     	
     	SearchBox searchBox = new SearchBox("searchbox");
     	searchBox.setQuery(query);
     	add(searchBox);
     	
-    	doSearch(parameters);
+    	resultPanel = new ResultPanel("results");
+    	add(resultPanel);
+    	
+    	doSearch(query);
     }
     
-    private void doSearch(final PageParameters parameters) {
-    	// TODO
+    private void doSearch(final String query) {
+		try {
+			resultPanel.doSearch(query);
+		} catch (IOException e) {
+			logger.error("IO exception", e);
+			// TODO: display message to the user
+		} catch (SolrServerException e) {
+			logger.error("SOLR server exception", e);
+			// TODO: display message to the user
+		}
     }
 }

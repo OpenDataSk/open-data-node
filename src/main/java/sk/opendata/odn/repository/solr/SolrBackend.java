@@ -166,4 +166,15 @@ public class SolrBackend implements OdnRepositoryInterface<List<SolrItem>> {
 		instance = null;
 	}
 
+	/**
+	 * Purpose of this is to provide access to data stored in SOLR backend for search GUI.
+	 * 
+	 * TODO: Clean-up this setter. It might not be a good idea to give away reference to that object.
+	 * 
+	 * @return SOLR server instance used by this backend
+	 */
+	public SolrServer getSolrServer() {
+		return solrServer;
+	}
+	
 }
