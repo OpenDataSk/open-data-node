@@ -26,6 +26,7 @@ import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.link.ExternalLink;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
@@ -55,8 +56,11 @@ public class ResultPanel extends Panel {
 		protected void populateItem(ListItem<SolrItem> item) {
 			final SolrItem solrResultItem = item.getModelObject();
 			
-			item.add(new Label("itemUrl", "TODO: itemUrl"));
-			item.add(new Label("itemTitle", "TODO: itemTitle"));
+			// TODO: rework into BookmarkablePageLink to a page which will
+			// display the given item based on ID
+			item.add(new ExternalLink("itemUrl",
+					"http://www.opendata.sk/item/" + solrResultItem.getId(),
+					solrResultItem.getId() + ": " + solrResultItem.getName()));
 		}
 		
 	}
