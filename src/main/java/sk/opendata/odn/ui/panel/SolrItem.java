@@ -45,7 +45,10 @@ import sk.opendata.odn.model.Currency;
  * 	at org.apache.solr.client.solrj.response.QueryResponse.getBeans(QueryResponse.java:452)
  * 	at sk.opendata.odn.ui.panel.ResultPanel.doSearch(ResultPanel.java:147)
  * 
- * 2) 'createSolrItem()' removed
+ * 2) type of {@code donationCurrency} is {@code String} instead of
+ * {@sk.opendata.odn.model.Currency} for reasons similar to those stated in item #1 (above)
+ * 
+ * 3) 'createSolrItem()' removed
  * 
  * Until that issue is resolved in a better way, we need to maintain this class.
  * 
@@ -93,7 +96,7 @@ public class SolrItem {
 	@Field("donation_value_f")
 	private float donationValue;
 	@Field("donation_currency_s")
-	private Currency donationCurrency;
+	private String donationCurrency;
 	@Field("donor_address_s")
 	private String donorAddress;
 	@Field("donor_psc_s")
@@ -253,11 +256,11 @@ public class SolrItem {
 		this.donationValue = donationValue;
 	}
 
-	public Currency getDonationCurrency() {
+	public String getDonationCurrency() {
 		return donationCurrency;
 	}
 
-	public void setDonationCurrency(Currency donationCurrency) {
+	public void setDonationCurrency(String donationCurrency) {
 		this.donationCurrency = donationCurrency;
 	}
 
