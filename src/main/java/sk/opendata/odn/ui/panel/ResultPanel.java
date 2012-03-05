@@ -34,7 +34,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sk.opendata.odn.repository.solr.SolrBackend;
-import sk.opendata.odn.repository.solr.SolrItem;
 
 public class ResultPanel extends Panel {
 	

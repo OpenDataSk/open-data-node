@@ -37,17 +37,12 @@ public enum SolrItemType {
 	PROCUREMENT_RECORD;
 
 	private final static Map<Class<?>, SolrItemType> classLookup = new HashMap<Class<?>, SolrItemType>();
-//	private final static Map<String, SolrItemType> stringLookup = new HashMap<String, SolrItemType>();
 	
 	
 	static {
 		classLookup.put(OrganizationRecord.class, ORGANIZATION_RECORD);
 		classLookup.put(PoliticalPartyDonationRecord.class, POLITICAL_PARTY_DONATION_RECORD);
 		classLookup.put(ProcurementRecord.class, PROCUREMENT_RECORD);
-
-//		stringLookup.put(ORGANIZATION_RECORD.toString(), ORGANIZATION_RECORD);
-//		stringLookup.put(ORGANIZATION_RECORD.toString(), POLITICAL_PARTY_DONATION_RECORD);
-//		stringLookup.put(PROCUREMENT_RECORD.toString(), PROCUREMENT_RECORD);
 	}
 	
 	
@@ -68,22 +63,4 @@ public enum SolrItemType {
 		
 		return result;
 	}
-	
-	/**
-	 * Determine record type for given string representation of type.
-	 * 
-	 * @param type
-	 *            string representation of the type
-	 * @return enum value corresponding to given record
-	 * @throws IllegalArgumentException
-	 *             when given record is not known
-	 */
-//	public static SolrItemType getType(String type) throws IllegalArgumentException {
-//		SolrItemType result = stringLookup.get(type);
-//		
-//		if (result == null)
-//			throw new IllegalArgumentException(type);
-//		
-//		return result;
-//	}
 }

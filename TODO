@@ -7,17 +7,6 @@ a) some simple GUI for full-text searching using SOLR
       searching using name and surname, organization name or ICO
       facets: sro, no, ...
 
-      i) fix exception occurring during fetching of results from SOLR:
-
-Caused by: java.lang.RuntimeException: Exception while setting value : ORGANIZATION_RECORD on private sk.opendata.odn.repository.solr.SolrItemType sk.opendata.odn.repository.solr.SolrItem.type
-	at org.apache.solr.client.solrj.beans.DocumentObjectBinder$DocField.set(DocumentObjectBinder.java:380)
-	at org.apache.solr.client.solrj.beans.DocumentObjectBinder$DocField.inject(DocumentObjectBinder.java:362)
-	at org.apache.solr.client.solrj.beans.DocumentObjectBinder.getBean(DocumentObjectBinder.java:67)
-	at org.apache.solr.client.solrj.beans.DocumentObjectBinder.getBeans(DocumentObjectBinder.java:47)
-	at org.apache.solr.client.solrj.response.QueryResponse.getBeans(QueryResponse.java:452)
-	at sk.opendata.odn.ui.panel.ResultPanel.doSearch(ResultPanel.java:147)
-
-
    2) ...
 
 b) GUI for "advanced search" using SOLR syntax with some "prepared examples"
