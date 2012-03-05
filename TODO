@@ -8,6 +8,8 @@ a) some simple GUI for full-text searching using SOLR
       facets: sro, no, ...
 
    2) ...
+   
+   n) this also means creating proper SOLR schema!
 
 b) GUI for "advanced search" using SOLR syntax with some "prepared examples"
    (in a form of link: after link is clicked, search term is filled in and
