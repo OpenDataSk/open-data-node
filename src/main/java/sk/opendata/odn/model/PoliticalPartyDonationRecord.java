@@ -21,6 +21,29 @@ package sk.opendata.odn.model;
 import java.util.Date;
 
 
+/**
+ * For now, this is a direct 1-1 mapping of DataNest's donation item
+ * into a java bean with some items omitted.
+ * 
+ * TODO: To allow better matching of people, companies and political parties,
+ * it would be nice to introduce "person" and "political party" records into the
+ * Open Data Node. From here, we will then only "link" (via id) to those records.
+ * 
+ * That way, we can:
+ * 
+ * a) have only one data set for people with content coming from organization data sets
+ *    (owners, ...), political parties data sets (party leaders, ...) etc. (with only
+ *    "minor problem" at hand: properly detecting and merging information about same
+ *    person from multiple sources into one record)
+ * b) have better search: Say we have only one SOLR index for all data sets in
+ *    Open Data Node. By putting less duplicates into the system, the index is will
+ *    be smaller thus easier to search.
+ * c) have better ability to detect relations: With data about people duplicated
+ *    between data sets, each having its own copy, to find a relation means finding
+ *    same name, same address, etc. Now if we store only references using IDs
+ *    (and assuming we properly solved the "minor problem" mentioned above, i.e.
+ *    merging of data about same entity) it would become easy ID lookup.
+ */
 public class PoliticalPartyDonationRecord extends AbstractRecord {
 	private String datanestId;
 	private String donorName;
