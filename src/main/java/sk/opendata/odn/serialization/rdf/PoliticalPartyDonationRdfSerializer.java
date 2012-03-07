@@ -82,8 +82,8 @@ public class PoliticalPartyDonationRdfSerializer extends AbstractRdfSerializer<P
 			label.append(record.getDonorSurname()).append(" ");
 		if (record.getDonorTitle() != null)
 			label.append(record.getDonorTitle()).append(" ");
-		if (record.getDonorCompany() != null)
-			label.append(record.getDonorCompany()).append(" ");
+		if (record.getName() != null)
+			label.append(record.getName()).append(" ");
 		label.append(" - ");
 		label.append(donationValueFormat.format(record.getDonationValue()));
 		label.append(" - ");
@@ -111,18 +111,18 @@ public class PoliticalPartyDonationRdfSerializer extends AbstractRdfSerializer<P
 		if (record.getDonorTitle() != null)
 			concept.appendChild(appendTextNode(doc, "opendata:xDonorTitle",
 					record.getDonorTitle()));
-		if (record.getDonorCompany() != null)
+		if (record.getName() != null)
 			concept.appendChild(appendTextNode(doc, "opendata:xDonorCompanyName",
-					record.getDonorCompany()));
-		if (record.getDonorIco() != null)
+					record.getName()));
+		if (record.getIco() != null)
 			concept.appendChild(appendTextNode(doc, "opendata:xDonorIco",
-					record.getDonorIco()));
+					record.getIco()));
 		// TODO: adresa, mesto a PSC darcu
 		
 		concept.appendChild(appendTextNode(doc, "opendata:xGiftValue",
 				donationValueFormat.format(record.getDonationValue())));
 		concept.appendChild(appendTextNode(doc, "opendata:xGiftCurrency",
-				record.getDonationCurrency().getCurrencyCode()));
+				record.getCurrency().getCurrencyCode()));
 		concept.appendChild(appendTextNode(doc, "opendata:xRecipientParty",
 				record.getRecipientParty()));
 		if (record.getAcceptDate() != null) {

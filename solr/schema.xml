@@ -496,57 +496,43 @@
        when adding a document.
    -->
 
+   <!-- general fields: -->
    <field name="id" type="string" indexed="true" stored="true" required="true" /> 
-   <field name="sku" type="text_en_splitting_tight" indexed="true" stored="true" omitNorms="true"/>
-   <field name="name" type="text_general" indexed="true" stored="true"/>
-   <field name="alphaNameSort" type="alphaOnlySort" indexed="true" stored="false"/>
-   <field name="manu" type="text_general" indexed="true" stored="true" omitNorms="true"/>
-   <field name="cat" type="string" indexed="true" stored="true" multiValued="true"/>
-   <field name="features" type="text_general" indexed="true" stored="true" multiValued="true"/>
-   <field name="includes" type="text_general" indexed="true" stored="true" termVectors="true" termPositions="true" termOffsets="true" />
+   <field name="type" type="string" indexed="true" stored="true" required="true" />
+   
+   <!-- fields common to multiple data sets: -->
+   <field name="note" type="text_general" indexed="true" stored="true" />
+   <field name="currency" type="string" indexed="true" stored="true" />
+   <field name="ico" type="string" indexed="true" stored="true" />
+   
+   <!-- fields for organization records: -->
+   <field name="name" type="text_general" indexed="true" stored="true" />
+   <field name="legal_form" type="string" indexed="true" stored="true" />
+   <field name="seat" type="text_general" indexed="true" stored="true" />
+   <field name="date_from" type="date" indexed="true" stored="true"/>
+   <field name="date_to" type="date" indexed="true" stored="true"/>
+   
+   <!-- fields for political party donation records: -->
+   <field name="donor_name" type="text_general" indexed="true" stored="true" />
+   <field name="donor_surname" type="text_general" indexed="true" stored="true" />
+   <field name="donor_address" type="text_general" indexed="true" stored="true" />
+   <field name="donor_psc" type="string" indexed="true" stored="true" />
+   <field name="donor_city" type="text_general" indexed="true" stored="true" />
+   <field name="donation_value" type="float" indexed="true" stored="true"/>
+   <field name="recipient_party" type="string" indexed="true" stored="true" />
+   <field name="year" type="string" indexed="true" stored="true" />
+   <field name="accept_date" type="date" indexed="true" stored="true"/>
+   
+   <!-- fields for procurement records: -->
+   <field name="bulletin_id" type="string" indexed="true" stored="true" />
+   <field name="procurement_id" type="string" indexed="true" stored="true" />
+   <field name="procurement_subject" type="text_general" indexed="true" stored="true" />
+   <field name="price" type="float" indexed="true" stored="true"/>
+   <field name="vat_included" type="boolean" indexed="true" stored="true" />
+   <field name="customer_ico" type="string" indexed="true" stored="true" />
+   <field name="supplier_ico" type="string" indexed="true" stored="true" />
 
-   <field name="weight" type="float" indexed="true" stored="true"/>
-   <field name="price"  type="float" indexed="true" stored="true"/>
-   <field name="popularity" type="int" indexed="true" stored="true" />
-   <field name="inStock" type="boolean" indexed="true" stored="true" />
-
-   <!--
-   The following store examples are used to demonstrate the various ways one might _CHOOSE_ to
-    implement spatial.  It is highly unlikely that you would ever have ALL of these fields defined.
-    -->
-   <field name="store" type="location" indexed="true" stored="true"/>
-
-   <!-- Common metadata fields, named specifically to match up with
-     SolrCell metadata when parsing rich documents such as Word, PDF.
-     Some fields are multiValued only because Tika currently may return
-     multiple values for them.
-   -->
-   <field name="title" type="text_general" indexed="true" stored="true" multiValued="true"/>
-   <field name="subject" type="text_general" indexed="true" stored="true"/>
-   <field name="description" type="text_general" indexed="true" stored="true"/>
-   <field name="comments" type="text_general" indexed="true" stored="true"/>
-   <field name="author" type="text_general" indexed="true" stored="true"/>
-   <field name="keywords" type="text_general" indexed="true" stored="true"/>
-   <field name="category" type="text_general" indexed="true" stored="true"/>
-   <field name="content_type" type="string" indexed="true" stored="true" multiValued="true"/>
-   <field name="last_modified" type="date" indexed="true" stored="true"/>
-   <field name="links" type="string" indexed="true" stored="true" multiValued="true"/>
-
-   <!-- catchall field, containing all other searchable text fields (implemented
-        via copyField further on in this schema  -->
-   <field name="text" type="text_general" indexed="true" stored="false" multiValued="true"/>
-
-   <!-- catchall text field that indexes tokens both normally and in reverse for efficient
-        leading wildcard queries. -->
-   <field name="text_rev" type="text_general_rev" indexed="true" stored="false" multiValued="true"/>
-
-   <!-- non-tokenized version of manufacturer to make it easier to sort or group
-        results by manufacturer.  copied from "manu" via copyField -->
-   <field name="manu_exact" type="string" indexed="true" stored="false"/>
-
-   <field name="payloads" type="payloads" indexed="true" stored="true"/>
-
-   <!-- Uncommenting the following will create a "timestamp" field using
+   <!-- TODO: Uncommenting the following will create a "timestamp" field using
         a default value of "NOW" to indicate when each document was indexed.
      -->
    <!--
@@ -604,46 +590,9 @@
  <uniqueKey>id</uniqueKey>
 
  <!-- field for the QueryParser to use when an explicit fieldname is absent -->
- <defaultSearchField>text</defaultSearchField>
+ <defaultSearchField>name</defaultSearchField>
 
  <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
  <solrQueryParser defaultOperator="OR"/>
-
-  <!-- copyField commands copy one field to another at the time a document
-        is added to the index.  It's used either to index the same field differently,
-        or to add multiple fields to the same field for easier/faster searching.  -->
-
-   <copyField source="cat" dest="text"/>
-   <copyField source="name" dest="text"/>
-   <copyField source="manu" dest="text"/>
-   <copyField source="features" dest="text"/>
-   <copyField source="includes" dest="text"/>
-   <copyField source="manu" dest="manu_exact"/>
-	
-   <!-- Above, multiple source fields are copied to the [text] field. 
-	  Another way to map multiple source fields to the same 
-	  destination field is to use the dynamic field syntax. 
-	  copyField also supports a maxChars to copy setting.  -->
-	   
-   <!-- <copyField source="*_t" dest="text" maxChars="3000"/> -->
-
-   <!-- copy name to alphaNameSort, a field designed for sorting by name -->
-   <!-- <copyField source="name" dest="alphaNameSort"/> -->
- 
-
- <!-- Similarity is the scoring routine for each document vs. a query.
-      A custom similarity may be specified here, but the default is fine
-      for most applications.  -->
- <!-- <similarity class="org.apache.lucene.search.DefaultSimilarity"/> -->
- <!-- ... OR ...
-      Specify a SimilarityFactory class name implementation
-      allowing parameters to be used.
- -->
- <!--
- <similarity class="com.example.solr.CustomSimilarityFactory">
-   <str name="paramkey">param value</str>
- </similarity>
- -->
-
 
 </schema>

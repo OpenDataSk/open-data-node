@@ -49,10 +49,10 @@ public class PoliticalPartyDonationRecord extends AbstractRecord {
 	private String donorName;
 	private String donorSurname;
 	private String donorTitle;
-	private String donorCompany;
-	private String donorIco;
+	private String name;	// donor company
+	private String ico;		// donor ICO
 	private float donationValue;
-	private Currency donationCurrency;
+	private Currency currency;
 	private String donorAddress;
 	private String donorPsc;
 	private String donorCity;
@@ -96,17 +96,17 @@ public class PoliticalPartyDonationRecord extends AbstractRecord {
 	public void setDonorTitle(String donorTitle) {
 		this.donorTitle = donorTitle;
 	}
-	public String getDonorCompany() {
-		return donorCompany;
+	public String getName() {
+		return name;
 	}
-	public void setDonorCompany(String donorCompany) {
-		this.donorCompany = donorCompany;
+	public void setName(String name) {
+		this.name = name;
 	}
-	public String getDonorIco() {
-		return donorIco;
+	public String getIco() {
+		return ico;
 	}
-	public void setDonorIco(String donorIco) {
-		this.donorIco = donorIco;
+	public void setIco(String ico) {
+		this.ico = ico;
 	}
 	public float getDonationValue() {
 		return donationValue;
@@ -114,11 +114,11 @@ public class PoliticalPartyDonationRecord extends AbstractRecord {
 	public void setDonationValue(float donationValue) {
 		this.donationValue = donationValue;
 	}
-	public Currency getDonationCurrency() {
-		return donationCurrency;
+	public Currency getCurrency() {
+		return currency;
 	}
-	public void setDonationCurrency(Currency donationCurrency) {
-		this.donationCurrency = donationCurrency;
+	public void setCurrency(Currency currency) {
+		this.currency = currency;
 	}
 	public String getDonorAddress() {
 		return donorAddress;

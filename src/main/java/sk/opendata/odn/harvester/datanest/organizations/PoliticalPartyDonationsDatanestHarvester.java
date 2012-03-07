@@ -106,13 +106,13 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 		if (!row[ATTR_INDEX_DONOR_TITLE].isEmpty())
 			record.setDonorTitle(row[ATTR_INDEX_DONOR_TITLE]);
 		if (!row[ATTR_INDEX_DONOR_COMPANY].isEmpty())
-			record.setDonorCompany(row[ATTR_INDEX_DONOR_COMPANY]);
+			record.setName(row[ATTR_INDEX_DONOR_COMPANY]);
 		if (!row[ATTR_INDEX_DONOR_ICO].isEmpty())
-			record.setDonorIco(row[ATTR_INDEX_DONOR_ICO]);
+			record.setIco(row[ATTR_INDEX_DONOR_ICO]);
 		if (!row[ATTR_INDEX_DONATION_VALUE].isEmpty())
 			record.setDonationValue(Float.valueOf(row[ATTR_INDEX_DONATION_VALUE]));
 		Currency currency = Currency.parse(row[ATTR_INDEX_DONATION_CURRENCY]);
-		record.setDonationCurrency(currency);
+		record.setCurrency(currency);
 		record.setDonorAddress(row[ATTR_INDEX_DONOR_ADDRESS]);
 		if (!row[ATTR_INDEX_DONOR_PSC].isEmpty())
 			record.setDonorPsc(row[ATTR_INDEX_DONOR_PSC]);
