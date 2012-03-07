@@ -26,8 +26,6 @@ import org.apache.solr.client.solrj.beans.Field;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sk.opendata.odn.model.Currency;
-
 /**
  * FIXME:
  * This is almost exact copy of {@code sk.opendata.odn.repository.solr.SolrItem} with
@@ -45,7 +43,7 @@ import sk.opendata.odn.model.Currency;
  * 	at org.apache.solr.client.solrj.response.QueryResponse.getBeans(QueryResponse.java:452)
  * 	at sk.opendata.odn.ui.panel.ResultPanel.doSearch(ResultPanel.java:147)
  * 
- * 2) type of {@code donationCurrency} is {@code String} instead of
+ * 2) type of {@code currency} is {@code String} instead of
  * {@sk.opendata.odn.model.Currency} for reasons similar to those stated in item #1 (above)
  * 
  * 3) 'createSolrItem()' removed
@@ -61,55 +59,53 @@ public class SolrItem {
 	// common fields:
 	@Field
 	private String id;
-	@Field("type_s")
+	@Field
 	private String type;
 	// "organization record" fields: should match what is available in
 	// 'OrganizationRecord' and we need only those fields which are going to be
 	// used in SOLR index
 	// note: for now, to avoid changing schema, we're taking advantage of
 	// dynamic field definitions.
-	@Field("name_s")
+	@Field
 	private String name;
-	@Field("legal_form_s")
+	@Field("legal_form")
 	private String legalForm;
-	@Field("seat_s")
+	@Field
 	private String seat;
-	@Field("ico_s")
+	@Field
 	private String ico;
-	@Field("date_from_dt")
+	@Field("date_from")
 	private Date dateFrom;
-	@Field("date_to_dt")
+	@Field("date_to")
 	private Date dateTo;
 	// "political party donation record" fields: should match what is available
 	// in 'PoliticalPartyDonationRecord' and we need only those fields which are
 	// going to be used in SOLR index
 	// note: for now, to avoid changing schema, we're taking advantage of
 	// dynamic field definitions.
-	@Field("donor_name_s")
+	@Field("donor_name")
 	private String donorName;
-	@Field("donor_surname_s")
+	@Field("donor_surname")
 	private String donorSurname;
-	@Field("donor_company_s")
-	private String donorCompany;
-	@Field("donor_ico_s")
-	private String donorIco;
-	@Field("donation_value_f")
+	//private String donorCompany;	- we will map it to 'name' from OrganizationRecord as it is organization name too
+	//private String donorIco;	- we will map it to 'ico' from OrganizationRecord as it is ICO of organization too
+	@Field("donation_value")
 	private float donationValue;
-	@Field("donation_currency_s")
-	private String donationCurrency;
-	@Field("donor_address_s")
+	@Field
+	private String currency;
+	@Field("donor_address")
 	private String donorAddress;
-	@Field("donor_psc_s")
-	private String donorPsc;
-	@Field("donor_city_s")
+	@Field("donor_psc")
+	private String donorPsc;	// TODO: we use "string" in SOLR schema => make sure we use same form by filtering out spaces (i.e. to prevent cases like "058 01" and "05801" being considered different PSC)
+	@Field("donor_city")
 	private String donorCity;
-	@Field("recipient_party_s")
+	@Field("recipient_party")
 	private String recipientParty;
-	@Field("year_s")
+	@Field("year")
 	private String year;
-	@Field("accept_date_dt")
+	@Field("accept_date")
 	private Date acceptDate;
-	@Field("note_s")
+	@Field("note")
 	private String note;
 	// "procurement record" fields: should match what is available in
 	// 'ProcurementRecord' and we need only those fields which are going to be
@@ -118,21 +114,20 @@ public class SolrItem {
 	// dynamic field definitions.
 	//private String note;	- same name as field in PoliticalPartyDonationRecord
 	//private String year;	- same name as field in PoliticalPartyDonationRecord
-	@Field("bulletin_id_s")
+	@Field("bulletin_id")
 	private String bulletinId;
-	@Field("procurement_id_s")
+	@Field("procurement_id")
 	private String procurementId;
-	@Field("procurement_subject_s")
+	@Field("procurement_subject")
 	private String procurementSubject;
-	@Field("price_f")
+	@Field("price")
 	private float price;
-	@Field("currency_s")
-	private Currency currency;
-	@Field("vat_included_b")
+	//private Currency currency;	- same name as field in PoliticalPartyDonationRecord
+	@Field("vat_included")
 	private boolean isVatIncluded;
-	@Field("customer_ico_s")
+	@Field("customer_ico")
 	private String customerIco;
-	@Field("supplier_ico_s")
+	@Field("supplier_ico")
 	private String supplierIco;
 	
 
@@ -231,37 +226,12 @@ public class SolrItem {
 		this.donorSurname = donorSurname;
 	}
 
-	public String getDonorCompany() {
-		return donorCompany;
-	}
-
-	public void setDonorCompany(String donorCompany) {
-		this.donorCompany = donorCompany;
-	}
-
-	public String getDonorIco() {
-		return donorIco;
-	}
-
-	public void setDonorIco(String donorIco) {
-		this.donorIco = donorIco;
-	}
-
-
 	public float getDonationValue() {
 		return donationValue;
 	}
 
 	public void setDonationValue(float donationValue) {
 		this.donationValue = donationValue;
-	}
-
-	public String getDonationCurrency() {
-		return donationCurrency;
-	}
-
-	public void setDonationCurrency(String donationCurrency) {
-		this.donationCurrency = donationCurrency;
 	}
 
 	public String getDonorAddress() {
@@ -352,11 +322,11 @@ public class SolrItem {
 		this.price = price;
 	}
 
-	public Currency getCurrency() {
+	public String getCurrency() {
 		return currency;
 	}
 
-	public void setCurrency(Currency currency) {
+	public void setCurrency(String currency) {
 		this.currency = currency;
 	}
 
