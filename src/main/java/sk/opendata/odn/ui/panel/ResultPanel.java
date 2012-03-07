@@ -35,6 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sk.opendata.odn.repository.solr.SolrBackend;
+import sk.opendata.odn.utils.PscUtil;
 
 public class ResultPanel extends Panel {
 	
@@ -110,8 +111,17 @@ public class ResultPanel extends Panel {
     				"customer_ico " +
     				"supplier_ico"
     				);
-    	}
-    	else {
+    	} else if (PscUtil.isPsc(query)) {
+    		// PCS
+    		solrQuery.set("defType", "dismax");
+    		solrQuery.set("qf",
+    				"donor_psc^2 " +
+    				"seat " +		// TODO: this is "text_general' in SOLR schema and here PSC might still be in a form "058 01" thus searching for "05801" wont match it
+    				"donor_address"	// TODO: -"-
+    				);
+    		// re-set query to normalized PSC
+    		solrQuery.setQuery(PscUtil.normalize(query));
+    	} else {
     		// default
     		solrQuery.set("defType", "dismax");
     		solrQuery.set("qf",

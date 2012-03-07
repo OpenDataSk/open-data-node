@@ -45,6 +45,7 @@ import sk.opendata.odn.repository.solr.SolrBackend;
 import sk.opendata.odn.serialization.OdnSerializationException;
 import sk.opendata.odn.serialization.rdf.PoliticalPartyDonationRdfSerializer;
 import sk.opendata.odn.serialization.solr.SolrSerializer;
+import sk.opendata.odn.utils.PscUtil;
 import au.com.bytecode.opencsv.CSVReader;
 
 /**
@@ -115,7 +116,7 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 		record.setCurrency(currency);
 		record.setDonorAddress(row[ATTR_INDEX_DONOR_ADDRESS]);
 		if (!row[ATTR_INDEX_DONOR_PSC].isEmpty())
-			record.setDonorPsc(row[ATTR_INDEX_DONOR_PSC]);
+			record.setDonorPsc(PscUtil.normalize(row[ATTR_INDEX_DONOR_PSC]));
 		if (!row[ATTR_INDEX_DONOR_CITY].isEmpty())
 			record.setDonorCity(row[ATTR_INDEX_DONOR_CITY]);
 		record.setRecipientParty(row[ATTR_INDEX_RECIPIENT_PARTY]);
