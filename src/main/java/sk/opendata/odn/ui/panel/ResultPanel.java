@@ -105,35 +105,36 @@ public class ResultPanel extends Panel {
     		// ICO
     		solrQuery.set("defType", "dismax");
     		solrQuery.set("qf",
-    				"ico_s^2 " +
-    				"donor_ico_s " +
-    				"customer_ico_s " +
-    				"supplier_ico_s"
+    				"ico^2 " +
+    				"donor_ico " +
+    				"customer_ico " +
+    				"supplier_ico"
     				);
     	}
     	else {
     		// default
     		solrQuery.set("defType", "dismax");
     		solrQuery.set("qf",
-    				"name_s^3 " +
-    				"legal_form_s^0.5 " +
-    				"seat_s ico_s^2 " +
-    				"date_from_dt " +
-    				"date_to_dt " +
-    				"donor_name_s^2 " +
-    				"donor_surname_s^2 " +
-    				"donor_company_s^2 " +
-    				"donor_ico_s " +
-    				"donor_address_s " +
-    				"donor_psc_s " +
-    				"donor_city_s " +
-    				"recipient_party_s^0.75 " +
-    				"year_s " +
-    				"accept_date_dt " +
-    				"note_s^0.5 " +
-    				"procurement_subject_s " +
-    				"customer_ico_s " +
-    				"supplier_ico_s"
+    				"name^3 " +
+    				"legal_form^0.5 " +
+    				"seat " +
+    				"ico^2 " +
+    				"date_from " +
+    				"date_to " +
+    				"donor_name^2 " +
+    				"donor_surname^2 " +
+    				"donor_company^2 " +
+    				"donor_ico " +
+    				"donor_address " +
+    				"donor_psc " +
+    				"donor_city " +
+    				"recipient_party^0.75 " +
+    				"year " +
+    				"accept_date " +
+    				"note^0.5 " +
+    				"procurement_subject " +
+    				"customer_ico " +
+    				"supplier_ico"
     				);
     	}
 		
