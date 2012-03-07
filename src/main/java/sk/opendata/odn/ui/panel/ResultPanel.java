@@ -135,6 +135,7 @@ public class ResultPanel extends Panel {
     				"donor_surname^2 " +
     				"donor_company^2 " +
     				"donor_ico " +
+    				"currency^0.5 " +
     				"donor_address " +
     				"donor_psc " +
     				"donor_city " +
