@@ -16,18 +16,18 @@
  * along with Open Data Node.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package sk.opendata.odn;
+package sk.opendata.odn.ui;
 
 import junit.framework.TestCase;
 
 import org.apache.wicket.util.tester.WicketTester;
 
-import sk.opendata.odn.ui.AdminHomePage;
+import sk.opendata.odn.ui.HomePage;
 
 /**
  * Simple test using the WicketTester
  */
-public class TestAdminHomePage extends TestCase
+public class TestHomePage extends TestCase
 {
 	private WicketTester tester;
 
@@ -39,12 +39,12 @@ public class TestAdminHomePage extends TestCase
 	public void testRenderMyPage()
 	{
 		//start and render the test page
-		tester.startPage(AdminHomePage.class);
+		tester.startPage(HomePage.class);
 
 		//assert rendered page class
-		tester.assertRenderedPage(AdminHomePage.class);
+		tester.assertRenderedPage(HomePage.class);
 
 		tester.assertContains("Open Data Node");
-		tester.assertContains("Scrap Right Now!");
+		tester.assertContains("Search");
 	}
 }
