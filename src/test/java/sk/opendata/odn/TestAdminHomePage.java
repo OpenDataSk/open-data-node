@@ -22,12 +22,12 @@ import junit.framework.TestCase;
 
 import org.apache.wicket.util.tester.WicketTester;
 
-import sk.opendata.odn.ui.HomePage;
+import sk.opendata.odn.ui.AdminHomePage;
 
 /**
  * Simple test using the WicketTester
  */
-public class TestHomePage extends TestCase
+public class TestAdminHomePage extends TestCase
 {
 	private WicketTester tester;
 
@@ -39,12 +39,12 @@ public class TestHomePage extends TestCase
 	public void testRenderMyPage()
 	{
 		//start and render the test page
-		tester.startPage(HomePage.class);
+		tester.startPage(AdminHomePage.class);
 
 		//assert rendered page class
-		tester.assertRenderedPage(HomePage.class);
+		tester.assertRenderedPage(AdminHomePage.class);
 
 		tester.assertContains("Open Data Node");
-		tester.assertContains("Search");
+		tester.assertContains("Scrap Right Now!");
 	}
 }
