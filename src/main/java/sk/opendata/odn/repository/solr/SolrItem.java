@@ -46,6 +46,25 @@ import sk.opendata.odn.serialization.OdnSerializationException;
  * appropriate {@code SolrItem} constructor</li>
  * <li>"SOLR items" are collected in list and pushed to SOLR</li>
  * </ol>
+ *
+ * TODO:
+ * Usage of {@code SolrItemType} and {@code Currency} is causing exceptions like:
+ * 
+ * Caused by: java.lang.RuntimeException: Exception while setting value : ORGANIZATION_RECORD on private sk.opendata.odn.repository.solr.SolrItemType sk.opendata.odn.repository.solr.SolrItem.type
+ * 	at org.apache.solr.client.solrj.beans.DocumentObjectBinder$DocField.set(DocumentObjectBinder.java:380)
+ * 	at org.apache.solr.client.solrj.beans.DocumentObjectBinder$DocField.inject(DocumentObjectBinder.java:362)
+ * 	at org.apache.solr.client.solrj.beans.DocumentObjectBinder.getBean(DocumentObjectBinder.java:67)
+ * 	at org.apache.solr.client.solrj.beans.DocumentObjectBinder.getBeans(DocumentObjectBinder.java:47)
+ * 	at org.apache.solr.client.solrj.response.QueryResponse.getBeans(QueryResponse.java:452)
+ * 	at sk.opendata.odn.ui.panel.ResultPanel.doSearch(ResultPanel.java:147)
+ * 
+ * so for now, we use {@code String} instead of those specialized types for following variables:
+ * 
+ * 1) for {@code type}: instead of {@sk.opendata.odn.repository.solr.SolrItemType}
+ * 
+ * 2) for {@code currency}: instead of {@sk.opendata.odn.model.Currency}
+ * 
+ * Hint: Maybe {@code @FieldObject} annotation in upcoming SOLR 3.6.0 will help.
  */
 public class SolrItem {
 	
@@ -55,7 +74,7 @@ public class SolrItem {
 	@Field
 	private String id;
 	@Field
-	private SolrItemType type;
+	private String type;	// TODO: Use 'SolrItemType' - see TODO note in the class javadoc
 	// "organization record" fields: should match what is available in
 	// 'OrganizationRecord' and we need only those fields which are going to be
 	// used in SOLR index
@@ -87,7 +106,7 @@ public class SolrItem {
 	@Field("donation_value")
 	private float donationValue;
 	@Field
-	private Currency currency;
+	private String currency;	// TODO: Use 'Currency' - see TODO note in the class javadoc
 	@Field("donor_address")
 	private String donorAddress;
 	@Field("donor_psc")
@@ -149,7 +168,7 @@ public class SolrItem {
 		try {
 			solrItem = new SolrItem();
 			PropertyUtils.copyProperties(solrItem, source);
-			solrItem.type = SolrItemType.getType(source.getClass());
+			solrItem.type = SolrItemType.getType(source.getClass()).toString();
 			solrItem.id = source.getId();
 		} catch (IllegalAccessException e) {
 			logger.error("illegal access exception", e);
@@ -190,11 +209,11 @@ public class SolrItem {
 	}
 
 	public SolrItemType getType() {
-		return type;
+		return SolrItemType.valueOf(type);
 	}
 
 	public void setType(SolrItemType type) {
-		this.type = type;
+		this.type = type.toString();
 	}
 
 	public String getName() {
@@ -358,11 +377,14 @@ public class SolrItem {
 	}
 
 	public Currency getCurrency() {
-		return currency;
+		return Currency.parse(currency);
 	}
 
 	public void setCurrency(Currency currency) {
-		this.currency = currency;
+		if (currency == null)
+			this.currency = null;
+		else
+			this.currency = currency.toString();
 	}
 
 	public boolean isVatIncluded() {
