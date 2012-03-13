@@ -377,6 +377,9 @@ public class SolrItem {
 	}
 
 	public Currency getCurrency() {
+		if (currency == null)
+			return null;
+		
 		return Currency.parse(currency);
 	}
 
