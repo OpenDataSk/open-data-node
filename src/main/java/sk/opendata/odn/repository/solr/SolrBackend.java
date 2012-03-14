@@ -127,17 +127,13 @@ public class SolrBackend implements OdnRepositoryInterface<List<SolrItem>> {
 		OdnRepositoryException odnRepoException = null;
 
 		try {
-			// As of now, the "update" consist of fresh "whole at once" copy of
-			// the new data loaded into the repository. Thus, we need to remove
-			// existing data from the repository before loading the new data so
-			// as to prevent old, stale data to be left in the repository (like
-			// items which were valid yesterday, but then deemed "bad" or
-			// whatever and deleted).
-			// Note: Yes, that is costly and we want to fix that later on.
 			// FIXME: Implement proper "update" procedure. For now disabled as
 			// we're pushing multiple data sets into one index meaning that if
 			// we left this here, insertion of 2nd data set will mean deletion
-			// of 1st etc. Workaround: Clean the index manualy if necessary.
+			// of 1st etc. Plus, 'store()' might be called for multiple batches
+			// and we do not want to be left with only last batch in th
+			// back-end.
+			// Workaround: Clean the index manualy if necessary.
 			//solrServer.deleteByQuery("*:*");	// CAUTION: deletes everything!
 			
 			solrServer.addBeans(records);

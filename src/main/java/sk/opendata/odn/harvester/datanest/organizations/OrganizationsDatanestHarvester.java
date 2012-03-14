@@ -56,6 +56,7 @@ public class OrganizationsDatanestHarvester extends
 
 	public final static String KEY_DATANEST_ORGANIZATIONS_URL = "datanest.organizations.url";
 	public final static String KEY_DATANEST_ORGANIZATIONS_SEZAME_REPO_NAME = "datanest.organizations.sesame_repo_name";
+	public final static String KEY_DATANEST_ORGANIZATIONS_BATCH_SIZE = "datanest.organizations.batch_size";
 	
 	private final static int ATTR_INDEX_ID = 0;
 	protected final static int ATTR_INDEX_NAME = 1;
@@ -134,6 +135,8 @@ public class OrganizationsDatanestHarvester extends
 			
 			// read the rows
 			String[] row;
+			int batchSize = Integer.valueOf(datanestProperties.getProperty(KEY_DATANEST_ORGANIZATIONS_BATCH_SIZE));
+			int itemCount = 0;
 			int debugProcessOnlyNItems = Integer.valueOf(datanestProperties.getProperty(KEY_DEBUG_PROCESS_ONLY_N_ITEMS));
 		    while ((row = csvReader.readNext()) != null) {
 		    	try {
@@ -144,9 +147,14 @@ public class OrganizationsDatanestHarvester extends
 					logger.warn("skipping following record: "
 							+ Arrays.deepToString(row));
 				}
-		        
-		        if (debugProcessOnlyNItems > 0 &&
-		        		records.size() > debugProcessOnlyNItems)
+		    	
+		    	if (records.size() >= batchSize) {
+		    		store(records);
+		    		records.clear();
+		    	}
+		    	
+		    	if (debugProcessOnlyNItems > 0 &&
+		    			++itemCount > debugProcessOnlyNItems)
 		        	break;
 		    }
 		    

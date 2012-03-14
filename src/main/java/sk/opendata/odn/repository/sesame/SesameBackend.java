@@ -195,18 +195,18 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 
 			connection = repo.getConnection();
 
-			// As of now, the "update" consist of fresh "whole at once" copy of
-			// the new data loaded into the repository. Thus, we need to remove
-			// existing data from the repository before loading the new data so
-			// as to prevent old, stale data to be left in the repository (like
-			// items which were valid yesterday, but then deemed "bad" or
-			// whatever and deleted).
-			// Note: Yes, that is costly and we want to fix that later on.
 			// FIXME: Implement proper "update" procedure.
+			// As of now, we're not clearing old records, only replacing old
+			// copies with fresh copies (assuming "ID" was not changed). If we
+			// want a clean-up, we need to manually clean the back-end and rerun
+			// harvesting.
+			// Note of caution: 'store()' can be called for "a batch" (at least
+			// for 'OrganizationsDatanestHarvester' it is) which means that
+			// simple "DELETE all" here wont have a desired effect as it removed
+			// all the "new" items from previous batch and leave the back-end
+			// only with content from last batch.
 			if (contexts != null && contexts.length > 0) {
-				connection.clear(convertedContexts);
-
-				// why we duplicate the 'clear()' and 'add()' statements:
+				// why we duplicate the 'add()' statements:
 				// 'getStatements(null, null, null, true);' is not the same as
 				// 'getStatements(null, null, null, true, (Resource)null);' -
 				// see
@@ -215,17 +215,6 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 						records.getRdfBaseURI(), RDFFormat.RDFXML,
 						convertedContexts);
 			} else {
-				// CRUDE HACK, FIXME: If we use contexts for the "all"
-				// repository to distinguish statements in terms of where they
-				// came from so that we can do a proper clean-up before
-				// "update", I'm then not able yet to make a proper query on top
-				// of statements from different contexts. Thus for now I'm not
-				// using contexts and for "all" repository I'm not doing the
-				// automatic clean-up, which means that "Clean" needs to be done
-				// on the repo manually!!!
-				if (!repoName.equals("all"))
-					connection.clear();
-
 				connection.add(new StringReader(records.getRdfData()),
 						records.getRdfBaseURI(), RDFFormat.RDFXML);
 			}
