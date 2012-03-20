@@ -137,6 +137,8 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 	public void update() throws OdnHarvesterException,
 			OdnSerializationException, OdnRepositoryException {
 		
+		logger.info("harvesting started");
+		
 		OdnHarvesterException odnHarvestgerException = null;
 		
 		try {
@@ -188,6 +190,8 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 
 		if (odnHarvestgerException != null)
 			throw odnHarvestgerException;
+		
+		logger.info("harvesting finished");
 	}
 
 }

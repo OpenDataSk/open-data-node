@@ -116,6 +116,8 @@ public class OrganizationsDatanestHarvester extends
 	public void update() throws OdnHarvesterException,
 			OdnSerializationException, OdnRepositoryException {
 		
+		logger.info("harvesting started");
+		
 		OdnHarvesterException odnHarvestgerException = null;
 		
 		try {
@@ -174,6 +176,8 @@ public class OrganizationsDatanestHarvester extends
 
 		if (odnHarvestgerException != null)
 			throw odnHarvestgerException;
+		
+		logger.info("harvesting finished");
 	}
 
 }
