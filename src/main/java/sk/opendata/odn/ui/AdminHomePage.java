@@ -35,7 +35,6 @@ import org.slf4j.LoggerFactory;
 /**
  * Open Data Node "management console" homepage.
  * 
- * TODO: make it a bookmarkable page http://localhost:8080/open-data-node/admin"
  */
 public class AdminHomePage extends WebPage {
 
