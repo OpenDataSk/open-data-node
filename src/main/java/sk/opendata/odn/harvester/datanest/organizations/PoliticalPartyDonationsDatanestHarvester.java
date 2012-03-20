@@ -139,7 +139,7 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 		
 		logger.info("harvesting started");
 		
-		OdnHarvesterException odnHarvestgerException = null;
+		OdnHarvesterException odnHarvesterException = null;
 		
 		try {
 			URL csvUrl = new URL(datanestProperties.getProperty(KEY_DATANEST_PPD_URL));
@@ -182,14 +182,14 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 		// code.
 		} catch (MalformedURLException e) {
 			logger.error("malformed URL exception", e);
-			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
+			odnHarvesterException = new OdnHarvesterException(e.getMessage(), e);
 		} catch (IOException e) {
 			logger.error("IO exception", e);
-			odnHarvestgerException = new OdnHarvesterException(e.getMessage(), e);
+			odnHarvesterException = new OdnHarvesterException(e.getMessage(), e);
 		}
 
-		if (odnHarvestgerException != null)
-			throw odnHarvestgerException;
+		if (odnHarvesterException != null)
+			throw odnHarvesterException;
 		
 		logger.info("harvesting finished");
 	}
