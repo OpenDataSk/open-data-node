@@ -34,7 +34,6 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Open Data Node "management console" homepage.
- * 
  */
 public class AdminHomePage extends WebPage {
 
@@ -72,6 +71,8 @@ public class AdminHomePage extends WebPage {
 				for (JobKey jobKey : jobKeys) {
 					scheduler.triggerJob(jobKey);
 				}
+				
+				setResponsePage(AdminHomePage.class);
 			} catch (SchedulerException e) {
 				logger.error("scheduler exception", e);
 				// TODO is it a "good practice" to pass that also up to Wicket?
