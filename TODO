@@ -4,7 +4,10 @@ Things to do (a.k.a. "road map"):
 a) get rid of separate RDF repositories and use only one, utilize
    contexts/named graphs instead or some other scheme - see for example
    Data Segmenting in Anzo
-   (http://www.slideshare.net/LeeFeigenbaum/data-segmenting-in-anzo)
+   (http://www.slideshare.net/LeeFeigenbaum/data-segmenting-in-anzo) and
+   The Sesame 2 console: Creating Repositories, Loading Data with Context,
+   SPARQL-Querying with Context
+   (http://confuseddevelopment.blogspot.com/2007/10/sesame-2-console-creating-repositories.html)
 
 b) some simple GUI for full-text searching using SOLR
 
