@@ -11,7 +11,17 @@
 	<!-- TODO <organization> <name>company name</name> <url>company url</url> 
 		</organization> -->
 	<url>http://utopia.sk/wiki/pages/viewpage.action?pageId=7077901</url>
-
+	
+	<!-- sesame is not yet available on Maven Central 
+	(http://sesame-general.435816.n3.nabble.com/Maven-Sesame-Runtime-Dependency-td3772834.html) -->
+	<repositories>
+	    <repository>
+	        <id>aduna</id>
+	        <name>Aduna Software</name>
+	        <url>http://repo.aduna-software.org/maven2/releases/</url>
+	    </repository>
+	</repositories> 
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.wicket</groupId>
@@ -175,5 +185,4 @@
 		<solr.version>3.5.0</solr.version>
 		<wicket.version>1.4.6</wicket.version>
 	</properties>
-
 </project>
