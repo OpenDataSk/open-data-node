@@ -29,8 +29,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sk.opendata.odn.repository.OdnRepositoryException;
-import sk.opendata.odn.repository.sesame.SesameBackend;
-import sk.opendata.odn.repository.solr.SolrBackend;
+import sk.opendata.odn.repository.sesame.SesameRepository;
+import sk.opendata.odn.repository.solr.SolrRepository;
 import sk.opendata.odn.ui.AdminHomePage;
 import sk.opendata.odn.ui.HomePage;
 
@@ -44,8 +44,8 @@ public class WicketApplication extends WebApplication
 	
 	private static Logger logger = LoggerFactory.getLogger(WicketApplication.class);
 	
-	private SesameBackend sesameBackend = null;
-	private SolrBackend solrBackend = null;
+	private SesameRepository sesameRepository = null;
+	private SolrRepository solrRepository = null;
 	private Scheduler scheduler = null;
     
 	/**
@@ -57,8 +57,8 @@ public class WicketApplication extends WebApplication
 			mountBookmarkablePage("admin", AdminHomePage.class);
 			
 			// initialize repositories
-			sesameBackend = SesameBackend.getInstance();
-			solrBackend = SolrBackend.getInstance();
+			sesameRepository = SesameRepository.getInstance();
+			solrRepository = SolrRepository.getInstance();
 			
 			// initialize job scheduler
 			logger.debug("initializing job scheduler ...");
@@ -82,8 +82,8 @@ public class WicketApplication extends WebApplication
 		logger.debug("shuting down job scheduler ...");
 		try {
 			scheduler.shutdown();
-			sesameBackend.shutDown();
-			solrBackend.shutDown();
+			sesameRepository.shutDown();
+			solrRepository.shutDown();
 		} catch (SchedulerException e) {
 			logger.error("scheduler exception", e);
 			// TODO is it a "good practice" to pass that also up to Wicket?

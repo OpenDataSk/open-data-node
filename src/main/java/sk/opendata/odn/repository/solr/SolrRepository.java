@@ -36,28 +36,19 @@ import sk.opendata.odn.repository.OdnRepositoryInterface;
 import sk.opendata.odn.utils.ApplicationProperties;
 
 /**
- * SOLR backend/repository for Open Data Node.
- * 
- * "Little" terminology note:
- * 
- * <ul>
- * <li>in Open Data Node architecture, this (this class) is a repository</li>
- * <li>in SOLR, it is called "index"</li>
- * <li>to achieve this, we're using "SOLR index"</li>
- * <li>but to be in-line with naming chosen for Sesame, "repository" is used</li>
- * </ul>
+ * SOLR repository for Open Data Node.
  */
-public class SolrBackend implements OdnRepositoryInterface<List<SolrItem>> {
+public class SolrRepository implements OdnRepositoryInterface<List<SolrItem>> {
 
 	public final static String SOLR_REPOSITORY_PROPERTIES_NAME = "/repo-solr.properties";
 	public final static String KEY_DEBUG_DUMP = "solr.debug.dump";
 	public final static String KEY_REPO_URL = "solr.repo.url";
 
-	private static Logger logger = LoggerFactory.getLogger(SolrBackend.class);
+	private static Logger logger = LoggerFactory.getLogger(SolrRepository.class);
 	private ApplicationProperties srProperties = null;
 	private SolrServer solrServer = null;
 
-	private static SolrBackend instance = null;
+	private static SolrRepository instance = null;
 
 	/**
 	 * Initialize SOLR back-end.
@@ -65,7 +56,7 @@ public class SolrBackend implements OdnRepositoryInterface<List<SolrItem>> {
 	 * @throws IOException
 	 *             when error occurs while loading properties
 	 */
-	private SolrBackend() throws IOException {
+	private SolrRepository() throws IOException {
 		// load properties
 		srProperties = ApplicationProperties
 				.getInstance(SOLR_REPOSITORY_PROPERTIES_NAME);
@@ -77,16 +68,16 @@ public class SolrBackend implements OdnRepositoryInterface<List<SolrItem>> {
 	}
 
 	/**
-	 * Get the instance of SOLR back-end singleton.
+	 * Get the instance of SOLR repository singleton.
 	 * 
-	 * @return instance of SOLR backend
+	 * @return instance of SOLR repository
 	 * @throws IOException
 	 *             when error occurs while loading properties
 	 */
-	public static SolrBackend getInstance() throws IOException {
+	public static SolrRepository getInstance() throws IOException {
 
 		if (instance == null)
-			instance = new SolrBackend();
+			instance = new SolrRepository();
 
 		return instance;
 	}
@@ -163,11 +154,11 @@ public class SolrBackend implements OdnRepositoryInterface<List<SolrItem>> {
 	}
 
 	/**
-	 * Purpose of this is to provide access to data stored in SOLR backend for search GUI.
+	 * Purpose of this is to provide access to data stored in SOLR repository for search GUI.
 	 * 
 	 * TODO: Clean-up this setter. It might not be a good idea to give away reference to that object.
 	 * 
-	 * @return SOLR server instance used by this backend
+	 * @return SOLR server instance used by this repository
 	 */
 	public SolrServer getSolrServer() {
 		return solrServer;

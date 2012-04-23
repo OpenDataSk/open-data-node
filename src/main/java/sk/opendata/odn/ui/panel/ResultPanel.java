@@ -34,7 +34,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sk.opendata.odn.repository.solr.SolrBackend;
+import sk.opendata.odn.repository.solr.SolrRepository;
 import sk.opendata.odn.repository.solr.SolrItem;
 import sk.opendata.odn.utils.PscUtil;
 
@@ -96,7 +96,7 @@ public class ResultPanel extends Panel {
 			// nothing to do with empty search query
 			return;
 		
-    	SolrBackend solrBackend = SolrBackend.getInstance();
+    	SolrRepository solrRepository = SolrRepository.getInstance();
     	
     	SolrQuery solrQuery = new SolrQuery();
     	solrQuery.setQuery(query);
@@ -159,7 +159,7 @@ public class ResultPanel extends Panel {
 		
 		
 		// obtain results
-		QueryResponse queryResponse = solrBackend.getSolrServer().query(solrQuery);
+		QueryResponse queryResponse = solrRepository.getSolrServer().query(solrQuery);
 		List<SolrItem> responseItems = queryResponse.getBeans(SolrItem.class);
 		
 		// update the display

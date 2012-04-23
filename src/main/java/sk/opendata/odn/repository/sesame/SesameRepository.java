@@ -39,25 +39,9 @@ import sk.opendata.odn.repository.OdnRepositoryInterface;
 import sk.opendata.odn.utils.ApplicationProperties;
 
 /**
- * Sesame backend/repository for Open Data Node.
- * 
- * "Little" terminology note:
- * 
- * TODO:
- * 1) Remove this "terminology note"
- * 2) refactor class names from <xxx>Backend to <xxx>Repository
- * 
- * <ul>
- * <li>in Open Data Node architecture, this (this class) is a repository</li>
- * <li>to achieve this, we're using multiple "Sesame repositories"</li>
- * <li>so we have a little problem with "repository" being a little bit
- * confusing (Open Data Node repository consists of one or more Sesame
- * repositories)</li>
- * <li>so, to avoid some of the confusion, this class is called "back-end"
- * instead of "repository"</li>
- * </ul>
+ * Sesame repository for Open Data Node.
  */
-public class SesameBackend implements OdnRepositoryInterface<RdfData> {
+public class SesameRepository implements OdnRepositoryInterface<RdfData> {
 
 	public final static String SESAME_REPOSITORY_PROPERTIES_NAME = "/repo-sesame.properties";
 	public final static String KEY_DEBUG_DUMP_RDF = "sesame.debug.dump_rdf";
@@ -66,11 +50,11 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 	public final static String KEY_ID = PREFIX_KEY_REPO + "id";
 	public final static String PREFIX_KEY_CONTEXTS = PREFIX_KEY_REPO + "contexts.";
 
-	private static Logger logger = LoggerFactory.getLogger(SesameBackend.class);
+	private static Logger logger = LoggerFactory.getLogger(SesameRepository.class);
 	private ApplicationProperties srProperties = null;
 	private HTTPRepository sesameRepo = null;
 
-	private static SesameBackend instance = null;
+	private static SesameRepository instance = null;
 
 	/**
 	 * Initialize Sesame back-end.
@@ -78,23 +62,23 @@ public class SesameBackend implements OdnRepositoryInterface<RdfData> {
 	 * @throws IOException
 	 *             when error occurs while loading properties
 	 */
-	private SesameBackend() throws IOException {
+	private SesameRepository() throws IOException {
 		// load properties
 		srProperties = ApplicationProperties
 				.getInstance(SESAME_REPOSITORY_PROPERTIES_NAME);
 	}
 
 	/**
-	 * Get the instance of Sesame back-end singleton.
+	 * Get the instance of Sesame repository singleton.
 	 * 
-	 * @return instance of Sesame backend
+	 * @return instance of Sesame repository
 	 * @throws IOException
 	 *             when error occurs while loading properties
 	 */
-	public static SesameBackend getInstance() throws IOException {
+	public static SesameRepository getInstance() throws IOException {
 
 		if (instance == null)
-			instance = new SesameBackend();
+			instance = new SesameRepository();
 
 		return instance;
 	}

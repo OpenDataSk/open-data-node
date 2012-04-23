@@ -39,8 +39,8 @@ import org.slf4j.LoggerFactory;
 import sk.opendata.odn.model.Currency;
 import sk.opendata.odn.model.ProcurementRecord;
 import sk.opendata.odn.repository.OdnRepositoryException;
-import sk.opendata.odn.repository.sesame.SesameBackend;
-import sk.opendata.odn.repository.solr.SolrBackend;
+import sk.opendata.odn.repository.sesame.SesameRepository;
+import sk.opendata.odn.repository.solr.SolrRepository;
 import sk.opendata.odn.serialization.OdnSerializationException;
 import sk.opendata.odn.serialization.rdf.ProcurementRdfSerializer;
 import sk.opendata.odn.serialization.solr.SolrSerializer;
@@ -83,13 +83,13 @@ public class ProcurementsDatanestHarvester extends
 		super();
 		
 		ProcurementRdfSerializer rdfSerializer = new ProcurementRdfSerializer(
-				SesameBackend.getInstance(),
+				SesameRepository.getInstance(),
 				datanestProperties
 						.getProperty(KEY_DATANEST_PROCUREMENTS_SEZAME_REPO_NAME));
 		serializers.add(rdfSerializer);
 
 		SolrSerializer<ProcurementRecord> solrSerializer = new SolrSerializer<ProcurementRecord>(
-				SolrBackend.getInstance());
+				SolrRepository.getInstance());
 		serializers.add(solrSerializer);
 	}
 	
