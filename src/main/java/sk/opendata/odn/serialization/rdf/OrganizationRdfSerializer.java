@@ -44,14 +44,15 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 	// be either nice to "guess" it correctly from some other configuration or
 	// have it in some per-ODN repository configuration
 	public final static String OPENDATA_ORGANIZATIONS_BASE_URI = "http://opendata.sk/dataset/organizations/";
+	public final static String OPENDATA_ORGANIZATIONS_CONTEXTS_KEY = "organizations";
 	
 	/**
 	 * Initialize serializer to use given repository.
 	 * 
 	 * @param repository
 	 *            repository to use for storage of record
-	 * @param name
-	 *            name of the storage/back-end to store into
+	 * @param contextsKey
+	 *            property key used to retrieve RDF contexts used for data serialized here
 	 * 
 	 * @throws IllegalArgumentException
 	 *             if repository is {@code null}
@@ -61,11 +62,11 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 	 *             when XML document transformer fails to initialize
 	 */
 	public OrganizationRdfSerializer(
-			OdnRepositoryInterface<RdfData> repository, String name)
+			OdnRepositoryInterface<RdfData> repository, String contextsKey)
 			throws IllegalArgumentException, ParserConfigurationException,
 			TransformerConfigurationException {
 	
-		super(repository, name);
+		super(repository, contextsKey);
 	}
 	
 	@Override
@@ -95,27 +96,10 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 			throws IllegalArgumentException, OdnSerializationException,
 			OdnRepositoryException {
 		
-		// TODO: We're calling 'serialize(records)' twice. They are supposed to
-		// produce same results => call it only once and reuse it twice.
-		
 		RdfData rdfData = new RdfData(
-				repoName,
 				serialize(records),
 				OPENDATA_ORGANIZATIONS_BASE_URI,
-				null);
-		getRepository().store(rdfData);
-		
-		// "combined mirror" of the RDF statements: for the purpose of doing
-		// combined queries on top of all RDF data sets we have one special
-		// repository where we push all our RDF statements with same special
-		// base URI but differenciated by contexts (and we reuse the "original"
-		// base URI as context
-		// FIXME: Contexts temporarily disabled - see FIXME note about ugly workaround in 'SesameBackend.store()'.
-		rdfData = new RdfData(
-				OPENDATA_COMBINED_REPO_NAME,
-				serialize(records),
-				OPENDATA_COMBINED_BASE_URI,
-				/*OPENDATA_ORGANIZATIONS_BASE_URI*/ null);
+				OPENDATA_ORGANIZATIONS_CONTEXTS_KEY);
 		getRepository().store(rdfData);
 	}
 

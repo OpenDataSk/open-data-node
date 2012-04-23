@@ -29,12 +29,39 @@ PREFIX skos:<http://www.w3.org/2004/02/skos/core#>
 PREFIX pc:<http://opendata.cz/vocabulary/procurement.rdf#>
 SELECT *
 WHERE {
-  ?supplier opendata:xSupplierIco ?suspectIco .
-  ?donor opendata:xDonorIco ?suspectIco .
+   GRAPH <http://opendata.sk/datanest/> {
+    ?supplier opendata:xSupplierIco ?suspectIco .
+    ?donor opendata:xDonorIco ?suspectIco .
+  }
 }
-
 
 Expected results:
 
-<http://opendata.sk/dataset/procurements/28991> "17703956" <http://opendata.sk/dataset/political_party_donations/1222>
+supplier													suspectIco	donor
+<http://opendata.sk/dataset/procurements/procurement_18175>	"31404596"	<http://opendata.sk/dataset/political_party_donations/donation_1167>
 ...
+
+Note: Following works too:
+
+PREFIX dc:<http://purl.org/dc/elements/1.1/>
+PREFIX rdf:<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX opendata:<http://sk.eea.opendata/2011/02/opendicts#>
+PREFIX procurement:<http://opendata.cz/vocabulary/procurement.rdf#>
+PREFIX skos:<http://www.w3.org/2004/02/skos/core#>
+PREFIX pc:<http://opendata.cz/vocabulary/procurement.rdf#>
+SELECT *
+WHERE {
+   GRAPH <http://opendata.sk/datanest/procurements/> {
+    ?supplier opendata:xSupplierIco ?suspectIco .
+  }
+   GRAPH <http://opendata.sk/datanest/political_party_donations/> {
+    ?donor opendata:xDonorIco ?suspectIco .
+  }
+}
+
+thus TODO: Which query is more efficient?
+(note: If the second query is more efficient - i.e. quicker execution - then it would
+be nice as then we would not need second "general" context and then we can "identify"
+source of the triplet by context alone and thus implement the (ugly but workable)
+clean-up of old data by simply removing all triplets with given context before the
+update.)  

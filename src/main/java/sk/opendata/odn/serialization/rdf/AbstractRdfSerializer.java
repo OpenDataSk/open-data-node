@@ -68,7 +68,7 @@ public abstract class AbstractRdfSerializer<RecordType extends AbstractRecord> e
 	protected final static SimpleDateFormat sdf = new SimpleDateFormat(
 			OPENDATA_DATE_FORMAT);
 
-	protected String repoName;
+	protected String contextsKey;
 
 	protected DocumentBuilder docBuilder;
 	protected Transformer transformer;
@@ -78,8 +78,8 @@ public abstract class AbstractRdfSerializer<RecordType extends AbstractRecord> e
 	 * 
 	 * @param repository
 	 *            repository to use for storage of record
-	 * @param name
-	 *            name of the storage/back-end to store into
+	 * @param contextsKey
+	 *            property key used to retrieve RDF contexts used for data serialized here
 	 * 
 	 * @throws IllegalArgumentException
 	 *             if repository is {@code null}
@@ -89,12 +89,12 @@ public abstract class AbstractRdfSerializer<RecordType extends AbstractRecord> e
 	 *             when XML document transformer fails to initialize
 	 */
 	public AbstractRdfSerializer(OdnRepositoryInterface<RdfData> repository,
-			String name) throws IllegalArgumentException,
+			String contextsKey) throws IllegalArgumentException,
 			ParserConfigurationException, TransformerConfigurationException {
 
 		super(repository);
 		
-		this.repoName = name;
+		this.contextsKey = contextsKey;
 
 		DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory
 				.newInstance();

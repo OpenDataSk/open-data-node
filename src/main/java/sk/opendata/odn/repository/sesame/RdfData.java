@@ -23,39 +23,27 @@ package sk.opendata.odn.repository.sesame;
  * Sesame repository.
  */
 public class RdfData {
-	private String repoName;
-	
 	private String rdfData;
 	private String rdfBaseURI;
-	private String[] rdfContexts;
+	private String rdfContextsKey;
 	
 	/**
 	 * Construct contained holding data necessary to perform storage operation.
 	 * 
-	 * @param repoName
-	 *            name of the Sesame repository to store into
 	 * @param rdfData
 	 *            RDF data to store
 	 * @param rdfBaseURI
 	 *            base URI of the RDF data
-	 * @param rdfContexts
-	 *            context(s) of the RDF data, {@code null} means "no context"
+	 * @param rdfContextsKey
+	 *            property name used to retrieve context(s) of the RDF data,
+	 *            {@code null} means "no context"
 	 */
-	public RdfData(String repoName, String rdfData, String rdfBaseURI,
-			String[] rdfContexts) {
+	public RdfData(String rdfData, String rdfBaseURI,
+			String rdfContextsKey) {
 		
-		this.repoName = repoName;
 		this.rdfData = rdfData;
 		this.rdfBaseURI = rdfBaseURI;
-		this.rdfContexts = rdfContexts;
-	}
-
-	public String getRepoName() {
-		return repoName;
-	}
-
-	public void setRepoName(String repoName) {
-		this.repoName = repoName;
+		this.rdfContextsKey = rdfContextsKey;
 	}
 
 	public String getRdfData() {
@@ -74,11 +62,11 @@ public class RdfData {
 		this.rdfBaseURI = rdfBaseURI;
 	}
 
-	public String[] getRdfContexts() {
-		return rdfContexts;
+	public String getRdfContextsKey() {
+		return rdfContextsKey;
 	}
 
-	public void setRdfContexts(String[] rdfContexts) {
-		this.rdfContexts = rdfContexts;
+	public void setRdfContextsKey(String rdfContextsKey) {
+		this.rdfContextsKey = rdfContextsKey;
 	}
 }

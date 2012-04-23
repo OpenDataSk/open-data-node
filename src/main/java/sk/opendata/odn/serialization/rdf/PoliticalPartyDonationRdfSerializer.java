@@ -45,6 +45,7 @@ public class PoliticalPartyDonationRdfSerializer extends AbstractRdfSerializer<P
 	// be either nice to "guess" it correctly from some other configuration or
 	// have it in some per-ODN repository configuration
 	public final static String OPENDATA_PPD_BASE_URI = "http://opendata.sk/dataset/political_party_donations/";
+	public final static String OPENDATA_PPD_CONTEXTS_KEY = "political_party_donations";
 	
 	private final static DecimalFormat donationValueFormat = new DecimalFormat("#.##");
 	
@@ -145,27 +146,10 @@ public class PoliticalPartyDonationRdfSerializer extends AbstractRdfSerializer<P
 			throws IllegalArgumentException, OdnSerializationException,
 			OdnRepositoryException {
 		
-		// TODO: We're calling 'serialize(records)' twice. They are supposed to
-		// produce same results => call it only once and reuse it twice.
-		
 		RdfData rdfData = new RdfData(
-				repoName,
 				serialize(records),
 				OPENDATA_PPD_BASE_URI,
-				null);
-		getRepository().store(rdfData);
-		
-		// "combined mirror" of the RDF statements: for the purpose of doing
-		// combined queries on top of all RDF data sets we have one special
-		// repository where we push all our RDF statements with same special
-		// base URI but differenciated by contexts (and we reuse the "original"
-		// base URI as context
-		// FIXME: Contexts temporarily disabled - see FIXME note about ugly workaround in 'SesameBackend.store()'.
-		rdfData = new RdfData(
-				OPENDATA_COMBINED_REPO_NAME,
-				serialize(records),
-				OPENDATA_COMBINED_BASE_URI,
-				/*OPENDATA_PPD_BASE_URI*/ null);
+				OPENDATA_PPD_CONTEXTS_KEY);
 		getRepository().store(rdfData);
 	}
 
