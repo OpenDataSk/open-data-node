@@ -116,6 +116,7 @@ public class OrganizationsDatanestHarvester extends
 	public void update() throws OdnHarvesterException,
 			OdnSerializationException, OdnRepositoryException {
 		
+		// TODO: start measuring the time
 		logger.info("harvesting started");
 		
 		OdnHarvesterException odnHarvesterException = null;
@@ -152,6 +153,7 @@ public class OrganizationsDatanestHarvester extends
 		    	
 		    	if (records.size() >= batchSize) {
 		    		store(records);
+		    		// TODO: report "current speed" of harvesting (in total number of records / time)
 		    		records.clear();
 		    	}
 		    	
@@ -178,6 +180,7 @@ public class OrganizationsDatanestHarvester extends
 			throw odnHarvesterException;
 		
 		logger.info("harvesting finished");
+		// TODO: report the time it took to complete the harvesting
 	}
 
 }
