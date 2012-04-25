@@ -25,6 +25,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
@@ -116,8 +117,12 @@ public class OrganizationsDatanestHarvester extends
 	public void update() throws OdnHarvesterException,
 			OdnSerializationException, OdnRepositoryException {
 		
-		// TODO: start measuring the time
 		logger.info("harvesting started");
+		
+		// sort of performance counters
+		long timeStart = Calendar.getInstance().getTimeInMillis();
+		long timeCurrent = -1;
+		long recordCounter = 0;
 		
 		OdnHarvesterException odnHarvesterException = null;
 		
@@ -153,7 +158,15 @@ public class OrganizationsDatanestHarvester extends
 		    	
 		    	if (records.size() >= batchSize) {
 		    		store(records);
-		    		// TODO: report "current speed" of harvesting (in total number of records / time)
+		    		
+		    		// report current harvesting status
+					timeCurrent = Calendar.getInstance().getTimeInMillis();
+					recordCounter += records.size();
+					float harvestingSpeed = 1000f * (float) recordCounter
+							/ (float) (timeCurrent - timeStart);
+					logger.info("harvested " + recordCounter + " records ("
+							+ harvestingSpeed + "/s) so far ...");
+		    		
 		    		records.clear();
 		    	}
 		    	
@@ -164,6 +177,7 @@ public class OrganizationsDatanestHarvester extends
 		    
 		    // store the results
 		    store(records);
+    		recordCounter += records.size();
 		    
 		// TODO: If there wont be any more specialized error handling here
 		// in the future, try catching only 'Exception' to simplify the
@@ -180,7 +194,14 @@ public class OrganizationsDatanestHarvester extends
 			throw odnHarvesterException;
 		
 		logger.info("harvesting finished");
-		// TODO: report the time it took to complete the harvesting
+		
+		// report final harvesting status
+		timeCurrent = Calendar.getInstance().getTimeInMillis();
+		float harvestingSpeed = 1000f * (float) recordCounter
+				/ (float) (timeCurrent - timeStart);
+		logger.info("harvested " + recordCounter + " records in "
+				+ (float) (timeCurrent - timeStart) / 1000f + " seconds ("
+				+ harvestingSpeed + "/s)");
 	}
 
 }
