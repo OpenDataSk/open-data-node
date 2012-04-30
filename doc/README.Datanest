@@ -1,0 +1,73 @@
+Datanest README
+===============
+
+Updating: problem statement
+---------------------------
+
+
+For machine readable data, Datanest provides only CSV dumps. Update process of those is
+difficult as the server is not returning any modification timestamp and does not honor
+HTTP headers like 'If-Modified-Since'.
+
+How can we test those statements:
+
+a) perform 'HEAD' request twice on same CSV dump URL:
+
+$ curl -Ii 'http://datanest.fair-play.sk/api/dataset_records?api_key=bc8d980bf8e9fecf410d1035ac60acbdd61b2599&dataset_id=1'
+HTTP/1.1 200 OK
+Date: Mon, 30 Apr 2012 09:21:23 GMT
+Server: Apache
+X-Powered-By: Phusion Passenger (mod_rails/mod_rack) 3.0.9
+Content-Disposition: attachment; filename="organisations-dump.csv"
+Content-Transfer-Encoding: binary
+Cache-Control: private
+X-UA-Compatible: IE=Edge,chrome=1
+X-Runtime: 0.107142
+Status: 200
+Content-Type: text/csv; charset=utf-8
+
+$ curl -Ii 'http://datanest.fair-play.sk/api/dataset_records?api_key=bc8d980bf8e9fecf410d1035ac60acbdd61b2599&dataset_id=1'
+HTTP/1.1 200 OK
+Date: Mon, 30 Apr 2012 09:21:25 GMT
+Server: Apache
+X-Powered-By: Phusion Passenger (mod_rails/mod_rack) 3.0.9
+Content-Disposition: attachment; filename="organisations-dump.csv"
+Content-Transfer-Encoding: binary
+Cache-Control: private
+X-UA-Compatible: IE=Edge,chrome=1
+X-Runtime: 0.041777
+Status: 200
+Content-Type: text/csv; charset=utf-8
+
+   Conclusion: Same response each time, no Last-Modified nor ETag, nothing.
+
+
+b) Try to use 'If-Modified-Since' HTTP header:
+
+$ curl -Ii -z organisations-dump-20120430.csv 'http://datanest.fair-play.sk/api/dataset_records?api_key=bc8d980bf8e9fecf410d1035ac60acbdd61b2599&dataset_id=1'
+organisations-dump-20111024.csv  organisations-dump-20120430.csv  
+[hany@localhost datanest.fair-play.sk]$ curl -Ii -z organisations-dump-20120430.csv  'http://datanest.fair-play.sk/api/dataset_records?api_key=bc8d980bf8e9fecf410d1035ac60acbdd61b2599&dataset_id=1'
+HTTP/1.1 200 OK
+Date: Mon, 30 Apr 2012 13:11:14 GMT
+Server: Apache
+X-Powered-By: Phusion Passenger (mod_rails/mod_rack) 3.0.9
+Content-Disposition: attachment; filename="organisations-dump.csv"
+Content-Transfer-Encoding: binary
+Cache-Control: private
+X-UA-Compatible: IE=Edge,chrome=1
+X-Runtime: 0.244836
+Status: 200
+Content-Type: text/csv; charset=utf-8
+
+   "200" is returned even if 'organisations-dump-20120430.csv' is up-to-date (in such case
+   "304 Not Modified" would be expected and desired - "200 OK" is OK from the spec point of
+   view but unusable for detection of changes)
+
+
+Conclusion: We need to always download whole content from Datanest and determine changes by
+ourselves. In case of Organizations dataset it poses a bigger challenge as whole dump is
+around 500MG and takes around 16 minutes to download.
+
+
+On the other hand, this is the opportunity for Open Data Node: If it is used to republish
+Datanest data, it will do it better (thanks to OAI-MPH later on or thanks to SPARQL even now).
