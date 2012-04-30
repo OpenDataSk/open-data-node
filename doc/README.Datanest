@@ -4,7 +4,6 @@ Datanest README
 Updating: problem statement
 ---------------------------
 
-
 For machine readable data, Datanest provides only CSV dumps. Update process of those is
 difficult as the server is not returning any modification timestamp and does not honor
 HTTP headers like 'If-Modified-Since'.
@@ -71,3 +70,30 @@ around 500MG and takes around 16 minutes to download.
 
 On the other hand, this is the opportunity for Open Data Node: If it is used to republish
 Datanest data, it will do it better (thanks to OAI-MPH later on or thanks to SPARQL even now).
+
+
+Implementation
+--------------
+
+For now, a plan:
+
+We need a "local copy" of the content we're downloading from Datanest (without any
+modifications) say in Jackrabbit (or in git, as tender.sme.sk is doing). With that,
+we can do a "diff" between what we got last time and what we've downloaded now and
+then process only changed items.
+   
+As of now, we do not have "Jackarabbit repository" implemented on this implementation
+of Open Data Node so as a workaround we do following:
+
+a) We hack a workaround using SOLR to retrieve "out copy" of records.
+
+b) We implemented per-record comparison/change detection.
+
+c) We enhance the harvesting so that it utilized "updated" flag, i.e. mainly that
+   it wont try to push in records which were not changed in the Datanest since last
+   harvesting.
+
+
+Note of caution (just to be sure): Using SOLR as main data storage is a hack, workaround.
+Based on current architecture, Jackrabbit would be a proper solution.
+ 
