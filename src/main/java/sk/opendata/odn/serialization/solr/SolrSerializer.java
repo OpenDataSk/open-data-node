@@ -23,7 +23,7 @@ import java.util.Vector;
 
 import sk.opendata.odn.model.AbstractRecord;
 import sk.opendata.odn.repository.OdnRepositoryException;
-import sk.opendata.odn.repository.OdnRepositoryInterface;
+import sk.opendata.odn.repository.OdnRepositoryStoreInterface;
 import sk.opendata.odn.repository.solr.SolrItem;
 import sk.opendata.odn.serialization.AbstractSerializer;
 import sk.opendata.odn.serialization.OdnSerializationException;
@@ -47,7 +47,7 @@ public class SolrSerializer<RecordType extends AbstractRecord> extends
 	 * @throws IllegalArgumentException
 	 *             if repository is {@code null}
 	 */
-	public SolrSerializer(OdnRepositoryInterface<List<SolrItem>> repository)
+	public SolrSerializer(OdnRepositoryStoreInterface<List<SolrItem>> repository)
 			throws IllegalArgumentException {
 	
 		super(repository);

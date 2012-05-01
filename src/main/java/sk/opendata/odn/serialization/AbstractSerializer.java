@@ -21,7 +21,7 @@ package sk.opendata.odn.serialization;
 import java.util.List;
 
 import sk.opendata.odn.repository.OdnRepositoryException;
-import sk.opendata.odn.repository.OdnRepositoryInterface;
+import sk.opendata.odn.repository.OdnRepositoryStoreInterface;
 
 /**
  * Stuff common to all OpenData.sk serializers.
@@ -39,7 +39,7 @@ import sk.opendata.odn.repository.OdnRepositoryInterface;
  */
 public abstract class AbstractSerializer<SerializationInputType, SerializationOutputType, RepositoryStoreType> {
 
-	private OdnRepositoryInterface<RepositoryStoreType> repository;
+	private OdnRepositoryStoreInterface<RepositoryStoreType> repository;
 
 	
 	/**
@@ -52,7 +52,7 @@ public abstract class AbstractSerializer<SerializationInputType, SerializationOu
 	 *             if repository is {@code null}
 	 */
 	public AbstractSerializer(
-			OdnRepositoryInterface<RepositoryStoreType> repository)
+			OdnRepositoryStoreInterface<RepositoryStoreType> repository)
 			throws IllegalArgumentException {
 
 		if (repository == null)
@@ -90,12 +90,12 @@ public abstract class AbstractSerializer<SerializationInputType, SerializationOu
 			OdnRepositoryException;
 
 	
-	public OdnRepositoryInterface<RepositoryStoreType> getRepository() {
+	public OdnRepositoryStoreInterface<RepositoryStoreType> getRepository() {
 		return repository;
 	}
 
 	public void setRepository(
-			OdnRepositoryInterface<RepositoryStoreType> repository) {
+			OdnRepositoryStoreInterface<RepositoryStoreType> repository) {
 		this.repository = repository;
 	}
 

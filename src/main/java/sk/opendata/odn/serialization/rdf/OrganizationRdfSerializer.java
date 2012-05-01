@@ -29,7 +29,7 @@ import org.w3c.dom.Element;
 
 import sk.opendata.odn.model.OrganizationRecord;
 import sk.opendata.odn.repository.OdnRepositoryException;
-import sk.opendata.odn.repository.OdnRepositoryInterface;
+import sk.opendata.odn.repository.OdnRepositoryStoreInterface;
 import sk.opendata.odn.repository.sesame.RdfData;
 import sk.opendata.odn.serialization.OdnSerializationException;
 
@@ -62,7 +62,7 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 	 *             when XML document transformer fails to initialize
 	 */
 	public OrganizationRdfSerializer(
-			OdnRepositoryInterface<RdfData> repository, String contextsKey)
+			OdnRepositoryStoreInterface<RdfData> repository, String contextsKey)
 			throws IllegalArgumentException, ParserConfigurationException,
 			TransformerConfigurationException {
 	

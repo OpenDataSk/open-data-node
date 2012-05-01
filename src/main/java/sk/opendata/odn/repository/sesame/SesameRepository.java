@@ -35,7 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sk.opendata.odn.repository.OdnRepositoryException;
-import sk.opendata.odn.repository.OdnRepositoryInterface;
+import sk.opendata.odn.repository.OdnRepositoryStoreInterface;
 import sk.opendata.odn.repository.OdnRepositoryRetrieveInterface;
 import sk.opendata.odn.repository.solr.SolrItem;
 import sk.opendata.odn.utils.ApplicationProperties;
@@ -43,7 +43,7 @@ import sk.opendata.odn.utils.ApplicationProperties;
 /**
  * Sesame repository for Open Data Node.
  */
-public class SesameRepository implements OdnRepositoryInterface<RdfData>, OdnRepositoryRetrieveInterface<SolrItem> {
+public class SesameRepository implements OdnRepositoryStoreInterface<RdfData>, OdnRepositoryRetrieveInterface<SolrItem> {
 
 	public final static String SESAME_REPOSITORY_PROPERTIES_NAME = "/repo-sesame.properties";
 	public final static String KEY_DEBUG_DUMP_RDF = "sesame.debug.dump_rdf";

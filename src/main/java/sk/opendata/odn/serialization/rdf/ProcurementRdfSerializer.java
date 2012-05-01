@@ -30,7 +30,7 @@ import org.w3c.dom.Element;
 
 import sk.opendata.odn.model.ProcurementRecord;
 import sk.opendata.odn.repository.OdnRepositoryException;
-import sk.opendata.odn.repository.OdnRepositoryInterface;
+import sk.opendata.odn.repository.OdnRepositoryStoreInterface;
 import sk.opendata.odn.repository.sesame.RdfData;
 import sk.opendata.odn.serialization.OdnSerializationException;
 
@@ -66,7 +66,7 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 	 * @throws TransformerConfigurationException
 	 *             when XML document transformer fails to initialize
 	 */
-	public ProcurementRdfSerializer(OdnRepositoryInterface<RdfData> repository,
+	public ProcurementRdfSerializer(OdnRepositoryStoreInterface<RdfData> repository,
 			String name) throws IllegalArgumentException,
 			ParserConfigurationException, TransformerConfigurationException {
 	

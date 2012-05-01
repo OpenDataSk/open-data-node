@@ -39,7 +39,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
 import sk.opendata.odn.model.AbstractRecord;
-import sk.opendata.odn.repository.OdnRepositoryInterface;
+import sk.opendata.odn.repository.OdnRepositoryStoreInterface;
 import sk.opendata.odn.repository.sesame.RdfData;
 import sk.opendata.odn.serialization.AbstractSerializer;
 import sk.opendata.odn.serialization.OdnSerializationException;
@@ -88,7 +88,7 @@ public abstract class AbstractRdfSerializer<RecordType extends AbstractRecord> e
 	 * @throws TransformerConfigurationException
 	 *             when XML document transformer fails to initialize
 	 */
-	public AbstractRdfSerializer(OdnRepositoryInterface<RdfData> repository,
+	public AbstractRdfSerializer(OdnRepositoryStoreInterface<RdfData> repository,
 			String contextsKey) throws IllegalArgumentException,
 			ParserConfigurationException, TransformerConfigurationException {
 

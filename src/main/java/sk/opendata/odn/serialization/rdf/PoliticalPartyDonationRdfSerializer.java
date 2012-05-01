@@ -30,7 +30,7 @@ import org.w3c.dom.Element;
 
 import sk.opendata.odn.model.PoliticalPartyDonationRecord;
 import sk.opendata.odn.repository.OdnRepositoryException;
-import sk.opendata.odn.repository.OdnRepositoryInterface;
+import sk.opendata.odn.repository.OdnRepositoryStoreInterface;
 import sk.opendata.odn.repository.sesame.RdfData;
 import sk.opendata.odn.serialization.OdnSerializationException;
 
@@ -65,7 +65,7 @@ public class PoliticalPartyDonationRdfSerializer extends AbstractRdfSerializer<P
 	 *             when XML document transformer fails to initialize
 	 */
 	public PoliticalPartyDonationRdfSerializer(
-			OdnRepositoryInterface<RdfData> repository, String name)
+			OdnRepositoryStoreInterface<RdfData> repository, String name)
 			throws IllegalArgumentException, ParserConfigurationException,
 			TransformerConfigurationException {
 	

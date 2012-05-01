@@ -25,12 +25,11 @@ package sk.opendata.odn.repository;
  * 
  * TODO:
  * a) back-end => repository
- * b) OdnRepositoryInterface -> OdnRepositoryStoreInterface
  * 
  * @param <RecordType>
  *            type of records which are going to be stored in repository
  */
-public interface OdnRepositoryInterface<RecordType> {
+public interface OdnRepositoryStoreInterface<RecordType> {
 	
 	/**
 	 * Store given record(s) into the back-end.
