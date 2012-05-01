@@ -20,21 +20,26 @@ package sk.opendata.odn.repository;
 
 
 /**
- * This is a Open Data Node Repository interface defining "internal API"
- * between "serialization" and "repository" classes.
- *
- * @param <RecordType> type of records which are going to be stored in repository
+ * This is a Open Data Node Repository interface defining "internal API" between
+ * "serialization" and "repository" classes.
+ * 
+ * TODO:
+ * a) back-end => repository
+ * b) OdnRepositoryInterface -> OdnRepositoryStoreInterface
+ * 
+ * @param <RecordType>
+ *            type of records which are going to be stored in repository
  */
 public interface OdnRepositoryInterface<RecordType> {
 	
 	/**
-	 * Store given record into the back-end with given name.
+	 * Store given record(s) into the back-end.
 	 * 
 	 * Essentially, a repository can use multiple storages/back-ends so the
 	 * {@code name} defines which one to store into.
 	 * 
 	 * @param records
-	 *            record to store
+	 *            one or more records to store
 	 * 
 	 * @throws IllegalArgumentException
 	 *             when some of the given arguments is not valid

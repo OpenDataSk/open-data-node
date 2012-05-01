@@ -33,12 +33,13 @@ import org.slf4j.LoggerFactory;
 
 import sk.opendata.odn.repository.OdnRepositoryException;
 import sk.opendata.odn.repository.OdnRepositoryInterface;
+import sk.opendata.odn.repository.OdnRepositoryRetrieveInterface;
 import sk.opendata.odn.utils.ApplicationProperties;
 
 /**
  * SOLR repository for Open Data Node.
  */
-public class SolrRepository implements OdnRepositoryInterface<List<SolrItem>> {
+public class SolrRepository implements OdnRepositoryInterface<List<SolrItem>>, OdnRepositoryRetrieveInterface<SolrItem> {
 
 	public final static String SOLR_REPOSITORY_PROPERTIES_NAME = "/repo-solr.properties";
 	public final static String KEY_DEBUG_DUMP = "solr.debug.dump";
@@ -145,6 +146,14 @@ public class SolrRepository implements OdnRepositoryInterface<List<SolrItem>> {
 
 		if (odnRepoException != null)
 			throw odnRepoException;
+	}
+
+	@Override
+	public SolrItem retrieve(String id) throws IllegalArgumentException,
+			OdnRepositoryException {
+		
+		// TODO
+		throw new OdnRepositoryException("retrieval not implemented yet");
 	}
 
 	@Override

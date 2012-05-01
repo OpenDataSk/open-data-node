@@ -81,7 +81,7 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 			RepositoryConfigException, RepositoryException,
 			ParserConfigurationException, TransformerConfigurationException {
 		
-		super();
+		super(SolrRepository.getInstance());	// TODO: fix that by using Jackrabbit
 		
 		PoliticalPartyDonationRdfSerializer rdfSerializer = new PoliticalPartyDonationRdfSerializer(
 				SesameRepository.getInstance(),
@@ -161,7 +161,14 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 			int debugProcessOnlyNItems = Integer.valueOf(datanestProperties.getProperty(KEY_DEBUG_PROCESS_ONLY_N_ITEMS));
 		    while ((row = csvReader.readNext()) != null) {
 		    	try {
-			        records.add(scrapOneRecord(row));
+		    		PoliticalPartyDonationRecord record = scrapOneRecord(row);
+		    		
+		    		// determine whether it changed since last harvesting ...
+		    		if (!updatedSinceLastHarvest(record))
+		    			// ... no change => no update needed
+		    			continue;
+		    		
+			        records.add(record);
 		    	}
 		    	catch (ParseException e) {
 					logger.warn("parse exception", e);

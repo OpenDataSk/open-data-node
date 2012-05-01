@@ -80,7 +80,7 @@ public class ProcurementsDatanestHarvester extends
 			RepositoryConfigException, RepositoryException,
 			ParserConfigurationException, TransformerConfigurationException {
 		
-		super();
+		super(SolrRepository.getInstance());	// TODO: fix that by using Jackrabbit
 		
 		ProcurementRdfSerializer rdfSerializer = new ProcurementRdfSerializer(
 				SesameRepository.getInstance(),
@@ -162,7 +162,14 @@ public class ProcurementsDatanestHarvester extends
 			int debugProcessOnlyNItems = Integer.valueOf(datanestProperties.getProperty(KEY_DEBUG_PROCESS_ONLY_N_ITEMS));
 		    while ((row = csvReader.readNext()) != null) {
 		    	try {
-			        records.add(scrapOneRecord(row));
+		    		ProcurementRecord record = scrapOneRecord(row);
+		    		
+		    		// determine whether it changed since last harvesting ...
+		    		if (!updatedSinceLastHarvest(record))
+		    			// ... no change => no update needed
+		    			continue;
+		    		
+			        records.add(record);
 		    	}
 		    	catch (ParseException e) {
 					logger.warn("parse exception", e);

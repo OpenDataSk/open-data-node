@@ -18,16 +18,28 @@
 
 package sk.opendata.odn.repository;
 
-public class OdnRepositoryException extends Exception {
 
-	private static final long serialVersionUID = -177167040492576287L;
-
-	public OdnRepositoryException(String message) {
-		super(message);
-	}
-
-	public OdnRepositoryException(String message, Throwable cause) {
-		super(message, cause);
-	}
+/**
+ * This is a Open Data Node Repository interface defining "internal API" for retrieving
+ * of records from "repository" (a.k.a. reading).
+ * 
+ * @param <RetrieveRecordType>
+ *            type of records which are going to be retrieved from repository
+ */
+public interface OdnRepositoryRetrieveInterface<RetrieveRecordType> {
+	
+	/**
+	 * Retrieve record with given ID from the back-end with given name.
+	 * 
+	 * @param id
+	 *            ID of the record to retrieve
+	 * 
+	 * @throws IllegalArgumentException
+	 *             when some of the given arguments is not valid
+	 * @throws OdnRepositoryException
+	 *             when retrieve operation fails
+	 */
+	public RetrieveRecordType retrieve(String id)
+			throws IllegalArgumentException, OdnRepositoryException;
 
 }
