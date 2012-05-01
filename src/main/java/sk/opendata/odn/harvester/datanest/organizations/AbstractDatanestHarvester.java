@@ -26,6 +26,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
@@ -59,6 +60,7 @@ import au.com.bytecode.opencsv.CSVReader;
 public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecord> {
 
 	public final static String DATANEST_PROPERTIES_NAME = "/datanest.properties";
+	public final static String KEY_DATANEST_BATCH_SIZE = "datanest.batch_size";
 	public final static String KEY_DEBUG_PROCESS_ONLY_N_ITEMS = "datanest.debug.process_only_n_items";
 
 	public final static String DATANEST_DATE_FORMAT = "yyyy-MM-dd";
@@ -146,6 +148,11 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 
 		logger.info("harvesting started (" + urlKey + ")");
 
+		// sort of performance counters
+		long timeStart = Calendar.getInstance().getTimeInMillis();
+		long timeCurrent = -1;
+		long recordCounter = 0;
+		
 		OdnHarvesterException odnHarvesterException = null;
 
 		try {
@@ -164,6 +171,8 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 
 			// read the rows
 			String[] row;
+			int batchSize = Integer.valueOf(datanestProperties.getProperty(KEY_DATANEST_BATCH_SIZE));
+			int itemCount = 0;	// same as 'recordCounter' => TODO: clean-up
 			int debugProcessOnlyNItems = Integer.valueOf(datanestProperties
 					.getProperty(KEY_DEBUG_PROCESS_ONLY_N_ITEMS));
 			while ((row = csvReader.readNext()) != null) {
@@ -181,18 +190,33 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 					logger.warn("skipping following record: "
 							+ Arrays.deepToString(row));
 				}
+		    	
+		    	if (records.size() >= batchSize) {
+		    		store(records);
+		    		
+		    		// report current harvesting status
+					timeCurrent = Calendar.getInstance().getTimeInMillis();
+					recordCounter += records.size();
+					float harvestingSpeed = 1000f * (float) recordCounter
+							/ (float) (timeCurrent - timeStart);
+					logger.info("harvested " + recordCounter + " records ("
+							+ harvestingSpeed + "/s) so far ...");
+		    		
+		    		records.clear();
+		    	}
 
-				if (debugProcessOnlyNItems > 0
-						&& records.size() > debugProcessOnlyNItems)
+		    	if (debugProcessOnlyNItems > 0 &&
+		    			++itemCount > debugProcessOnlyNItems)
 					break;
 			}
 
 			// store the results
 			store(records);
+    		recordCounter += records.size();
 
-			// TODO: If there wont be any more specialized error handling here
-			// in the future, try catching only 'Exception' to simplify the
-			// code.
+		// TODO: If there wont be any more specialized error handling here
+		// in the future, try catching only 'Exception' to simplify the
+		// code.
 		} catch (MalformedURLException e) {
 			logger.error("malformed URL exception", e);
 			odnHarvesterException = new OdnHarvesterException(e.getMessage(), e);
@@ -205,6 +229,14 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 			throw odnHarvesterException;
 
 		logger.info("harvesting finished (" + urlKey + ")");
+		
+		// report final harvesting status
+		timeCurrent = Calendar.getInstance().getTimeInMillis();
+		float harvestingSpeed = 1000f * (float) recordCounter
+				/ (float) (timeCurrent - timeStart);
+		logger.info("harvested " + recordCounter + " records in "
+				+ (float) (timeCurrent - timeStart) / 1000f + " seconds ("
+				+ harvestingSpeed + "/s)");
 	}
 
 	/**
