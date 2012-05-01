@@ -275,6 +275,10 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 	protected void store(List<RecordType> records) throws IllegalArgumentException,
 			OdnSerializationException, OdnRepositoryException {
 	    
+		if (records.size() <= 0)
+			// nothing to store so why bother?
+			return;
+		
 		for (AbstractSerializer<RecordType, ?, ?> serializer : serializers)
 	    	serializer.store(records);
 	}
