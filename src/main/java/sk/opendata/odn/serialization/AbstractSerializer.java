@@ -29,17 +29,17 @@ import sk.opendata.odn.repository.OdnRepositoryInterface;
  * Serializer is given harvested data, it converts them into form suitable to a
  * repository and then passes them to the repository.
  * 
- * @param <InputType>
+ * @param <SerializationInputType>
  *            type of the input data, of the individual record, which will be
  *            serialized
- * @param <OutputType>
+ * @param <SerializationOutputType>
  *            type of the output data, the result of serialization
- * @param <RepositoryType>
+ * @param <RepositoryStoreType>
  *            type of the data pushed to the repository
  */
-public abstract class AbstractSerializer<InputType, OutputType, RepositoryType> {
+public abstract class AbstractSerializer<SerializationInputType, SerializationOutputType, RepositoryStoreType> {
 
-	private OdnRepositoryInterface<RepositoryType> repository;
+	private OdnRepositoryInterface<RepositoryStoreType> repository;
 
 	
 	/**
@@ -51,7 +51,8 @@ public abstract class AbstractSerializer<InputType, OutputType, RepositoryType> 
 	 * @throws IllegalArgumentException
 	 *             if repository is {@code null}
 	 */
-	public AbstractSerializer(OdnRepositoryInterface<RepositoryType> repository)
+	public AbstractSerializer(
+			OdnRepositoryInterface<RepositoryStoreType> repository)
 			throws IllegalArgumentException {
 
 		if (repository == null)
@@ -68,7 +69,7 @@ public abstract class AbstractSerializer<InputType, OutputType, RepositoryType> 
 	 * 
 	 * @throws OdnSerializationException when serialization fails
 	 */
-	public abstract OutputType serialize(List<InputType> records)
+	public abstract SerializationOutputType serialize(List<SerializationInputType> records)
 			throws OdnSerializationException;
 
 	/**
@@ -84,16 +85,18 @@ public abstract class AbstractSerializer<InputType, OutputType, RepositoryType> 
 	 * @throws OdnRepositoryException
 	 *             when we fail to store given data into repository
 	 */
-	public abstract void store(List<InputType> records)
+	public abstract void store(List<SerializationInputType> records)
 			throws IllegalArgumentException, OdnSerializationException,
 			OdnRepositoryException;
 
 	
-	public OdnRepositoryInterface<RepositoryType> getRepository() {
+	public OdnRepositoryInterface<RepositoryStoreType> getRepository() {
 		return repository;
 	}
 
-	public void setRepository(OdnRepositoryInterface<RepositoryType> repository) {
+	public void setRepository(
+			OdnRepositoryInterface<RepositoryStoreType> repository) {
 		this.repository = repository;
 	}
+
 }
