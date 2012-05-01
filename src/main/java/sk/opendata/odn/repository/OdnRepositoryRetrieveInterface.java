@@ -34,6 +34,8 @@ public interface OdnRepositoryRetrieveInterface<RetrieveRecordType> {
 	 * @param id
 	 *            ID of the record to retrieve
 	 * 
+	 * @return record with given ID or {@code null} if no such record is found
+	 *
 	 * @throws IllegalArgumentException
 	 *             when some of the given arguments is not valid
 	 * @throws OdnRepositoryException
