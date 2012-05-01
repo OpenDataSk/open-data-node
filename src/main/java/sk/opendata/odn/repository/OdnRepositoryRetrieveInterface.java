@@ -29,7 +29,7 @@ package sk.opendata.odn.repository;
 public interface OdnRepositoryRetrieveInterface<RetrieveRecordType> {
 	
 	/**
-	 * Retrieve record with given ID from the back-end with given name.
+	 * Retrieve record with given ID from the repository.
 	 * 
 	 * @param id
 	 *            ID of the record to retrieve
