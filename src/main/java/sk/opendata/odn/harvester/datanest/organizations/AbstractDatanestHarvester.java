@@ -166,6 +166,15 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 			// "open" the CSV dump
 			CSVReader csvReader = new CSVReader(new BufferedReader(
 					new InputStreamReader(csvUrl.openStream())));
+			// TODO: If we store also the original copy of the data (say in
+			// Jacrabbit) and perform a "diff" on that and previous version we can:
+			// a) determine also removed records (which current implementation
+			//    does not know to do)
+			// b) determine new and updated records without downloading records
+			//    for all IDs ...
+			// c) ... instead noting only changed records in say vectors and
+			//    processing only those (thus saving a LOT of resources assuming
+			//    changes and additions are small and infrequent)
 
 			Vector<RecordType> records = new Vector<RecordType>();
 
