@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -163,10 +164,14 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 			URL csvUrl = new URL(
 					datanestProperties.getProperty(urlKey));
 			logger.debug("going to load data from " + csvUrl.toExternalForm());
+			
+			URLConnection csvConnection = csvUrl.openConnection();
+			csvConnection.setRequestProperty("User-Agent",
+							"Open Data Node (http://opendata.sk/liferay/open-data-node)");
 
 			// "open" the CSV dump
 			CSVReader csvReader = new CSVReader(new BufferedReader(
-					new InputStreamReader(csvUrl.openStream())));
+					new InputStreamReader(csvConnection.getInputStream())));
 			// TODO: If we store also the original copy of the data (say in
 			// Jacrabbit) and perform a "diff" on that and previous version we can:
 			// a) determine also removed records (which current implementation
