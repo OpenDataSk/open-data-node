@@ -23,6 +23,7 @@ import java.util.Date;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.solr.client.solrj.beans.Field;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +67,7 @@ import sk.opendata.odn.serialization.OdnSerializationException;
  * 
  * Hint: Maybe {@code @FieldObject} annotation in upcoming SOLR 3.6.0 will help.
  */
-public class SolrItem {
+public class SolrItem implements Comparable<SolrItem> {
 	
 	private static Logger logger = LoggerFactory.getLogger(SolrItem.class);
 	
@@ -197,6 +198,13 @@ public class SolrItem {
 		}
 		
 		return super.toString();
+	}
+
+
+	@Override
+	public int compareTo(SolrItem o) {
+		int result = CompareToBuilder.reflectionCompare(this, o);
+		return result;
 	}
 
 

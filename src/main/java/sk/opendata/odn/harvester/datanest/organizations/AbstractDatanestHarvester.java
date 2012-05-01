@@ -98,8 +98,11 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 	protected boolean updatedSinceLastHarvest(RecordType record) throws IllegalArgumentException, OdnRepositoryException, OdnSerializationException {
 		SolrItem ourCurrentCopyOfRecord = primaryRepository.retrieve(record.getId());
 		SolrItem freshDownloadOfRecord = SolrItem.createSolrItem(record);
-		// TODO: compare (BeanComparator from beanutils?)
-		return true;
+		
+		if (ourCurrentCopyOfRecord.compareTo(freshDownloadOfRecord) == 0)
+			return true;
+
+		return false;
 	}
 	
 	public abstract void update() throws OdnHarvesterException,
