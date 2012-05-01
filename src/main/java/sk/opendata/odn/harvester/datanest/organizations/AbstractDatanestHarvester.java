@@ -100,9 +100,9 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 		SolrItem freshDownloadOfRecord = SolrItem.createSolrItem(record);
 		
 		if (ourCurrentCopyOfRecord.compareTo(freshDownloadOfRecord) == 0)
-			return true;
+			return false;
 
-		return false;
+		return true;
 	}
 	
 	public abstract void update() throws OdnHarvesterException,
