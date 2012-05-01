@@ -27,13 +27,15 @@ import java.util.List;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.params.ModifiableSolrParams;
 import org.openrdf.repository.RepositoryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sk.opendata.odn.repository.OdnRepositoryException;
-import sk.opendata.odn.repository.OdnRepositoryStoreInterface;
 import sk.opendata.odn.repository.OdnRepositoryRetrieveInterface;
+import sk.opendata.odn.repository.OdnRepositoryStoreInterface;
 import sk.opendata.odn.utils.ApplicationProperties;
 
 /**
@@ -152,8 +154,25 @@ public class SolrRepository implements OdnRepositoryStoreInterface<List<SolrItem
 	public SolrItem retrieve(String id) throws IllegalArgumentException,
 			OdnRepositoryException {
 		
-		// TODO
-		throw new OdnRepositoryException("retrieval not implemented yet");
+		SolrItem result = null;
+
+		ModifiableSolrParams params = new ModifiableSolrParams();
+		params.set("q", "id:" + id);
+
+		try {
+			QueryResponse response = solrServer.query(params);
+			List<SolrItem> records = response.getBeans(SolrItem.class);
+			
+			if (records.size() != 1)
+				throw new OdnRepositoryException("unable to retrieve record ("
+						+ records.size() + " items found)");
+			result = records.get(0);
+		} catch (SolrServerException e) {
+			logger.error("SOLR server exception", e);
+			throw new OdnRepositoryException(e.getMessage(), e);
+		}
+
+		return result;
 	}
 
 	@Override
