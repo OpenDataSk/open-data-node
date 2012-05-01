@@ -155,6 +155,7 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 		long timeStart = Calendar.getInstance().getTimeInMillis();
 		long timeCurrent = -1;
 		long recordCounter = 0;
+		long unchangedRecordCounter = 0;
 		
 		OdnHarvesterException odnHarvesterException = null;
 
@@ -192,8 +193,10 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 
 					// determine whether it changed since last harvesting ...
 					UpdatedSinceLastHarvestResults updated = updatedSinceLastHarvest(record);
-					if (updated == UpdatedSinceLastHarvestResults.RECORD_UNCHANGED)
+					if (updated == UpdatedSinceLastHarvestResults.RECORD_UNCHANGED) {
+						unchangedRecordCounter++;
 						continue;
+					}
 					
 					// clean-up data related to old record
 					if (updated == UpdatedSinceLastHarvestResults.RECORD_UPDATED)
@@ -251,7 +254,8 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 				/ (float) (timeCurrent - timeStart);
 		logger.info("harvested " + recordCounter + " records in "
 				+ (float) (timeCurrent - timeStart) / 1000f + " seconds ("
-				+ harvestingSpeed + "/s)");
+				+ harvestingSpeed + "/s, " + unchangedRecordCounter
+				+ " records not changed)");
 	}
 
 	/**
