@@ -125,9 +125,9 @@ public class SolrRepository implements OdnRepositoryStoreInterface<List<SolrItem
 			// we're pushing multiple data sets into one index meaning that if
 			// we left this here, insertion of 2nd data set will mean deletion
 			// of 1st etc. Plus, 'store()' might be called for multiple batches
-			// and we do not want to be left with only last batch in th
-			// back-end.
-			// Workaround: Clean the index manualy if necessary.
+			// and we do not want to be left with only last batch in the
+			// repository.
+			// Workaround: Clean the index manually if necessary.
 			//solrServer.deleteByQuery("*:*");	// CAUTION: deletes everything!
 			
 			solrServer.addBeans(records);
