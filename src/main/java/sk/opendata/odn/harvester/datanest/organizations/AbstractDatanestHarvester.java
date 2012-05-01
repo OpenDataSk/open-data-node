@@ -97,6 +97,10 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 	 */
 	protected boolean updatedSinceLastHarvest(RecordType record) throws IllegalArgumentException, OdnRepositoryException, OdnSerializationException {
 		SolrItem ourCurrentCopyOfRecord = primaryRepository.retrieve(record.getId());
+		if (ourCurrentCopyOfRecord == null)
+			// no record with such ID in DB => yup, update
+			return true;
+		
 		SolrItem freshDownloadOfRecord = SolrItem.createSolrItem(record);
 		
 		if (ourCurrentCopyOfRecord.compareTo(freshDownloadOfRecord) == 0)
