@@ -103,18 +103,21 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 	 * @throws OdnSerializationException
 	 *             when conversion into SOLR beans fails
 	 */
-	protected boolean updatedSinceLastHarvest(RecordType record) throws IllegalArgumentException, OdnRepositoryException, OdnSerializationException {
-		SolrItem ourCurrentCopyOfRecord = primaryRepository.retrieve(record.getId());
+	protected UpdatedSinceLastHarvestResults updatedSinceLastHarvest(
+			RecordType record) throws IllegalArgumentException,
+			OdnRepositoryException, OdnSerializationException {
+		
+		SolrItem ourCurrentCopyOfRecord = primaryRepository.retrieve(record
+				.getId());
 		if (ourCurrentCopyOfRecord == null)
-			// no record with such ID in DB => yup, update
-			return true;
-		
-		SolrItem freshDownloadOfRecord = SolrItem.createSolrItem(record);
-		
-		if (ourCurrentCopyOfRecord.compareTo(freshDownloadOfRecord) == 0)
-			return false;
+			return UpdatedSinceLastHarvestResults.NEW_RECORD;
 
-		return true;
+		SolrItem freshDownloadOfRecord = SolrItem.createSolrItem(record);
+
+		if (ourCurrentCopyOfRecord.compareTo(freshDownloadOfRecord) == 0)
+			return UpdatedSinceLastHarvestResults.RECORD_UNCHANGED;
+
+		return UpdatedSinceLastHarvestResults.RECORD_UPDATED;
 	}
 	
 	/**
@@ -179,9 +182,13 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 					RecordType record = scrapOneRecord(row);
 
 					// determine whether it changed since last harvesting ...
-					if (!updatedSinceLastHarvest(record))
-						// ... no change => no update needed
+					UpdatedSinceLastHarvestResults updated = updatedSinceLastHarvest(record);
+					if (updated == UpdatedSinceLastHarvestResults.RECORD_UNCHANGED)
 						continue;
+					
+					// clean-up data related to old record
+					if (updated == UpdatedSinceLastHarvestResults.RECORD_UPDATED)
+						throw new OdnHarvesterException("clean-up of old records not implemented yet");
 
 					records.add(record);
 				} catch (ParseException e) {

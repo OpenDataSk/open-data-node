@@ -18,16 +18,8 @@
 
 package sk.opendata.odn.harvester.datanest.organizations;
 
-public class OdnHarvesterException extends Exception {
-
-	private static final long serialVersionUID = -8471759141795275830L;
-
-	public OdnHarvesterException(String message) {
-		super(message);
-	}
-
-	public OdnHarvesterException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
+public enum UpdatedSinceLastHarvestResults {
+	RECORD_UNCHANGED,
+	RECORD_UPDATED,
+	NEW_RECORD;
 }
