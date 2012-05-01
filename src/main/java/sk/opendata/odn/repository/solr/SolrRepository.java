@@ -163,10 +163,14 @@ public class SolrRepository implements OdnRepositoryStoreInterface<List<SolrItem
 			QueryResponse response = solrServer.query(params);
 			List<SolrItem> records = response.getBeans(SolrItem.class);
 			
-			if (records.size() != 1)
+			// having multiple records with same ID in the repository is and ERROR
+			if (records.size() > 1)
 				throw new OdnRepositoryException("unable to retrieve record ("
 						+ records.size() + " items found)");
-			result = records.get(0);
+			
+			// one match or no match are expected, so return the match or return {@code null}
+			if (records.size() == 1)
+				result = records.get(0);
 		} catch (SolrServerException e) {
 			logger.error("SOLR server exception", e);
 			throw new OdnRepositoryException(e.getMessage(), e);
