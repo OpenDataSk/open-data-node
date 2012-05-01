@@ -203,8 +203,7 @@ public class SolrItem implements Comparable<SolrItem> {
 
 	@Override
 	public int compareTo(SolrItem o) {
-		int result = CompareToBuilder.reflectionCompare(this, o);
-		return result;
+		return CompareToBuilder.reflectionCompare(this, o);
 	}
 
 
