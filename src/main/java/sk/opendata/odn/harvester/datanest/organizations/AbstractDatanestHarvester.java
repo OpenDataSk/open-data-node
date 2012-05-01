@@ -172,7 +172,6 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 			// read the rows
 			String[] row;
 			int batchSize = Integer.valueOf(datanestProperties.getProperty(KEY_DATANEST_BATCH_SIZE));
-			int itemCount = 0;	// same as 'recordCounter' => TODO: clean-up
 			int debugProcessOnlyNItems = Integer.valueOf(datanestProperties
 					.getProperty(KEY_DEBUG_PROCESS_ONLY_N_ITEMS));
 			while ((row = csvReader.readNext()) != null) {
@@ -206,7 +205,7 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 		    	}
 
 		    	if (debugProcessOnlyNItems > 0 &&
-		    			++itemCount > debugProcessOnlyNItems)
+		    			recordCounter > debugProcessOnlyNItems)
 					break;
 			}
 
