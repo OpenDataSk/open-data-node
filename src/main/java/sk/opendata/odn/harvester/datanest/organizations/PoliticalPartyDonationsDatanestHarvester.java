@@ -18,15 +18,9 @@
 
 package sk.opendata.odn.harvester.datanest.organizations;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.Vector;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
@@ -46,7 +40,6 @@ import sk.opendata.odn.serialization.OdnSerializationException;
 import sk.opendata.odn.serialization.rdf.PoliticalPartyDonationRdfSerializer;
 import sk.opendata.odn.serialization.solr.SolrSerializer;
 import sk.opendata.odn.utils.PscUtil;
-import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * This class contains stuff related to scraper of Sponzori politických strán
@@ -136,69 +129,8 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 	@Override
 	public void update() throws OdnHarvesterException,
 			OdnSerializationException, OdnRepositoryException {
-		
-		logger.info("harvesting started");
-		
-		OdnHarvesterException odnHarvesterException = null;
-		
-		try {
-			URL csvUrl = new URL(datanestProperties.getProperty(KEY_DATANEST_PPD_URL));
-			logger.debug("going to load data from " + csvUrl.toExternalForm());
-			
-			// "open" the CSV dump
-			CSVReader csvReader = new CSVReader(
-					new BufferedReader(
-							new InputStreamReader(
-									csvUrl.openStream())));
-		    
-			Vector<PoliticalPartyDonationRecord> records = new Vector<PoliticalPartyDonationRecord>();
-			
-			// TODO: check the header - for now we simply skip it
-			csvReader.readNext();
-			
-			// read the rows
-			String[] row;
-			int debugProcessOnlyNItems = Integer.valueOf(datanestProperties.getProperty(KEY_DEBUG_PROCESS_ONLY_N_ITEMS));
-		    while ((row = csvReader.readNext()) != null) {
-		    	try {
-		    		PoliticalPartyDonationRecord record = scrapOneRecord(row);
-		    		
-		    		// determine whether it changed since last harvesting ...
-		    		if (!updatedSinceLastHarvest(record))
-		    			// ... no change => no update needed
-		    			continue;
-		    		
-			        records.add(record);
-		    	}
-		    	catch (ParseException e) {
-					logger.warn("parse exception", e);
-					logger.warn("skipping following record: "
-							+ Arrays.deepToString(row));
-				}
-
-		        if (debugProcessOnlyNItems > 0 &&
-		        		records.size() > debugProcessOnlyNItems)
-		        	break;
-		    }
-		    
-		    // store the results
-		    store(records);
-		    
-		// TODO: If there wont be any more specialized error handling here
-		// in the future, try catching only 'Exception' to simplify the
-		// code.
-		} catch (MalformedURLException e) {
-			logger.error("malformed URL exception", e);
-			odnHarvesterException = new OdnHarvesterException(e.getMessage(), e);
-		} catch (IOException e) {
-			logger.error("IO exception", e);
-			odnHarvesterException = new OdnHarvesterException(e.getMessage(), e);
-		}
-
-		if (odnHarvesterException != null)
-			throw odnHarvesterException;
-		
-		logger.info("harvesting finished");
+	
+		genericUpdate(KEY_DATANEST_PPD_URL);
 	}
 
 }

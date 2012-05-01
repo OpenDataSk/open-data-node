@@ -117,6 +117,8 @@ public class OrganizationsDatanestHarvester extends
 	public void update() throws OdnHarvesterException,
 			OdnSerializationException, OdnRepositoryException {
 		
+		// TODO: refactor this to use 'genericUpdate()'
+		
 		logger.info("harvesting started");
 		
 		// sort of performance counters

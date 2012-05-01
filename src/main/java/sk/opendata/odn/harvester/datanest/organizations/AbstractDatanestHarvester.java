@@ -18,9 +18,14 @@
 
 package sk.opendata.odn.harvester.datanest.organizations;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
@@ -38,6 +43,7 @@ import sk.opendata.odn.repository.solr.SolrRepository;
 import sk.opendata.odn.serialization.AbstractSerializer;
 import sk.opendata.odn.serialization.OdnSerializationException;
 import sk.opendata.odn.utils.ApplicationProperties;
+import au.com.bytecode.opencsv.CSVReader;
 
 /**
  * Stuff common to all Datanest harvesters.
@@ -109,9 +115,98 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 		return true;
 	}
 	
+	/**
+	 * Update our data using data harvested from source.
+	 * 
+	 * @throws OdnHarvesterException
+	 *             when some harvesting error occurs
+	 * @throws OdnSerializationException
+	 *             when some serialization error occurs
+	 * @throws OdnRepositoryException
+	 *             when some repository error occurs
+	 */
 	public abstract void update() throws OdnHarvesterException,
 			OdnSerializationException, OdnRepositoryException;
-	
+
+	/**
+	 * Most common implementation of harvesting code in our current harvesters.
+	 * 
+	 * @param urlKey
+	 *            property key used to retrieve source URL
+	 * 
+	 * @throws OdnHarvesterException
+	 *             when some harvesting error occurs
+	 * @throws OdnSerializationException
+	 *             when some serialization error occurs
+	 * @throws OdnRepositoryException
+	 *             when some repository error occurs
+	 */
+	protected void genericUpdate(String urlKey) throws OdnHarvesterException,
+			OdnSerializationException, OdnRepositoryException {
+
+		logger.info("harvesting started (" + urlKey + ")");
+
+		OdnHarvesterException odnHarvesterException = null;
+
+		try {
+			URL csvUrl = new URL(
+					datanestProperties.getProperty(urlKey));
+			logger.debug("going to load data from " + csvUrl.toExternalForm());
+
+			// "open" the CSV dump
+			CSVReader csvReader = new CSVReader(new BufferedReader(
+					new InputStreamReader(csvUrl.openStream())));
+
+			Vector<RecordType> records = new Vector<RecordType>();
+
+			// TODO: check the header - for now we simply skip it
+			csvReader.readNext();
+
+			// read the rows
+			String[] row;
+			int debugProcessOnlyNItems = Integer.valueOf(datanestProperties
+					.getProperty(KEY_DEBUG_PROCESS_ONLY_N_ITEMS));
+			while ((row = csvReader.readNext()) != null) {
+				try {
+					RecordType record = scrapOneRecord(row);
+
+					// determine whether it changed since last harvesting ...
+					if (!updatedSinceLastHarvest(record))
+						// ... no change => no update needed
+						continue;
+
+					records.add(record);
+				} catch (ParseException e) {
+					logger.warn("parse exception", e);
+					logger.warn("skipping following record: "
+							+ Arrays.deepToString(row));
+				}
+
+				if (debugProcessOnlyNItems > 0
+						&& records.size() > debugProcessOnlyNItems)
+					break;
+			}
+
+			// store the results
+			store(records);
+
+			// TODO: If there wont be any more specialized error handling here
+			// in the future, try catching only 'Exception' to simplify the
+			// code.
+		} catch (MalformedURLException e) {
+			logger.error("malformed URL exception", e);
+			odnHarvesterException = new OdnHarvesterException(e.getMessage(), e);
+		} catch (IOException e) {
+			logger.error("IO exception", e);
+			odnHarvesterException = new OdnHarvesterException(e.getMessage(), e);
+		}
+
+		if (odnHarvesterException != null)
+			throw odnHarvesterException;
+
+		logger.info("harvesting finished (" + urlKey + ")");
+	}
+
 	/**
 	 * Loop through all serializer and pass given records to them. Serializers
 	 * will serialize the records and store them.
