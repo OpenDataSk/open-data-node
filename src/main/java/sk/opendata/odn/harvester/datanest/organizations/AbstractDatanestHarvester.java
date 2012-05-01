@@ -190,19 +190,22 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 			while ((row = csvReader.readNext()) != null) {
 				try {
 					RecordType record = scrapOneRecord(row);
+					recordCounter++;
 
 					// determine whether it changed since last harvesting ...
 					UpdatedSinceLastHarvestResults updated = updatedSinceLastHarvest(record);
 					if (updated == UpdatedSinceLastHarvestResults.RECORD_UNCHANGED) {
+						// it did not => nothing to do, just maintain the count
 						unchangedRecordCounter++;
-						continue;
 					}
-					
-					// clean-up data related to old record
-					if (updated == UpdatedSinceLastHarvestResults.RECORD_UPDATED)
-						throw new OdnHarvesterException("clean-up of old records not implemented yet");
+					else {
+						// clean-up data related to old record, if necessary
+						if (updated == UpdatedSinceLastHarvestResults.RECORD_UPDATED)
+							throw new OdnHarvesterException("clean-up of old records not implemented yet");
 
-					records.add(record);
+						// add new data
+						records.add(record);
+					}
 				} catch (ParseException e) {
 					logger.warn("parse exception", e);
 					logger.warn("skipping following record: "
@@ -214,7 +217,6 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 		    		
 		    		// report current harvesting status
 					timeCurrent = Calendar.getInstance().getTimeInMillis();
-					recordCounter += records.size();
 					float harvestingSpeed = 1000f * (float) recordCounter
 							/ (float) (timeCurrent - timeStart);
 					logger.info("harvested " + recordCounter + " records ("
@@ -224,13 +226,12 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 		    	}
 
 		    	if (debugProcessOnlyNItems > 0 &&
-		    			recordCounter > debugProcessOnlyNItems)
+		    			recordCounter >= debugProcessOnlyNItems)
 					break;
 			}
 
 			// store the results
 			store(records);
-    		recordCounter += records.size();
 
 		// TODO: If there wont be any more specialized error handling here
 		// in the future, try catching only 'Exception' to simplify the
