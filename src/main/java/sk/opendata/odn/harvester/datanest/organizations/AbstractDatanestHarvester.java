@@ -206,7 +206,9 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 					else {
 						// clean-up data related to old record, if necessary
 						if (updated == UpdatedSinceLastHarvestResults.RECORD_UPDATED)
-							throw new OdnHarvesterException("clean-up of old records not implemented yet");
+							throw new OdnHarvesterException(
+									"clean-up of old records not implemented yet (record ID: "
+											+ record.getId() + ")");
 
 						// add new data
 						records.add(record);
