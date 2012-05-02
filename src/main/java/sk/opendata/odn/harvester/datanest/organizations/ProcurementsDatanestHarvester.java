@@ -53,6 +53,7 @@ public class ProcurementsDatanestHarvester extends
 	public final static String SC_MISSING_CURRENCY = "missing currency";
 	public final static String SC_MISSING_CURRENCY_FOR_NON_ZERO_PRICE = "missing currency (for price which is non-zero)";
 	public final static String SC_UNKNOWN_CURRENCY = "unknown currency: ";
+	public final static String SC_MISSING_PRICE = "missing price";
 	
 	private final static int ATTR_INDEX_ID = 0;
 	private final static int ATTR_INDEX_NOTE = 5;
@@ -97,7 +98,14 @@ public class ProcurementsDatanestHarvester extends
 		record.setBulletinId(row[ATTR_INDEX_BULLETIN_ID]);
 		record.setProcurementId(row[ATTR_INDEX_PROCUREMENT_ID]);
 		record.setProcurementSubject(row[ATTR_INDEX_PROCUREMENT_SUBJECT]);
-		record.setPrice(Float.valueOf(row[ATTR_INDEX_PRICE]));
+		
+		if (row[ATTR_INDEX_PRICE].isEmpty())
+			// some entries (like ID 49338, from
+			// http://www.e-vestnik.sk/EVestnik/Detail/29531) have empty string
+			// for price
+			record.addScrapNote(SC_MISSING_PRICE);
+		else
+			record.setPrice(Float.valueOf(row[ATTR_INDEX_PRICE]));
 		
 		if (!row[ATTR_INDEX_CURRENCY].isEmpty()) {
 			try {
