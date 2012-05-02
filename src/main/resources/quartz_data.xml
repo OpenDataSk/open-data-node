@@ -46,7 +46,7 @@
 	            <job-name>OrganizationsDatanestHarvesterJob</job-name>
 	            <job-group>DatanestHarvesterGroup</job-group>
 	            <misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
-	            <cron-expression>15 45 3 ? * SAT</cron-expression>
+	            <cron-expression>15 55 3 ? * SAT</cron-expression>
 	            <time-zone>Europe/Bratislava</time-zone>
 	        </cron>
 	    </trigger>
@@ -68,7 +68,7 @@
 	            <job-name>PoliticalPartyDonationsDatanestHarvesterJob</job-name>
 	            <job-group>DatanestHarvesterGroup</job-group>
 	            <misfire-instruction>MISFIRE_INSTRUCTION_SMART_POLICY</misfire-instruction>
-	            <cron-expression>15 47 3 ? * SAT</cron-expression>
+	            <cron-expression>15 45 3 ? * SAT</cron-expression>
 	            <time-zone>Europe/Bratislava</time-zone>
 	        </cron>
 	    </trigger>
