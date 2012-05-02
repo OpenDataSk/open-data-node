@@ -34,8 +34,8 @@ import org.apache.wicket.model.PropertyModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sk.opendata.odn.repository.solr.SolrRepository;
 import sk.opendata.odn.repository.solr.SolrItem;
+import sk.opendata.odn.repository.solr.SolrRepository;
 import sk.opendata.odn.utils.PscUtil;
 
 public class ResultPanel extends Panel {
@@ -155,7 +155,7 @@ public class ResultPanel extends Panel {
     	solrQuery.setStart(page * RESULTS_PER_PAGE);
     	solrQuery.setRows(RESULTS_PER_PAGE);
 		
-    	logger.info("XXX SOLR query: " + solrQuery.toString());
+    	logger.debug("XXX SOLR query: " + solrQuery.toString());
 		
 		
 		// obtain results
