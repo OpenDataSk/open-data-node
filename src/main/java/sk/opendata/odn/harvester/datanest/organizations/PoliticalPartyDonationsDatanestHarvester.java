@@ -105,7 +105,11 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 			record.setIco(row[ATTR_INDEX_DONOR_ICO]);
 		if (!row[ATTR_INDEX_DONATION_VALUE].isEmpty())
 			record.setDonationValue(Float.valueOf(row[ATTR_INDEX_DONATION_VALUE]));
-		Currency currency = Currency.parse(row[ATTR_INDEX_DONATION_CURRENCY]);
+		Currency currency = Currency.UNDEFINED;
+		// note: Some "non cash" donations have empty string filled in column
+		// currency so we use "UNDEFINED" for those.
+		if (!row[ATTR_INDEX_DONATION_CURRENCY].isEmpty())
+			Currency.parse(row[ATTR_INDEX_DONATION_CURRENCY]);
 		record.setCurrency(currency);
 		record.setDonorAddress(row[ATTR_INDEX_DONOR_ADDRESS]);
 		if (!row[ATTR_INDEX_DONOR_PSC].isEmpty())
