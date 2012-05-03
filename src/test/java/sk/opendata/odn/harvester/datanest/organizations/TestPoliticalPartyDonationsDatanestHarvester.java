@@ -89,8 +89,8 @@ public class TestPoliticalPartyDonationsDatanestHarvester {
 			assertEquals("donor title", TEST_DONOR_TITLE, record.getDonorTitle());
 			assertEquals("donor company", TEST_DONOR_COMPANY, record.getName());
 			assertEquals("donor ico", TEST_DONOR_ICO, record.getIco());
-			assertEquals("donor ico", TEST_DONOR_CITY, record.getDonorCity());
-			assertEquals("donor ico", TEST_DONOR_PSC_ODN_STORAGE_FORM, record.getDonorPsc());
+			assertEquals("donor city", TEST_DONOR_CITY, record.getDonorCity());
+			assertEquals("donor PSC", TEST_DONOR_PSC_ODN_STORAGE_FORM, record.getDonorPsc());
 			
 			assertEquals("donation value", TEST_DONATION_VALUE.floatValue(), record.getDonationValue(), 0.001f);
 			assertEquals("donation currency", TEST_DONATION_CURRENCY, record.getCurrency());
