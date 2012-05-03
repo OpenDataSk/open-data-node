@@ -51,21 +51,21 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 	public final static String KEY_DATANEST_PPD_URL = "datanest.political_party_donors.url";
 	public final static String KEY_DATANEST_PPD_SEZAME_REPO_NAME = "datanest.political_party_donors.sesame_repo_name";
 	
-	private final static int ATTR_INDEX_ID = 0;
-	private final static int ATTR_INDEX_DONOR_NAME = 1;
-	private final static int ATTR_INDEX_DONOR_SURNAME = 2;
-	private final static int ATTR_INDEX_DONOR_TITLE = 3;
-	private final static int ATTR_INDEX_DONOR_COMPANY = 4;
-	private final static int ATTR_INDEX_DONOR_ICO = 5;
-	private final static int ATTR_INDEX_DONATION_VALUE = 6;
-	private final static int ATTR_INDEX_DONATION_CURRENCY = 7;
-	private final static int ATTR_INDEX_DONOR_ADDRESS = 8;
-	private final static int ATTR_INDEX_DONOR_PSC = 9;
-	private final static int ATTR_INDEX_DONOR_CITY = 10;
-	private final static int ATTR_INDEX_RECIPIENT_PARTY = 11;
-	private final static int ATTR_INDEX_YEAR = 12;
-	private final static int ATTR_INDEX_ACCEPT_DATE = 13;
-	private final static int ATTR_INDEX_NOTE = 14;
+	protected final static int ATTR_INDEX_ID = 0;
+	protected final static int ATTR_INDEX_DONOR_NAME = 1;
+	protected final static int ATTR_INDEX_DONOR_SURNAME = 2;
+	protected final static int ATTR_INDEX_DONOR_TITLE = 3;
+	protected final static int ATTR_INDEX_DONOR_COMPANY = 4;
+	protected final static int ATTR_INDEX_DONOR_ICO = 5;
+	protected final static int ATTR_INDEX_DONATION_VALUE = 6;
+	protected final static int ATTR_INDEX_DONATION_CURRENCY = 7;
+	protected final static int ATTR_INDEX_DONOR_ADDRESS = 8;
+	protected final static int ATTR_INDEX_DONOR_PSC = 9;
+	protected final static int ATTR_INDEX_DONOR_CITY = 10;
+	protected final static int ATTR_INDEX_RECIPIENT_PARTY = 11;
+	protected final static int ATTR_INDEX_YEAR = 12;
+	protected final static int ATTR_INDEX_ACCEPT_DATE = 13;
+	protected final static int ATTR_INDEX_NOTE = 14;
 	
 	private static Logger logger = LoggerFactory.getLogger(PoliticalPartyDonationsDatanestHarvester.class);
 
