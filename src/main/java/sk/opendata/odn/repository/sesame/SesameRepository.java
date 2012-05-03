@@ -183,16 +183,6 @@ public class SesameRepository implements OdnRepositoryStoreInterface<RdfData> {
 
 			connection = repo.getConnection();
 
-			// FIXME: Implement proper "update" procedure.
-			// As of now, we're not clearing old records, only replacing old
-			// copies with fresh copies (assuming "ID" was not changed). If we
-			// want a clean-up, we need to manually clean the back-end and rerun
-			// harvesting.
-			// Note of caution: 'store()' can be called for "a batch" (at least
-			// for 'OrganizationsDatanestHarvester' it is) which means that
-			// simple "DELETE all" here wont have a desired effect as it removes
-			// all the "new" items from previous batch and leave the back-end
-			// only with content from last batch.
 			if (contexts != null && contexts.length > 0) {
 				// why we duplicate the 'add()' statements:
 				// 'getStatements(null, null, null, true);' is not the same as
