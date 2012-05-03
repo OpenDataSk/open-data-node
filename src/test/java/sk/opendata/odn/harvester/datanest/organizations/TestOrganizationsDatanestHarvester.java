@@ -95,8 +95,6 @@ public class TestOrganizationsDatanestHarvester {
 			assertEquals("date to: day", 6, dateTo.get(Calendar.DAY_OF_MONTH));
 			
 			assertEquals("source", TEST_SOURCE, record.getSource());
-			
-			// TODO: make OrganizationRecord "comparable" ...
 		} catch (ParseException e) {
 			fail("exception occured: " + e);
 		}
