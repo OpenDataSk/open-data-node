@@ -50,7 +50,7 @@ public class OrganizationsDatanestHarvester extends
 	public final static String KEY_DATANEST_ORGANIZATIONS_URL = "datanest.organizations.url";
 	public final static String KEY_DATANEST_ORGANIZATIONS_SEZAME_REPO_NAME = "datanest.organizations.sesame_repo_name";
 	
-	private final static int ATTR_INDEX_ID = 0;
+	protected final static int ATTR_INDEX_ID = 0;
 	protected final static int ATTR_INDEX_NAME = 1;
 	protected final static int ATTR_INDEX_SEAT = 3;
 	protected final static int ATTR_INDEX_LEGAL_FORM = 4;
