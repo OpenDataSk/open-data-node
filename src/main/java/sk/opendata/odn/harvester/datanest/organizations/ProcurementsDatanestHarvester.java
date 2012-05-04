@@ -55,17 +55,17 @@ public class ProcurementsDatanestHarvester extends
 	public final static String SC_UNKNOWN_CURRENCY = "unknown currency: ";
 	public final static String SC_MISSING_PRICE = "missing price";
 	
-	private final static int ATTR_INDEX_ID = 0;
-	private final static int ATTR_INDEX_NOTE = 5;
-	private final static int ATTR_INDEX_YEAR = 6;
-	private final static int ATTR_INDEX_BULLETIN_ID = 7;
-	private final static int ATTR_INDEX_PROCUREMENT_ID = 8;
-	private final static int ATTR_INDEX_PROCUREMENT_SUBJECT = 9;
-	private final static int ATTR_INDEX_PRICE = 10;
-	private final static int ATTR_INDEX_CURRENCY = 11;
-	private final static int ATTR_INDEX_IS_VAT_INCLUDED = 12;
-	private final static int ATTR_INDEX_CUSTOMER_ICO = 15;
-	private final static int ATTR_INDEX_SUPPLIER_ICO = 17;
+	protected final static int ATTR_INDEX_ID = 0;
+	protected final static int ATTR_INDEX_NOTE = 5;
+	protected final static int ATTR_INDEX_YEAR = 6;
+	protected final static int ATTR_INDEX_BULLETIN_ID = 7;
+	protected final static int ATTR_INDEX_PROCUREMENT_ID = 8;
+	protected final static int ATTR_INDEX_PROCUREMENT_SUBJECT = 9;
+	protected final static int ATTR_INDEX_PRICE = 10;
+	protected final static int ATTR_INDEX_CURRENCY = 11;
+	protected final static int ATTR_INDEX_IS_VAT_INCLUDED = 12;
+	protected final static int ATTR_INDEX_CUSTOMER_ICO = 15;
+	protected final static int ATTR_INDEX_SUPPLIER_ICO = 17;
 	
 	private static Logger logger = LoggerFactory.getLogger(ProcurementsDatanestHarvester.class);
 
@@ -120,6 +120,7 @@ public class ProcurementsDatanestHarvester extends
 		else {
 			// sometimes the currency is not filled in the source (so far only
 			// for cases where the price was 0)
+			// TODO: set the currency to Currency.UNDEFINED
 			if (record.getPrice() == 0)
 				record.addScrapNote(SC_MISSING_CURRENCY);
 			else
