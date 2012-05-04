@@ -230,7 +230,8 @@ public class SesameRepository implements OdnRepositoryStoreInterface<RdfData> {
 		RepositoryException repoException = null;
 		
 		try {
-			sesameRepo.shutDown();
+			if (sesameRepo != null)
+				sesameRepo.shutDown();
 		} catch (RepositoryException e) {
 			logger.error("repository exception", e);
 			// we're going to re-throw first exception we encounter
