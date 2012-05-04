@@ -120,7 +120,7 @@ public class ProcurementsDatanestHarvester extends
 		else {
 			// sometimes the currency is not filled in the source (so far only
 			// for cases where the price was 0)
-			// TODO: set the currency to Currency.UNDEFINED
+			record.setCurrency(Currency.UNDEFINED);
 			if (record.getPrice() == 0)
 				record.addScrapNote(SC_MISSING_CURRENCY);
 			else

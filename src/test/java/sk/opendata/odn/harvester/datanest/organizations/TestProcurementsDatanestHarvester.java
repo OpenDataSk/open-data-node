@@ -118,8 +118,7 @@ public class TestProcurementsDatanestHarvester {
 		try {
 			ProcurementRecord record = harvester.scrapOneRecord(recordWithEmptyCurrency);
 			
-			// TODO:
-			//assertEquals("currency", Currency.UNDEFINED, record.getCurrency());
+			assertEquals("currency", Currency.UNDEFINED, record.getCurrency());
 			assertEquals("number of scrap notes", 1, record.getScrapNotes().size());
 			assertEquals("scrap note", ProcurementsDatanestHarvester.SC_MISSING_CURRENCY_FOR_NON_ZERO_PRICE, record.getScrapNotes().get(0));
 		} catch (ParseException e) {
@@ -132,8 +131,7 @@ public class TestProcurementsDatanestHarvester {
 		try {
 			ProcurementRecord record = harvester.scrapOneRecord(recordWithEmptyCurrencyAndPrice);
 			
-			// TODO:
-			//assertEquals("currency", Currency.UNDEFINED, record.getCurrency());
+			assertEquals("currency", Currency.UNDEFINED, record.getCurrency());
 			assertEquals("number of scrap notes", 2, record.getScrapNotes().size());
 			assertTrue("scrap note about currency", record.getScrapNotes().contains(ProcurementsDatanestHarvester.SC_MISSING_CURRENCY));
 			assertTrue("scrap note about price", record.getScrapNotes().contains(ProcurementsDatanestHarvester.SC_MISSING_PRICE));
