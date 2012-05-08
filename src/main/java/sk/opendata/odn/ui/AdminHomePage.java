@@ -18,10 +18,12 @@
 
 package sk.opendata.odn.ui;
 
+import java.io.IOException;
 import java.util.Set;
 
 import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.quartz.JobKey;
@@ -32,6 +34,8 @@ import org.quartz.impl.matchers.GroupMatcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import sk.opendata.odn.utils.ApplicationProperties;
+
 /**
  * Open Data Node "management console" homepage.
  */
@@ -40,10 +44,13 @@ public class AdminHomePage extends WebPage {
 	private static final long serialVersionUID = 1L;
 	private static Logger logger = LoggerFactory.getLogger(AdminHomePage.class);
 	
+	public final static String ODN_PROPERTIES_NAME = "/odn.properties";
+	public final static String KEY_ODN_VERSION = "odn.version";
 	// TODO: Make it configurable or entirely re-think this "debug feature" as
 	// this hard-coded string have to match what is configured in
 	// quartz_data.xml .
 	public final static String DATANEST_HARVESTER_SCHEDULE_GROUP_NAME = "DatanestHarvesterGroup";
+	
 	
 	private class ScrapControlForm extends Form<Void> {
 		
@@ -88,6 +95,17 @@ public class AdminHomePage extends WebPage {
 	 *            Page parameters
 	 */
     public AdminHomePage(final PageParameters parameters) {
+    	String odnVersion = "unknown";
+		try {
+			ApplicationProperties odnProperties = ApplicationProperties
+					.getInstance(ODN_PROPERTIES_NAME);
+			odnVersion = odnProperties.getProperty(KEY_ODN_VERSION);
+		} catch (IOException e) {
+			logger.error("IO exception", e);
+			// TODO is it a "good practice" to pass that also up to Wicket?
+		}
+		
     	add(new ScrapControlForm("scrapControlForm"));
+    	add(new Label("odnVersion", odnVersion));
     }
 }
