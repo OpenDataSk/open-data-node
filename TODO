@@ -1,7 +1,23 @@
 Things to do (a.k.a. "road map"):
 ---------------------------------
 
-a) some simple GUI for full-text searching using SOLR
+a) Jackrabbit as back-end repository for:
+
+   1) storage of whole "original" (as downloaded) documents:
+   
+      a) versioned: to have some audit trail
+      b) caching: to be able to re-run harvesting/enhancements
+         if we update our code without making a request to
+         original source server
+   
+   2) storage of whole processed documents:
+   
+      a) for now, search GUI have nowhere to link to so this will also
+         allow to make some presentation layer for the data we harvest
+      
+      b) further publication/replication of data: OAI-PMH, APIs, ...
+
+b) some simple GUI for full-text searching using SOLR
 
    1) for organizations:
       searching using name and surname, organization name or ICO
@@ -11,25 +27,25 @@ a) some simple GUI for full-text searching using SOLR
    
    n) this also means creating proper SOLR schema!
 
-b) GUI for "advanced search" using SOLR syntax with some "prepared examples"
+c) GUI for "advanced search" using SOLR syntax with some "prepared examples"
    (in a form of link: after link is clicked, search term is filled in and
    search results are updated - each field and data type should be covered, like
    "zakladne imanie: from 10 to 100 €" etc.)
 
-c) find out the best value for 'datanest.organizations.batch_size', "best"
+d) find out the best value for 'datanest.organizations.batch_size', "best"
    meaning "quickest addition of all records into repository" - currently it
    takes around 6-8 hourse to add all items which slows down development and
    testing
 
-d) enhancing the Datanest CSV harvesters to be able to "re-run"
+e) enhancing the Datanest CSV harvesters to be able to "re-run"
    and process only differences - i.e. we need to make them able to
    keep ODN copy of data up-to-date with Datanest "original"
 
-e) adding more harvesters: direct harvesting of ORSR to get more data
+f) adding more harvesters: direct harvesting of ORSR to get more data
    about companies, direct harvesting of procurement portals to have
    a shot by getting more data from the scanned documents themselves, ...
 
-f) transform the existing application into something like container
+g) transform the existing application into something like container
    or whatever (maybe even using OSGI) so that it loads and runs
    Harvester and other components (as sort of plug-ins)
 
@@ -41,4 +57,4 @@ f) transform the existing application into something like container
        not need certain harvesters and APIs so there would be a way to
        configure and deploy ODN to meet that criteria)
 
-g) ...
+h) ...
