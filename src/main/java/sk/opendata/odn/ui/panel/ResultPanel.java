@@ -87,7 +87,9 @@ public class ResultPanel extends Panel {
     /**
      * Update the search results display with items obtained using given query.
      * 
-     * @param query SOLR dismax (i.e. user friendly) query
+     * See http://wiki.apache.org/solr/ExtendedDisMax .
+     * 
+     * @param query SOLR ExtendedDisMax (i.e. user friendly) query
      * @throws IOException when creation of SOLR back-end fails
      * @throws SolrServerException when SOLR query fails
      */
@@ -100,12 +102,12 @@ public class ResultPanel extends Panel {
     	
     	SolrQuery solrQuery = new SolrQuery();
     	solrQuery.setQuery(query);
+		solrQuery.set("defType", "edismax");
     	
     	// prepare the SOLR query
     	// we're trying to identify some "basic" query types and perform tuning those special cases
     	if (query.matches("[0-9]{8}")) {
     		// ICO
-    		solrQuery.set("defType", "dismax");
     		solrQuery.set("qf",
     				"ico^2 " +
     				"donor_ico " +
@@ -114,7 +116,6 @@ public class ResultPanel extends Panel {
     				);
     	} else if (PscUtil.isPsc(query)) {
     		// PCS
-    		solrQuery.set("defType", "dismax");
     		solrQuery.set("qf",
     				"donor_psc^2 " +
     				"seat " +		// TODO: this is "text_general' in SOLR schema and here PSC might still be in a form "058 01" thus searching for "05801" wont match it
@@ -124,7 +125,6 @@ public class ResultPanel extends Panel {
     		solrQuery.setQuery(PscUtil.normalize(query));
     	} else {
     		// default
-    		solrQuery.set("defType", "dismax");
     		solrQuery.set("qf",
     				"name^3 " +
     				"legal_form^0.5 " +
