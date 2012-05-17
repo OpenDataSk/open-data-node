@@ -609,8 +609,13 @@
  <uniqueKey>id</uniqueKey>
 
   <!-- field for the QueryParser to use when an explicit fieldname is absent
- TODO: DEPRECATED: specify "df" in your request handler instead. -->
- <defaultSearchField>name</defaultSearchField>
+ DEPRECATED: specify "df" in your request handler instead.
+ <defaultSearchField>text</defaultSearchField> -->
+ <!--  note for Open Data Node:
+ a) You need to change SOLR_HOME/conf/solrconfig.xml and change "text" into "name"
+    in '<str name="df">text</str>' in '<requestHandler name="/select" ...'.
+ b) TODO: Construct 'text' field using <copyField> from relevant ODN fields so that default
+    solrconfig.xml works (plus that field can be used as content preview in search results). -->
 
   <!-- SolrQueryParser configuration: defaultOperator="AND|OR"
  TODO: DEPRECATED: specify "q.op" in your request handler to switch from the default of OR. -->
