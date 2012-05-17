@@ -518,6 +518,8 @@
    
    <!-- fields common to multiple data sets: -->
    <field name="note" type="text_general" indexed="true" stored="true" />
+   <!-- TODO: change type to 'currency' introduced in SOLR 3.6.0
+   note: For now, there is not SKK by default. -->
    <field name="currency" type="string" indexed="true" stored="true" />
    <field name="ico" type="string" indexed="true" stored="true" />
    
@@ -606,10 +608,12 @@
    -->
  <uniqueKey>id</uniqueKey>
 
- <!-- field for the QueryParser to use when an explicit fieldname is absent -->
+  <!-- field for the QueryParser to use when an explicit fieldname is absent
+ TODO: DEPRECATED: specify "df" in your request handler instead. -->
  <defaultSearchField>name</defaultSearchField>
 
- <!-- SolrQueryParser configuration: defaultOperator="AND|OR" -->
+  <!-- SolrQueryParser configuration: defaultOperator="AND|OR"
+ TODO: DEPRECATED: specify "q.op" in your request handler to switch from the default of OR. -->
  <solrQueryParser defaultOperator="OR"/>
 
 </schema>
