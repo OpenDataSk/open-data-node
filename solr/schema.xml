@@ -617,8 +617,4 @@
  b) TODO: Construct 'text' field using <copyField> from relevant ODN fields so that default
     solrconfig.xml works (plus that field can be used as content preview in search results). -->
 
-  <!-- SolrQueryParser configuration: defaultOperator="AND|OR"
- TODO: DEPRECATED: specify "q.op" in your request handler to switch from the default of OR. -->
- <solrQueryParser defaultOperator="OR"/>
-
 </schema>
