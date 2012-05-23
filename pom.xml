@@ -182,7 +182,7 @@
 		<quartz.version>2.1.0</quartz.version>
 		<sesame.version>2.6.0</sesame.version>
 		<slf4j.version>1.6.1</slf4j.version>
-		<solr.version>3.5.0</solr.version>
+		<solr.version>3.6.0</solr.version>
 		<wicket.version>1.4.6</wicket.version>
 	</properties>
 </project>
