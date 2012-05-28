@@ -525,7 +525,7 @@
    
    <!-- fields for organization records: -->
    <field name="name" type="text_general" indexed="true" stored="true" />
-   <field name="legal_form" type="string" indexed="true" stored="true" />
+   <field name="legal_form" type="text_general" indexed="true" stored="true" />
    <field name="seat" type="text_general" indexed="true" stored="true" />
    <field name="date_from" type="date" indexed="true" stored="true"/>
    <field name="date_to" type="date" indexed="true" stored="true"/>
@@ -537,7 +537,7 @@
    <field name="donor_psc" type="string" indexed="true" stored="true" />
    <field name="donor_city" type="text_general" indexed="true" stored="true" />
    <field name="donation_value" type="float" indexed="true" stored="true"/>
-   <field name="recipient_party" type="string" indexed="true" stored="true" />
+   <field name="recipient_party" type="text_general" indexed="true" stored="true" />
    <field name="year" type="string" indexed="true" stored="true" />
    <field name="accept_date" type="date" indexed="true" stored="true"/>
    
