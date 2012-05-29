@@ -53,9 +53,6 @@ public class WicketApplication extends WebApplication
      */
 	public WicketApplication() {
 		try {
-			// initialize friendly URLs for certain pages
-			mountBookmarkablePage("admin", AdminHomePage.class);
-			
 			// initialize repositories
 			sesameRepository = SesameRepository.getInstance();
 			solrRepository = SolrRepository.getInstance();
@@ -71,6 +68,13 @@ public class WicketApplication extends WebApplication
 			logger.error("IO exception", e);
 			// TODO is it a "good practice" to pass that also up to Wicket?
 		}
+	}
+	
+	public void init() {
+		super.init();
+		// initialize friendly URLs for certain pages
+		
+		mountPage("admin", AdminHomePage.class);
 	}
 	
 	/**
