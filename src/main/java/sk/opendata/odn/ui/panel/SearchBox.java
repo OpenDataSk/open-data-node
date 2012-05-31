@@ -18,11 +18,11 @@
 
 package sk.opendata.odn.ui.panel;
 
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.form.StatelessForm;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
 
 public class SearchBox extends Panel {
 	

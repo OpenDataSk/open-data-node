@@ -21,8 +21,9 @@ package sk.opendata.odn.ui;
 import java.io.IOException;
 
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.wicket.PageParameters;
 import org.apache.wicket.markup.html.WebPage;
+import org.apache.wicket.request.mapper.parameter.PageParameters;
+import org.apache.wicket.util.string.StringValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +48,10 @@ public class HomePage extends WebPage {
 	 *            Page parameters
 	 */
     public HomePage(final PageParameters parameters) {
-    	final String query = parameters.getString("q", "").trim();
+    	StringValue queryValue = parameters.get("q");
+    	String query = "";
+    	if (!queryValue.isEmpty())
+    		query = queryValue.toString();
     	
     	SearchBox searchBox = new SearchBox("searchbox");
     	searchBox.setQuery(query);
