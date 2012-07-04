@@ -16,7 +16,7 @@
  * along with Open Data Node.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package sk.opendata.odn.harvester.datanest.organizations;
+package sk.opendata.odn.harvester.datanest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -28,6 +28,7 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 
+import sk.opendata.odn.harvester.datanest.ProcurementsDatanestHarvester;
 import sk.opendata.odn.model.Currency;
 import sk.opendata.odn.model.ProcurementRecord;
 

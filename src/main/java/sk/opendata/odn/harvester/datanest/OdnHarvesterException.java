@@ -16,10 +16,18 @@
  * along with Open Data Node.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package sk.opendata.odn.harvester.datanest.organizations;
+package sk.opendata.odn.harvester.datanest;
 
-public enum UpdatedSinceLastHarvestResults {
-	RECORD_UNCHANGED,
-	RECORD_UPDATED,
-	NEW_RECORD;
+public class OdnHarvesterException extends Exception {
+
+	private static final long serialVersionUID = -8471759141795275830L;
+
+	public OdnHarvesterException(String message) {
+		super(message);
+	}
+
+	public OdnHarvesterException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
 }

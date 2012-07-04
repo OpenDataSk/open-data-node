@@ -16,7 +16,7 @@
  * along with Open Data Node.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package sk.opendata.odn.harvester.datanest.organizations;
+package sk.opendata.odn.harvester.datanest;
 
 import java.io.BufferedReader;
 import java.io.IOException;
