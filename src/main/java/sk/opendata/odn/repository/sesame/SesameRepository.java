@@ -86,7 +86,7 @@ public class SesameRepository implements OdnRepositoryStoreInterface<RdfData> {
 	/**
 	 * Initialize Sesame repository.
 	 * 
-	 * @return instance of HTTP
+	 * @return instance of proxy for a remote repository on a Sesame server
 	 * @throws RepositoryException
 	 *             when initialization fails
 	 */
