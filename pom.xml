@@ -80,6 +80,16 @@
 		</dependency>
 
 		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>${httpcomponents.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+			<version>${httpcomponents.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>org.openrdf.sesame</groupId>
 			<artifactId>sesame-runtime</artifactId>
 			<version>${sesame.version}</version>
@@ -181,6 +191,7 @@
 	</build>
 
 	<properties>
+		<httpcomponents.version>4.2.1</httpcomponents.version>
 		<jackrabbit.version>2.2.4</jackrabbit.version>
 		<jetty.version>6.1.4</jetty.version>
 		<log4j.version>1.2.16</log4j.version>
