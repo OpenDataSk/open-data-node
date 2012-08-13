@@ -26,7 +26,7 @@ import java.util.List;
 
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
-import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.common.params.ModifiableSolrParams;
 import org.openrdf.repository.RepositoryException;
@@ -66,7 +66,7 @@ public class SolrRepository implements OdnRepositoryStoreInterface<List<SolrItem
 
 		// initialize SOLR server connection
 		String solrServerUrl = srProperties.getProperty(KEY_REPO_URL);
-		solrServer = new CommonsHttpSolrServer(solrServerUrl);
+		solrServer = new HttpSolrServer(solrServerUrl);
 		logger.info("index '" + solrServerUrl + "' initialized");
 	}
 
