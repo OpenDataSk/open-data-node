@@ -128,6 +128,19 @@
 			<artifactId>commons-lang3</artifactId>
 			<version>3.1</version>
 		</dependency>
+
+		<!-- The JCR API -->
+		<dependency>
+			<groupId>javax.jcr</groupId>
+			<artifactId>jcr</artifactId>
+			<version>2.0</version>
+		</dependency>
+		<!-- Jackrabbit content repository -->
+		<dependency>
+			<groupId>org.apache.jackrabbit</groupId>
+			<artifactId>jackrabbit-core</artifactId>
+			<version>${jackrabbit.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -178,6 +191,7 @@
 	</build>
 
 	<properties>
+		<jackrabbit.version>2.2.4</jackrabbit.version>
 		<jetty.version>6.1.4</jetty.version>
 		<quartz.version>2.1.0</quartz.version>
 		<sesame.version>2.6.0</sesame.version>
