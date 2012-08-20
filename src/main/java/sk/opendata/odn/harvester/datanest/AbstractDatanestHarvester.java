@@ -239,6 +239,8 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 
 			// store the results
 			store(records);
+			
+			csvReader.close();
 
 		// TODO: If there wont be any more specialized error handling here
 		// in the future, try catching only 'Exception' to simplify the
