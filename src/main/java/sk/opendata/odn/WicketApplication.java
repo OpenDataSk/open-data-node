@@ -29,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sk.opendata.odn.repository.OdnRepositoryException;
+import sk.opendata.odn.repository.jackrabbit.JackrabbitRepository;
 import sk.opendata.odn.repository.sesame.SesameRepository;
 import sk.opendata.odn.repository.solr.SolrRepository;
 import sk.opendata.odn.ui.AdminHomePage;
@@ -44,6 +45,7 @@ public class WicketApplication extends WebApplication
 	
 	private static Logger logger = LoggerFactory.getLogger(WicketApplication.class);
 	
+	private JackrabbitRepository jackrabbitRepository = null;
 	private SesameRepository sesameRepository = null;
 	private SolrRepository solrRepository = null;
 	private Scheduler scheduler = null;
@@ -54,6 +56,7 @@ public class WicketApplication extends WebApplication
 	public WicketApplication() {
 		try {
 			// initialize repositories
+			jackrabbitRepository = JackrabbitRepository.getInstance();
 			sesameRepository = SesameRepository.getInstance();
 			solrRepository = SolrRepository.getInstance();
 			
@@ -86,6 +89,7 @@ public class WicketApplication extends WebApplication
 		logger.debug("shuting down job scheduler ...");
 		try {
 			scheduler.shutdown();
+			jackrabbitRepository.shutDown();
 			sesameRepository.shutDown();
 			solrRepository.shutDown();
 		} catch (SchedulerException e) {
