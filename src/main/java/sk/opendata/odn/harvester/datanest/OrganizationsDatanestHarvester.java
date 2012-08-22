@@ -66,7 +66,7 @@ public class OrganizationsDatanestHarvester extends
 			RepositoryConfigException, RepositoryException,
 			ParserConfigurationException, TransformerConfigurationException {
 		
-		super(SolrRepository.getInstance());	// TODO: fix that by using Jackrabbit
+		super();
 		
 		OrganizationRdfSerializer rdfSerializer = new OrganizationRdfSerializer(
 				SesameRepository.getInstance(),

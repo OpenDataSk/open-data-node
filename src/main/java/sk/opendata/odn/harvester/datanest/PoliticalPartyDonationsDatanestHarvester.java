@@ -74,7 +74,7 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 			RepositoryConfigException, RepositoryException,
 			ParserConfigurationException, TransformerConfigurationException {
 		
-		super(SolrRepository.getInstance());	// TODO: fix that by using Jackrabbit
+		super();
 		
 		PoliticalPartyDonationRdfSerializer rdfSerializer = new PoliticalPartyDonationRdfSerializer(
 				SesameRepository.getInstance(),

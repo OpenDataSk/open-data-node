@@ -27,21 +27,18 @@ import java.util.List;
 import org.apache.solr.client.solrj.SolrServer;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.client.solrj.impl.HttpSolrServer;
-import org.apache.solr.client.solrj.response.QueryResponse;
-import org.apache.solr.common.params.ModifiableSolrParams;
 import org.openrdf.repository.RepositoryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import sk.opendata.odn.repository.OdnRepositoryException;
-import sk.opendata.odn.repository.OdnRepositoryRetrieveInterface;
 import sk.opendata.odn.repository.OdnRepositoryStoreInterface;
 import sk.opendata.odn.utils.ApplicationProperties;
 
 /**
  * SOLR repository for Open Data Node.
  */
-public class SolrRepository implements OdnRepositoryStoreInterface<List<SolrItem>>, OdnRepositoryRetrieveInterface<SolrItem> {
+public class SolrRepository implements OdnRepositoryStoreInterface<List<SolrItem>> {
 
 	public final static String SOLR_REPOSITORY_PROPERTIES_NAME = "/repo-solr.properties";
 	public final static String KEY_DEBUG_DUMP = "solr.debug.dump";
@@ -139,35 +136,6 @@ public class SolrRepository implements OdnRepositoryStoreInterface<List<SolrItem
 
 		if (odnRepoException != null)
 			throw odnRepoException;
-	}
-
-	@Override
-	public SolrItem retrieve(String id) throws IllegalArgumentException,
-			OdnRepositoryException {
-		
-		SolrItem result = null;
-
-		ModifiableSolrParams params = new ModifiableSolrParams();
-		params.set("q", "id:" + id);
-
-		try {
-			QueryResponse response = solrServer.query(params);
-			List<SolrItem> records = response.getBeans(SolrItem.class);
-			
-			// having multiple records with same ID in the repository is an ERROR
-			if (records.size() > 1)
-				throw new OdnRepositoryException("unable to retrieve record ("
-						+ records.size() + " items found)");
-			
-			// one match or no match are expected, so return the match or return {@code null}
-			if (records.size() == 1)
-				result = records.get(0);
-		} catch (SolrServerException e) {
-			logger.error("SOLR server exception", e);
-			throw new OdnRepositoryException(e.getMessage(), e);
-		}
-
-		return result;
 	}
 
 	@Override

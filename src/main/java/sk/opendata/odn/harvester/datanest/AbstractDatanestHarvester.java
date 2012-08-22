@@ -40,8 +40,8 @@ import org.slf4j.LoggerFactory;
 
 import sk.opendata.odn.model.AbstractRecord;
 import sk.opendata.odn.repository.OdnRepositoryException;
-import sk.opendata.odn.repository.solr.SolrItem;
-import sk.opendata.odn.repository.solr.SolrRepository;
+import sk.opendata.odn.repository.jackrabbit.JackrabbitItem;
+import sk.opendata.odn.repository.jackrabbit.JackrabbitRepository;
 import sk.opendata.odn.serialization.AbstractSerializer;
 import sk.opendata.odn.serialization.OdnSerializationException;
 import sk.opendata.odn.utils.ApplicationProperties;
@@ -72,21 +72,20 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 	protected ApplicationProperties datanestProperties = null;
 	protected Vector<AbstractSerializer<RecordType, ?, ?>> serializers = null;
 	
-	private SolrRepository primaryRepository = null;	// TODO: for now just a hack as SolrRepository is use instead of Jackrabbit
+	private JackrabbitRepository primaryRepository = null;
 	
 	
 	/**
-	 * @param primaryRepository repository where we store primary copy of our harvested data
 	 * @throws IOException
 	 */
-	public AbstractDatanestHarvester(SolrRepository primaryRepository)
+	public AbstractDatanestHarvester()
 			throws IOException {
 		
 		datanestProperties = ApplicationProperties.getInstance(DATANEST_PROPERTIES_NAME);
 		
 		serializers = new Vector<AbstractSerializer<RecordType, ?, ?>>();
 		
-		this.primaryRepository = primaryRepository;
+		this.primaryRepository = JackrabbitRepository.getInstance();
 	}
 	
 	abstract public RecordType scrapOneRecord(String[] row) throws ParseException;
@@ -108,12 +107,13 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 			RecordType record) throws IllegalArgumentException,
 			OdnRepositoryException, OdnSerializationException {
 		
-		SolrItem ourCurrentCopyOfRecord = primaryRepository.retrieve(record
+		JackrabbitItem ourCurrentCopyOfRecord = primaryRepository.retrieve(record
 				.getId());
 		if (ourCurrentCopyOfRecord == null)
 			return UpdatedSinceLastHarvestResults.NEW_RECORD;
 
-		SolrItem freshDownloadOfRecord = SolrItem.createSolrItem(record);
+		JackrabbitItem freshDownloadOfRecord = JackrabbitItem
+				.createJackrabbitItem(record);
 
 		if (ourCurrentCopyOfRecord.compareTo(freshDownloadOfRecord) == 0)
 			return UpdatedSinceLastHarvestResults.RECORD_UNCHANGED;
