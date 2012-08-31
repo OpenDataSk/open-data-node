@@ -28,22 +28,16 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
 import java.util.Vector;
 
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-import org.quartz.JobKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import sk.opendata.odn.harvester.AbstractHarvester;
 import sk.opendata.odn.harvester.OdnHarvesterException;
 import sk.opendata.odn.model.AbstractRecord;
 import sk.opendata.odn.repository.OdnRepositoryException;
 import sk.opendata.odn.repository.jackrabbit.JackrabbitItem;
-import sk.opendata.odn.repository.jackrabbit.JackrabbitRepository;
-import sk.opendata.odn.serialization.AbstractSerializer;
 import sk.opendata.odn.serialization.OdnSerializationException;
 import sk.opendata.odn.utils.ApplicationProperties;
 import au.com.bytecode.opencsv.CSVReader;
@@ -69,14 +63,12 @@ import au.com.bytecode.opencsv.CSVReader;
  * original record, harvested and enhanced record, ...) and secondary stores
  * SOLR (for full-text search) and Sesame (for RDF and SPARQL).
  * 
- * TODO: Enhance the documentation and separate stuff common to all Datansets
- * harvesters from stuff common to all harvesters.
- * 
  * @param <RecordType>
  *            type of individual record into which the harvested data are stored
  *            into
  */
-public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecord> {
+public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecord>
+		extends AbstractHarvester<RecordType> {
 
 	public final static String DATANEST_PROPERTIES_NAME = "/datanest.properties";
 	public final static String KEY_DATANEST_BATCH_SIZE = "datanest.batch_size";
@@ -88,22 +80,22 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 	protected final static SimpleDateFormat sdf = new SimpleDateFormat(DATANEST_DATE_FORMAT);
 	
 	protected ApplicationProperties datanestProperties = null;
-	protected Vector<AbstractSerializer<RecordType, ?, ?>> serializers = null;
-	
-	private JackrabbitRepository primaryRepository = null;
 	
 	
 	/**
-	 * @throws IOException
+	 * @param sourceUrlKey key used to get the source URL from Datanest properties
+	 * 
+	 * @throws IOException when initialization of primary repository fails
 	 */
-	public AbstractDatanestHarvester()
+	public AbstractDatanestHarvester(String sourceUrlKey)
 			throws IOException {
+		
+		super();
 		
 		datanestProperties = ApplicationProperties.getInstance(DATANEST_PROPERTIES_NAME);
 		
-		serializers = new Vector<AbstractSerializer<RecordType, ?, ?>>();
-		
-		this.primaryRepository = JackrabbitRepository.getInstance();
+		URL sourceUrl = new URL(datanestProperties.getProperty(sourceUrlKey));
+		setSourceUrl(sourceUrl);
 	}
 	
 	abstract public RecordType scrapOneRecord(String[] row) throws ParseException;
@@ -121,12 +113,17 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 	 * @throws OdnSerializationException
 	 *             when conversion into SOLR beans fails
 	 */
+	// TODO: rename to 'updatedSinceLastHarvest()' as I plan to introduce similar method
+	// into AbstractHarvester which would check the downloaded original document (using
+	// hash or last modification time) to detect changes at the source so as to avoid
+	// actualy parsing the file if it has not been updated.
 	protected UpdatedSinceLastHarvestResults updatedSinceLastHarvest(
 			RecordType record) throws IllegalArgumentException,
 			OdnRepositoryException, OdnSerializationException {
 		
-		JackrabbitItem ourCurrentCopyOfRecord = primaryRepository.retrieve(record
-				.getId());
+		JackrabbitItem ourCurrentCopyOfRecord = getPrimaryRepository()
+				.retrieve(record.getId());
+
 		if (ourCurrentCopyOfRecord == null)
 			return UpdatedSinceLastHarvestResults.NEW_RECORD;
 
@@ -138,22 +135,10 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 
 		return UpdatedSinceLastHarvestResults.RECORD_UPDATED;
 	}
-	
-	/**
-	 * Update our data using data harvested from source.
-	 * 
-	 * @throws OdnHarvesterException
-	 *             when some harvesting error occurs
-	 * @throws OdnSerializationException
-	 *             when some serialization error occurs
-	 * @throws OdnRepositoryException
-	 *             when some repository error occurs
-	 */
-	public abstract void update() throws OdnHarvesterException,
-			OdnSerializationException, OdnRepositoryException;
 
 	/**
-	 * Most common implementation of harvesting code in our current harvesters.
+	 * Most common implementation of harvesting code in our current Datanest
+	 * harvesters.
 	 * 
 	 * @param urlKey
 	 *            property key used to retrieve source URL
@@ -165,10 +150,11 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 	 * @throws OdnRepositoryException
 	 *             when some repository error occurs
 	 */
-	protected void genericUpdate(String urlKey) throws OdnHarvesterException,
+	@Override
+	public void performEtl() throws OdnHarvesterException,
 			OdnSerializationException, OdnRepositoryException {
 
-		logger.info("harvesting started (" + urlKey + ")");
+		logger.info("harvesting started (" + getSourceUrl().toExternalForm() + ")");
 
 		// sort of performance counters
 		long timeStart = Calendar.getInstance().getTimeInMillis();
@@ -179,10 +165,6 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 		OdnHarvesterException odnHarvesterException = null;
 
 		try {
-			URL csvUrl = new URL(
-					datanestProperties.getProperty(urlKey));
-			logger.debug("going to load data from " + csvUrl.toExternalForm());
-			
 			// TODO: insert following:
 			// a) just download the data to local temporary file
 			// b) store that content using 'storeOriginalData()'
@@ -192,7 +174,7 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 			// (to avoid downloading the data repeatedly - usefull from when
 			// the data did not chage at the source but we've updated harvesting code)
 			
-			URLConnection csvConnection = csvUrl.openConnection();
+			URLConnection csvConnection = getSourceUrl().openConnection();
 			csvConnection.setRequestProperty("User-Agent",
 							"Open Data Node (http://opendata.sk/liferay/open-data-node)");
 
@@ -283,7 +265,7 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 		if (odnHarvesterException != null)
 			throw odnHarvesterException;
 
-		logger.info("harvesting finished (" + urlKey + ")");
+		logger.info("harvesting finished (" + getSourceUrl().toExternalForm() + ")");
 		
 		// report final harvesting status
 		timeCurrent = Calendar.getInstance().getTimeInMillis();
@@ -293,52 +275,5 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 				+ (float) (timeCurrent - timeStart) / 1000f + " seconds ("
 				+ harvestingSpeed + "/s, " + unchangedRecordCounter
 				+ " records not changed)");
-	}
-
-	protected void storeOriginalData() {
-		// TODO: get the data as downloaded and store then into dedicated node in Jackrabbit, say /raw/datanest/ppd/2012/08/22/hh/mm
-	}
-	
-	/**
-	 * Loop through all serializers and pass given records to them. Serializers
-	 * will serialize the records and store them.
-	 * 
-	 * @param records
-	 *            list of records to serialize and store
-	 * 
-	 * @throws IllegalArgumentException
-	 *             if repository with given name does not exists
-	 * @throws OdnSerializationException
-	 *             when serialization fails
-	 * @throws OdnRepositoryException
-	 *             when we fail to store given data into repository
-	 */
-	protected void store(List<RecordType> records) throws IllegalArgumentException,
-			OdnSerializationException, OdnRepositoryException {
-	    
-		if (records.size() <= 0)
-			// nothing to store so why bother?
-			return;
-		
-		for (AbstractSerializer<RecordType, ?, ?> serializer : serializers)
-	    	serializer.store(records);
-	}
-	
-	/**
-	 * Method invoked by QUARTZ scheduler to launch this job.
-	 */
-	public void execute(JobExecutionContext context) throws JobExecutionException {
-		JobKey jobKey = context.getJobDetail().getKey();
-		logger.info("scheduled job says: " + jobKey + " executing at " + new Date());
-		
-		try {
-			update();
-		} catch (OdnHarvesterException e) {
-			logger.error("harvester exception", e);
-		} catch (OdnSerializationException e) {
-			logger.error("serialization exception", e);
-		} catch (OdnRepositoryException e) {
-			logger.error("repository exception", e);
-		}
 	}
 }

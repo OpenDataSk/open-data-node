@@ -32,12 +32,9 @@ import org.quartz.Job;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sk.opendata.odn.harvester.OdnHarvesterException;
 import sk.opendata.odn.model.OrganizationRecord;
-import sk.opendata.odn.repository.OdnRepositoryException;
 import sk.opendata.odn.repository.sesame.SesameRepository;
 import sk.opendata.odn.repository.solr.SolrRepository;
-import sk.opendata.odn.serialization.OdnSerializationException;
 import sk.opendata.odn.serialization.rdf.OrganizationRdfSerializer;
 import sk.opendata.odn.serialization.solr.SolrSerializer;
 
@@ -48,7 +45,7 @@ import sk.opendata.odn.serialization.solr.SolrSerializer;
 public class OrganizationsDatanestHarvester extends
 		AbstractDatanestHarvester<OrganizationRecord> implements Job {
 
-	public final static String KEY_DATANEST_ORGANIZATIONS_URL = "datanest.organizations.url";
+	public final static String KEY_DATANEST_ORGANIZATIONS_URL_KEY = "datanest.organizations.url";
 	
 	protected final static int ATTR_INDEX_ID = 0;
 	protected final static int ATTR_INDEX_NAME = 1;
@@ -66,15 +63,15 @@ public class OrganizationsDatanestHarvester extends
 			RepositoryConfigException, RepositoryException,
 			ParserConfigurationException, TransformerConfigurationException {
 		
-		super();
+		super(KEY_DATANEST_ORGANIZATIONS_URL_KEY);
 		
 		OrganizationRdfSerializer rdfSerializer = new OrganizationRdfSerializer(
 				SesameRepository.getInstance());
-		serializers.add(rdfSerializer);
+		addSerializer(rdfSerializer);
 
 		SolrSerializer<OrganizationRecord> solrSerializer = new SolrSerializer<OrganizationRecord>(
 				SolrRepository.getInstance());
-		serializers.add(solrSerializer);
+		addSerializer(solrSerializer);
 	}
 	
 	@Override
@@ -100,13 +97,6 @@ public class OrganizationsDatanestHarvester extends
 		logger.debug("scrapped record of: " + record.getName());
 		
 		return record;
-	}
-	
-	@Override
-	public void update() throws OdnHarvesterException,
-			OdnSerializationException, OdnRepositoryException {
-	
-		genericUpdate(KEY_DATANEST_ORGANIZATIONS_URL);
 	}
 
 }

@@ -31,13 +31,10 @@ import org.quartz.Job;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sk.opendata.odn.harvester.OdnHarvesterException;
 import sk.opendata.odn.model.Currency;
 import sk.opendata.odn.model.PoliticalPartyDonationRecord;
-import sk.opendata.odn.repository.OdnRepositoryException;
 import sk.opendata.odn.repository.sesame.SesameRepository;
 import sk.opendata.odn.repository.solr.SolrRepository;
-import sk.opendata.odn.serialization.OdnSerializationException;
 import sk.opendata.odn.serialization.rdf.PoliticalPartyDonationRdfSerializer;
 import sk.opendata.odn.serialization.solr.SolrSerializer;
 import sk.opendata.odn.utils.PscUtil;
@@ -49,7 +46,7 @@ import sk.opendata.odn.utils.PscUtil;
 public class PoliticalPartyDonationsDatanestHarvester extends
 		AbstractDatanestHarvester<PoliticalPartyDonationRecord> implements Job {
 
-	public final static String KEY_DATANEST_PPD_URL = "datanest.political_party_donors.url";
+	public final static String KEY_DATANEST_PPD_URL_KEY = "datanest.political_party_donors.url";
 	
 	protected final static int ATTR_INDEX_ID = 0;
 	protected final static int ATTR_INDEX_DONOR_NAME = 1;
@@ -74,15 +71,15 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 			RepositoryConfigException, RepositoryException,
 			ParserConfigurationException, TransformerConfigurationException {
 		
-		super();
+		super(KEY_DATANEST_PPD_URL_KEY);
 		
 		PoliticalPartyDonationRdfSerializer rdfSerializer = new PoliticalPartyDonationRdfSerializer(
 				SesameRepository.getInstance());
-		serializers.add(rdfSerializer);
+		addSerializer(rdfSerializer);
 
 		SolrSerializer<PoliticalPartyDonationRecord> solrSerializer = new SolrSerializer<PoliticalPartyDonationRecord>(
 				SolrRepository.getInstance());
-		serializers.add(solrSerializer);
+		addSerializer(solrSerializer);
 	}
 	
 	@Override
@@ -126,13 +123,6 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 		logger.debug("scrapped record of: " + record.getDatanestId());
 		
 		return record;
-	}
-	
-	@Override
-	public void update() throws OdnHarvesterException,
-			OdnSerializationException, OdnRepositoryException {
-	
-		genericUpdate(KEY_DATANEST_PPD_URL);
 	}
 
 }

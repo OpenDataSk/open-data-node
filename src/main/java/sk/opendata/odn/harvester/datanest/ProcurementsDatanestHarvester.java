@@ -30,13 +30,10 @@ import org.quartz.Job;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sk.opendata.odn.harvester.OdnHarvesterException;
 import sk.opendata.odn.model.Currency;
 import sk.opendata.odn.model.ProcurementRecord;
-import sk.opendata.odn.repository.OdnRepositoryException;
 import sk.opendata.odn.repository.sesame.SesameRepository;
 import sk.opendata.odn.repository.solr.SolrRepository;
-import sk.opendata.odn.serialization.OdnSerializationException;
 import sk.opendata.odn.serialization.rdf.ProcurementRdfSerializer;
 import sk.opendata.odn.serialization.solr.SolrSerializer;
 
@@ -48,7 +45,7 @@ import sk.opendata.odn.serialization.solr.SolrSerializer;
 public class ProcurementsDatanestHarvester extends
 		AbstractDatanestHarvester<ProcurementRecord> implements Job {
 
-	public final static String KEY_DATANEST_PROCUREMENTS_URL = "datanest.procurements.url";
+	public final static String KEY_DATANEST_PROCUREMENTS_URL_KEY = "datanest.procurements.url";
 	
 	public final static String SC_MISSING_CURRENCY = "missing currency";
 	public final static String SC_MISSING_CURRENCY_FOR_NON_ZERO_PRICE = "missing currency (for price which is non-zero)";
@@ -74,15 +71,15 @@ public class ProcurementsDatanestHarvester extends
 			RepositoryConfigException, RepositoryException,
 			ParserConfigurationException, TransformerConfigurationException {
 		
-		super();
+		super(KEY_DATANEST_PROCUREMENTS_URL_KEY);
 		
 		ProcurementRdfSerializer rdfSerializer = new ProcurementRdfSerializer(
 				SesameRepository.getInstance());
-		serializers.add(rdfSerializer);
+		addSerializer(rdfSerializer);
 
 		SolrSerializer<ProcurementRecord> solrSerializer = new SolrSerializer<ProcurementRecord>(
 				SolrRepository.getInstance());
-		serializers.add(solrSerializer);
+		addSerializer(solrSerializer);
 	}
 	
 	@Override
@@ -132,13 +129,6 @@ public class ProcurementsDatanestHarvester extends
 		logger.debug("scrapped record of: " + record.getDatanestId());
 		
 		return record;
-	}
-	
-	@Override
-	public void update() throws OdnHarvesterException,
-			OdnSerializationException, OdnRepositoryException {
-	
-		genericUpdate(KEY_DATANEST_PROCUREMENTS_URL);
 	}
 
 }
