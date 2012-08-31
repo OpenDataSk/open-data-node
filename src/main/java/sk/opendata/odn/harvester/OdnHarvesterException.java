@@ -16,7 +16,7 @@
  * along with Open Data Node.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package sk.opendata.odn.harvester.datanest;
+package sk.opendata.odn.harvester;
 
 public class OdnHarvesterException extends Exception {
 

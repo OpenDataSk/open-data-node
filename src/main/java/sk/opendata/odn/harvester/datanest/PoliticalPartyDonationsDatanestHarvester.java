@@ -31,6 +31,7 @@ import org.quartz.Job;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import sk.opendata.odn.harvester.OdnHarvesterException;
 import sk.opendata.odn.model.Currency;
 import sk.opendata.odn.model.PoliticalPartyDonationRecord;
 import sk.opendata.odn.repository.OdnRepositoryException;

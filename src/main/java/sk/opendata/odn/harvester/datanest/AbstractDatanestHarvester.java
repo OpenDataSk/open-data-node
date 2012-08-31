@@ -38,6 +38,7 @@ import org.quartz.JobKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import sk.opendata.odn.harvester.OdnHarvesterException;
 import sk.opendata.odn.model.AbstractRecord;
 import sk.opendata.odn.repository.OdnRepositoryException;
 import sk.opendata.odn.repository.jackrabbit.JackrabbitItem;
