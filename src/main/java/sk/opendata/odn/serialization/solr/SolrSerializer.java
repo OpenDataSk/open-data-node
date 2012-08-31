@@ -29,8 +29,13 @@ import sk.opendata.odn.serialization.AbstractSerializer;
 import sk.opendata.odn.serialization.OdnSerializationException;
 
 /**
- * This class is used by a Harvester to serialize organization records into beans
+ * This class is used by a Harvester to serialize various records into beans
  * intended to be added to SOLR and store them in Repository.
+ * 
+ * Note in regards to "various records": We're storing entries from several
+ * datasets (thus multiple types of entries) into just one SOLR index. Thus
+ * {@code SolrItem} is used to convert each particular type into one SOLR Type
+ * via {@code SolrItem.createSolrItem}.
  * 
  * @param <RecordType>
  *            type of individual record which will be converted to SOLR bean
