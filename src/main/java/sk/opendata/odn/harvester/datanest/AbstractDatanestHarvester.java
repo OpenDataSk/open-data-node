@@ -182,6 +182,15 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 					datanestProperties.getProperty(urlKey));
 			logger.debug("going to load data from " + csvUrl.toExternalForm());
 			
+			// TODO: insert following:
+			// a) just download the data to local temporary file
+			// b) store that content using 'storeOriginalData()'
+			// c) pass that temporary file to CSVReader
+			// Later on we can enhance the /admin page of ODN with some
+			// harvesting options like "use latest raw data (from Jackrabbit"
+			// (to avoid downloading the data repeatedly - usefull from when
+			// the data did not chage at the source but we've updated harvesting code)
+			
 			URLConnection csvConnection = csvUrl.openConnection();
 			csvConnection.setRequestProperty("User-Agent",
 							"Open Data Node (http://opendata.sk/liferay/open-data-node)");
@@ -285,6 +294,10 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 				+ " records not changed)");
 	}
 
+	protected void storeOriginalData() {
+		// TODO: get the data as downloaded and store then into dedicated node in Jackrabbit, say /raw/datanest/ppd/2012/08/22/hh/mm
+	}
+	
 	/**
 	 * Loop through all serializers and pass given records to them. Serializers
 	 * will serialize the records and store them.
