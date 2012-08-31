@@ -133,6 +133,7 @@ public class JackrabbitRepository implements OdnRepositoryStoreInterface<List<Ja
 		return jackrabbitSession;
 	}
 
+	// TODO: rename to 'getSession()' - it is a private method so no need to maintain some common naming with other Repository classes, even more so if it is confusing naming in this case
 	private synchronized Session getRepo() throws RepositoryException, NamingException, MalformedURLException {
 
 		Session repo = jackrabbitSession;
