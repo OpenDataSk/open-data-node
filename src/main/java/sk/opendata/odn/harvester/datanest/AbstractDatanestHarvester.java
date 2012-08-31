@@ -50,13 +50,30 @@ import au.com.bytecode.opencsv.CSVReader;
 /**
  * Stuff common to all Datanest harvesters.
  * 
- * Note in regards to "primary repository": After we harvest the data, we store it into multiple
- * repositories to serve for multiple purposes. In current architecture, it means Jackrabbit
- * as primary document store (with full data: original record, harvested and enhanced record, ...)
- * and secondary stores SOLR (for full-text search) and Sesame (for RDF and SPARQL).
+ * What is a common harvesting work-flow:
+ * 1) download the original document(s) from the main source of data
+ * 2) store the copy of original(s) in primary repository
+ *    why: to have audit trail, our own copy, possibly to run next steps
+ *    from this own copy instead of downloading (possibly unchanged)
+ *    document repeatedly
+ * 3) extract data
+ * 4) enhance data: clean-up, correction, correlation, possibly production
+ *    of new data via math/logic, ...
+ * 5) serialize data into format(s) suitable for ODN back-end repository(ies)
+ * 6) store the data into ODN back-end repository(ies)
+ * 
+ * Note in regards to "primary repository": After we harvest the data, we store
+ * it into multiple repositories to serve for multiple purposes. In current
+ * architecture, it means Jackrabbit as primary document store (with full data:
+ * original record, harvested and enhanced record, ...) and secondary stores
+ * SOLR (for full-text search) and Sesame (for RDF and SPARQL).
+ * 
+ * TODO: Enhance the documentation and separate stuff common to all Datansets
+ * harvesters from stuff common to all harvesters.
  * 
  * @param <RecordType>
- *            type of individual record into which the harvested data are stored into
+ *            type of individual record into which the harvested data are stored
+ *            into
  */
 public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecord> {
 
@@ -269,7 +286,7 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 	}
 
 	/**
-	 * Loop through all serializer and pass given records to them. Serializers
+	 * Loop through all serializers and pass given records to them. Serializers
 	 * will serialize the records and store them.
 	 * 
 	 * @param records
