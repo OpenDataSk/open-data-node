@@ -50,7 +50,6 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 		AbstractDatanestHarvester<PoliticalPartyDonationRecord> implements Job {
 
 	public final static String KEY_DATANEST_PPD_URL = "datanest.political_party_donors.url";
-	public final static String KEY_DATANEST_PPD_SEZAME_REPO_NAME = "datanest.political_party_donors.sesame_repo_name";
 	
 	protected final static int ATTR_INDEX_ID = 0;
 	protected final static int ATTR_INDEX_DONOR_NAME = 1;
@@ -78,9 +77,7 @@ public class PoliticalPartyDonationsDatanestHarvester extends
 		super();
 		
 		PoliticalPartyDonationRdfSerializer rdfSerializer = new PoliticalPartyDonationRdfSerializer(
-				SesameRepository.getInstance(),
-				datanestProperties
-						.getProperty(KEY_DATANEST_PPD_SEZAME_REPO_NAME));
+				SesameRepository.getInstance());
 		serializers.add(rdfSerializer);
 
 		SolrSerializer<PoliticalPartyDonationRecord> solrSerializer = new SolrSerializer<PoliticalPartyDonationRecord>(

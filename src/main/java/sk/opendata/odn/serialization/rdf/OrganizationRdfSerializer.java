@@ -51,8 +51,6 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 	 * 
 	 * @param repository
 	 *            repository to use for storage of record
-	 * @param contextsKey
-	 *            property key used to retrieve RDF contexts used for data serialized here
 	 * 
 	 * @throws IllegalArgumentException
 	 *             if repository is {@code null}
@@ -62,11 +60,11 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 	 *             when XML document transformer fails to initialize
 	 */
 	public OrganizationRdfSerializer(
-			OdnRepositoryStoreInterface<RdfData> repository, String contextsKey)
+			OdnRepositoryStoreInterface<RdfData> repository)
 			throws IllegalArgumentException, ParserConfigurationException,
 			TransformerConfigurationException {
 	
-		super(repository, contextsKey);
+		super(repository);
 	}
 	
 	@Override

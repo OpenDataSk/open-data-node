@@ -56,8 +56,6 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 	 * 
 	 * @param repository
 	 *            repository to use for storage of record
-	 * @param name
-	 *            name of the storage/back-end to store into
 	 * 
 	 * @throws IllegalArgumentException
 	 *             if repository is {@code null}
@@ -66,11 +64,12 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 	 * @throws TransformerConfigurationException
 	 *             when XML document transformer fails to initialize
 	 */
-	public ProcurementRdfSerializer(OdnRepositoryStoreInterface<RdfData> repository,
-			String name) throws IllegalArgumentException,
-			ParserConfigurationException, TransformerConfigurationException {
+	public ProcurementRdfSerializer(
+			OdnRepositoryStoreInterface<RdfData> repository)
+			throws IllegalArgumentException, ParserConfigurationException,
+			TransformerConfigurationException {
 	
-		super(repository, name);
+		super(repository);
 	}
 	
 	@Override

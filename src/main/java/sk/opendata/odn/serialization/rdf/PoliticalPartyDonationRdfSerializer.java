@@ -54,8 +54,6 @@ public class PoliticalPartyDonationRdfSerializer extends AbstractRdfSerializer<P
 	 * 
 	 * @param repository
 	 *            repository to use for storage of record
-	 * @param name
-	 *            name of the storage/back-end to store into
 	 * 
 	 * @throws IllegalArgumentException
 	 *             if repository is {@code null}
@@ -65,11 +63,11 @@ public class PoliticalPartyDonationRdfSerializer extends AbstractRdfSerializer<P
 	 *             when XML document transformer fails to initialize
 	 */
 	public PoliticalPartyDonationRdfSerializer(
-			OdnRepositoryStoreInterface<RdfData> repository, String name)
+			OdnRepositoryStoreInterface<RdfData> repository)
 			throws IllegalArgumentException, ParserConfigurationException,
 			TransformerConfigurationException {
 	
-		super(repository, name);
+		super(repository);
 	}
 	
 	@Override

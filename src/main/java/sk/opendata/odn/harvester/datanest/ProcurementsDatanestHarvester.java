@@ -49,7 +49,6 @@ public class ProcurementsDatanestHarvester extends
 		AbstractDatanestHarvester<ProcurementRecord> implements Job {
 
 	public final static String KEY_DATANEST_PROCUREMENTS_URL = "datanest.procurements.url";
-	public final static String KEY_DATANEST_PROCUREMENTS_SEZAME_REPO_NAME = "datanest.procurements.sesame_repo_name";
 	
 	public final static String SC_MISSING_CURRENCY = "missing currency";
 	public final static String SC_MISSING_CURRENCY_FOR_NON_ZERO_PRICE = "missing currency (for price which is non-zero)";
@@ -78,9 +77,7 @@ public class ProcurementsDatanestHarvester extends
 		super();
 		
 		ProcurementRdfSerializer rdfSerializer = new ProcurementRdfSerializer(
-				SesameRepository.getInstance(),
-				datanestProperties
-						.getProperty(KEY_DATANEST_PROCUREMENTS_SEZAME_REPO_NAME));
+				SesameRepository.getInstance());
 		serializers.add(rdfSerializer);
 
 		SolrSerializer<ProcurementRecord> solrSerializer = new SolrSerializer<ProcurementRecord>(

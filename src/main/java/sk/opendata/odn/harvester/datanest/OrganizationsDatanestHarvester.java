@@ -49,7 +49,6 @@ public class OrganizationsDatanestHarvester extends
 		AbstractDatanestHarvester<OrganizationRecord> implements Job {
 
 	public final static String KEY_DATANEST_ORGANIZATIONS_URL = "datanest.organizations.url";
-	public final static String KEY_DATANEST_ORGANIZATIONS_SEZAME_REPO_NAME = "datanest.organizations.sesame_repo_name";
 	
 	protected final static int ATTR_INDEX_ID = 0;
 	protected final static int ATTR_INDEX_NAME = 1;
@@ -70,9 +69,7 @@ public class OrganizationsDatanestHarvester extends
 		super();
 		
 		OrganizationRdfSerializer rdfSerializer = new OrganizationRdfSerializer(
-				SesameRepository.getInstance(),
-				datanestProperties
-						.getProperty(KEY_DATANEST_ORGANIZATIONS_SEZAME_REPO_NAME));
+				SesameRepository.getInstance());
 		serializers.add(rdfSerializer);
 
 		SolrSerializer<OrganizationRecord> solrSerializer = new SolrSerializer<OrganizationRecord>(
