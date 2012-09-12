@@ -222,6 +222,13 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 						// add new data
 						records.add(record);
 					}
+				} catch (ArrayIndexOutOfBoundsException e) {
+					// happens when connection with source server cuts
+					// prematurely - this will cause last fetched line of CSV to
+					// be incomplete
+					logger.warn("index out of bound exception (broken connection?)", e);
+					logger.warn("skipping following record: "
+							+ Arrays.deepToString(row));
 				} catch (ParseException e) {
 					logger.warn("parse exception", e);
 					logger.warn("skipping following record: "
