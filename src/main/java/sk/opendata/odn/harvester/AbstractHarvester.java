@@ -18,8 +18,13 @@
 
 package sk.opendata.odn.harvester;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLConnection;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
@@ -65,6 +70,9 @@ import sk.opendata.odn.serialization.OdnSerializationException;
 public abstract class AbstractHarvester<RecordType extends AbstractRecord> {
 
 	private static Logger logger = LoggerFactory.getLogger(AbstractHarvester.class);
+	
+	public final static String ODN_HARVESTER_TMP_PREF = "odn-harvester-";
+	public final static String ODN_HARVESTER_TMP_SUFF = ".tmp";
 	
 	private URL sourceUrl = null;
 	private JackrabbitRepository primaryRepository = null;
@@ -128,19 +136,53 @@ public abstract class AbstractHarvester<RecordType extends AbstractRecord> {
 	public void update() throws OdnHarvesterException,
 			OdnSerializationException, OdnRepositoryException {
 
-		// TODO:
-		// 1) download the source data into local temporary file using 'sourceUrl'
-		//    (or, if requested on admin console, retrieve latest copy from Jackrabbit
-		//    and use that instead of downloading fresh copy - in that case skip [2]
-		//    and [3] of course)
+		File tempFile = null;
 
-		// 2) use 'storeOriginalData()' to store that file into Jackrabbit
+		logger.info("harvesting started (" + this.sourceUrl.toExternalForm() + ")");
+
+		try {
+			// 1) download the source data into local temporary file using 'sourceUrl'
+			//    (or, if requested on admin console, retrieve latest copy from Jackrabbit
+			//    and use that instead of downloading fresh copy - in that case skip [2]
+			//    and [3] of course)
+			tempFile = File.createTempFile(ODN_HARVESTER_TMP_PREF,
+					ODN_HARVESTER_TMP_SUFF);
+			tempFile.deleteOnExit();
+			
+			URLConnection csvConnection = getSourceUrl().openConnection();
+			csvConnection.setRequestProperty("User-Agent",
+							"Open Data Node (http://opendata.sk/liferay/open-data-node)");
+			
+			ReadableByteChannel rbc = Channels.newChannel(csvConnection
+					.getInputStream());
+			FileOutputStream fos = new FileOutputStream(tempFile);
+			long count = fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+			logger.debug("downloaded " + Long.toString(count)
+					+ " bytes from " + sourceUrl.toExternalForm() + " to "
+					+ tempFile.getAbsolutePath());
+			fos.close();
+			rbc.close();
+
+			// 2) use 'storeOriginalData()' to store that file into Jackrabbit
+			// TODO
+			
+			// 3) determine, whether source file has been changed, if not stop
+			// TODO
+			
+			// 4) extract data (for now done in 'genericUpate()', but renamed that
+			//    to 'performEtl()' or 'processData()' or something
+			performEtl(tempFile);
+			
+			// 5) clean-up: delete temporary files
+			// TODO
+			if (!tempFile.delete())
+				logger.error("failed to delete temporary file "
+						+ tempFile.getAbsolutePath());
+		} catch (IOException e) {
+			logger.error("IO exception", e);
+		}
 		
-		// 3) determine, whether source file has been changed, if not stop
-		
-		// 4) extract data (for now done in 'genericUpate()', but renamed that
-		//    to 'performEtl()' or 'processData()' or something
-		performEtl();
+		logger.info("harvesting finished (" + this.sourceUrl.toExternalForm() + ")");
 	}
 
 	protected void storeOriginalData() {
@@ -150,7 +192,8 @@ public abstract class AbstractHarvester<RecordType extends AbstractRecord> {
 	/**
 	 * Extract, transform and load the data.
 	 * 
-	 * TODO: Add a File parameter pointing to the temporary file holding downloaded data.
+	 * @param sourceFile
+	 *            temporary file holding freshly obtained data to harvest from
 	 * 
 	 * @throws OdnHarvesterException
 	 *             when some harvesting error occurs
@@ -159,7 +202,7 @@ public abstract class AbstractHarvester<RecordType extends AbstractRecord> {
 	 * @throws OdnRepositoryException
 	 *             when some repository error occurs
 	 */
-	abstract public void performEtl() throws OdnHarvesterException,
+	abstract public void performEtl(File sourceFile) throws OdnHarvesterException,
 			OdnSerializationException, OdnRepositoryException;
 	
 	/**

@@ -19,11 +19,11 @@
 package sk.opendata.odn.harvester.datanest;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -140,8 +140,8 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 	 * Most common implementation of harvesting code in our current Datanest
 	 * harvesters.
 	 * 
-	 * @param urlKey
-	 *            property key used to retrieve source URL
+	 * @param sourceFile
+	 *            temporary file holding freshly obtained data to harvest from
 	 * 
 	 * @throws OdnHarvesterException
 	 *             when some harvesting error occurs
@@ -151,10 +151,10 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 	 *             when some repository error occurs
 	 */
 	@Override
-	public void performEtl() throws OdnHarvesterException,
+	public void performEtl(File sourceFile) throws OdnHarvesterException,
 			OdnSerializationException, OdnRepositoryException {
 
-		logger.info("harvesting started (" + getSourceUrl().toExternalForm() + ")");
+		logger.debug("ETL started (" + sourceFile.getAbsolutePath() + ")");
 
 		// sort of performance counters
 		long timeStart = Calendar.getInstance().getTimeInMillis();
@@ -165,22 +165,9 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 		OdnHarvesterException odnHarvesterException = null;
 
 		try {
-			// TODO: insert following:
-			// a) just download the data to local temporary file
-			// b) store that content using 'storeOriginalData()'
-			// c) pass that temporary file to CSVReader
-			// Later on we can enhance the /admin page of ODN with some
-			// harvesting options like "use latest raw data (from Jackrabbit"
-			// (to avoid downloading the data repeatedly - usefull from when
-			// the data did not chage at the source but we've updated harvesting code)
-			
-			URLConnection csvConnection = getSourceUrl().openConnection();
-			csvConnection.setRequestProperty("User-Agent",
-							"Open Data Node (http://opendata.sk/liferay/open-data-node)");
-
 			// "open" the CSV dump
 			CSVReader csvReader = new CSVReader(new BufferedReader(
-					new InputStreamReader(csvConnection.getInputStream())));
+					new FileReader(sourceFile)));
 			// TODO: If we store also the original copy of the data (say in
 			// Jacrabbit) and perform a "diff" on that and previous version we can:
 			// a) determine also removed records (which current implementation
@@ -272,7 +259,7 @@ public abstract class AbstractDatanestHarvester<RecordType extends AbstractRecor
 		if (odnHarvesterException != null)
 			throw odnHarvesterException;
 
-		logger.info("harvesting finished (" + getSourceUrl().toExternalForm() + ")");
+		logger.debug("ETL finished (" + sourceFile.getAbsolutePath() + ")");
 		
 		// report final harvesting status
 		timeCurrent = Calendar.getInstance().getTimeInMillis();
