@@ -76,17 +76,6 @@ public class JackrabbitRepository implements OdnRepositoryStoreInterface<List<Ja
 
 		if (instance == null)
 			instance = new JackrabbitRepository();
-		
-		// debug: just to test the session log in
-		// status: it works but uses local repo created in homedir (derby.log, repository and repository.xml)
-		// TODO: convince it to use remote Jackrabbit, by default on localhost, and configure it in my ~/.odn/ to use either VM or OHIO
-		try {
-			instance.getRepo();
-		} catch (RepositoryException e) {
-			e.printStackTrace();
-		} catch (NamingException e) {
-			e.printStackTrace();
-		}
 
 		return instance;
 	}
