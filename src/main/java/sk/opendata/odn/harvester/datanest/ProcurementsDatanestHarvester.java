@@ -19,6 +19,8 @@
 package sk.opendata.odn.harvester.datanest;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -65,6 +67,7 @@ public class ProcurementsDatanestHarvester extends
 	protected final static int ATTR_INDEX_SUPPLIER_ICO = 17;
 	
 	private static Logger logger = LoggerFactory.getLogger(ProcurementsDatanestHarvester.class);
+	private DecimalFormat priceFormat = null;
 
 	
 	public ProcurementsDatanestHarvester() throws IOException,
@@ -80,6 +83,16 @@ public class ProcurementsDatanestHarvester extends
 		SolrSerializer<ProcurementRecord> solrSerializer = new SolrSerializer<ProcurementRecord>(
 				SolrRepository.getInstance());
 		addSerializer(solrSerializer);
+		
+		// note: Following would be "clean":
+		//	NumberFormat.getNumberInstance(new Locale("sk", "SK"))
+		// but it requires source data to use non-breaking space instead of
+		// regular space.
+		priceFormat = new DecimalFormat();
+		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+		symbols.setGroupingSeparator(' ');
+		symbols.setDecimalSeparator(',');
+		priceFormat.setDecimalFormatSymbols(symbols);
 	}
 	
 	@Override
@@ -100,7 +113,8 @@ public class ProcurementsDatanestHarvester extends
 			// for price
 			record.addScrapNote(SC_MISSING_PRICE);
 		else
-			record.setPrice(Float.valueOf(row[ATTR_INDEX_PRICE]));
+			record.setPrice(priceFormat.parse(row[ATTR_INDEX_PRICE])
+					.floatValue());
 		
 		if (!row[ATTR_INDEX_CURRENCY].isEmpty()) {
 			try {

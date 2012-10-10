@@ -28,7 +28,6 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 
-import sk.opendata.odn.harvester.datanest.ProcurementsDatanestHarvester;
 import sk.opendata.odn.model.Currency;
 import sk.opendata.odn.model.ProcurementRecord;
 
@@ -36,14 +35,16 @@ public class TestProcurementsDatanestHarvester {
 	
 	public final String TEST_YEAR = "2012";
 	public final String TEST_ICO = "17321204";
-	public final Float TEST_PRICE = 1.25f;
+	public final String TEST_PRICE = "1,25 ";
 	public final String TEST_INVALID_PRICE = "L.25";
+	public final String TEST_PRICE_ISSUE_2 = "28 000 000,00 ";
 	public final Currency TEST_CURRENCY = Currency.EUR;
 	public final String TEST_EMPTY_STRING = "";
 	
 	private ProcurementsDatanestHarvester harvester;
 	
 	private String[] fullRecord;
+	private String[] recordWithPriceIssue2;
 	private String[] recordWithInvalidPrice;
 	private String[] recordWithEmptyPrice;
 	private String[] recordWithEmptyCurrency;
@@ -57,8 +58,12 @@ public class TestProcurementsDatanestHarvester {
 		fullRecord[ProcurementsDatanestHarvester.ATTR_INDEX_YEAR] = TEST_YEAR;
 		fullRecord[ProcurementsDatanestHarvester.ATTR_INDEX_CUSTOMER_ICO] = TEST_ICO;
 		fullRecord[ProcurementsDatanestHarvester.ATTR_INDEX_SUPPLIER_ICO] = TEST_ICO;
-		fullRecord[ProcurementsDatanestHarvester.ATTR_INDEX_PRICE] = TEST_PRICE.toString();
+		fullRecord[ProcurementsDatanestHarvester.ATTR_INDEX_PRICE] = TEST_PRICE;
 		fullRecord[ProcurementsDatanestHarvester.ATTR_INDEX_CURRENCY] = TEST_CURRENCY.toString();
+		
+		recordWithPriceIssue2 = Arrays
+				.copyOf(fullRecord, fullRecord.length);
+		recordWithPriceIssue2[ProcurementsDatanestHarvester.ATTR_INDEX_PRICE] = TEST_PRICE_ISSUE_2;
 		
 		recordWithInvalidPrice = Arrays
 				.copyOf(fullRecord, fullRecord.length);
@@ -87,7 +92,7 @@ public class TestProcurementsDatanestHarvester {
 			assertEquals("customer ICO", TEST_ICO, record.getCustomerIco());
 			assertEquals("supplier ICO", TEST_ICO, record.getSupplierIco());
 			
-			assertEquals("price", TEST_PRICE.floatValue(), record.getPrice(), 0.001f);
+			assertEquals("price", 1.25f, record.getPrice(), 0.001f);
 			assertEquals("currency", TEST_CURRENCY, record.getCurrency());
 
 			assertEquals("number of scrap notes", 0, record.getScrapNotes().size());
@@ -96,7 +101,22 @@ public class TestProcurementsDatanestHarvester {
 		}
 	}
 
-	@Test(expected=NumberFormatException.class)
+	/**
+	 * This test replicates issue #2 reported on GitHub:
+	 * https://github.com/OpenDataSk/open-data-node/issues/2
+	 */
+	@Test
+	public void testScrapOneRecordIssue2() {
+		try {
+			ProcurementRecord record = harvester.scrapOneRecord(recordWithPriceIssue2);
+			
+			assertEquals("price", 28000000f, record.getPrice(), 0.001f);
+		} catch (ParseException e) {
+			fail("exception occured: " + e);
+		}
+	}
+
+	@Test(expected=ParseException.class)
 	public void testScrapOneRecordWithInvalidPrice() throws ParseException {
 		harvester.scrapOneRecord(recordWithInvalidPrice);
 	}
