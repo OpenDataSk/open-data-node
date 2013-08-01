@@ -121,9 +121,9 @@ public class PoliticalPartyDonationRdfSerializer extends AbstractRdfSerializer<P
 		}
 		// TODO: adresa, mesto a PSC darcu
 		
-		concept.appendChild(appendTextNode(doc, "opendata:xGiftValue",
+		concept.appendChild(appendTextNode(doc, "opendata:giftValue",
 				donationValueFormat.format(record.getDonationValue())));
-		concept.appendChild(appendTextNode(doc, "opendata:xGiftCurrency",
+		concept.appendChild(appendTextNode(doc, "opendata:giftCurrency",
 				record.getCurrency().getCurrencyCode()));
 		concept.appendChild(appendTextNode(doc, "opendata:xRecipientParty",
 				record.getRecipientParty()));
