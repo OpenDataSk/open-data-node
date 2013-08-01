@@ -26,6 +26,7 @@ public class TestProcurementRdfSerializer {
 			+ "xmlns:dc=\"http://purl.org/dc/elements/1.1/\" "
 			+ "xmlns:locn=\"http://www.w3.org/ns/locn#\" "
 			+ "xmlns:opendata=\"http://sk.eea.opendata/2011/02/opendicts#\" "
+			+ "xmlns:org=\"http://www.w3.org/ns/org#\" "
 			+ "xmlns:pc=\"http://opendata.cz/vocabulary/procurement.rdf#\" "
 			+ "xmlns:rov=\"http://www.w3.org/TR/vocab-regorg/\" "
 			+ "xmlns:skos=\"http://www.w3.org/2004/02/skos/core#\">\n"

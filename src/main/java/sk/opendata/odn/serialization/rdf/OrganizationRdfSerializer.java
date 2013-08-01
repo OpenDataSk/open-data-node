@@ -99,7 +99,7 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 	    address.appendChild(fullAddress);
 	    // TODO: parse out PSC from full address
 	    //address.appendChild(appendTextNode(doc, "locn:postCode", record.getSeat()));
-	    Element primarySite = doc.createElement("rov:hasPrimarySite");
+	    Element primarySite = doc.createElement("org:registeredSite");
 	    primarySite.appendChild(address);
 	    concept.appendChild(primarySite);
 	    concept.appendChild(appendTextNode(doc, "opendata:ico", record.getIco()));
