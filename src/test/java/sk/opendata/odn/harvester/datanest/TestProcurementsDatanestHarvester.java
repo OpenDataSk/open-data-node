@@ -30,16 +30,9 @@ import org.junit.Test;
 
 import sk.opendata.odn.model.Currency;
 import sk.opendata.odn.model.ProcurementRecord;
+import sk.opendata.odn.utils.tests.ProcurementTestData;
 
 public class TestProcurementsDatanestHarvester {
-	
-	public final String TEST_YEAR = "2012";
-	public final String TEST_ICO = "17321204";
-	public final String TEST_PRICE = "1,25 ";
-	public final String TEST_INVALID_PRICE = "L.25";
-	public final String TEST_PRICE_ISSUE_2 = "28 000 000,00 ";
-	public final Currency TEST_CURRENCY = Currency.EUR;
-	public final String TEST_EMPTY_STRING = "";
 	
 	private ProcurementsDatanestHarvester harvester;
 	
@@ -55,32 +48,32 @@ public class TestProcurementsDatanestHarvester {
 		harvester = new ProcurementsDatanestHarvester();
 		
 		fullRecord = new String[ProcurementsDatanestHarvester.ATTR_INDEX_SUPPLIER_ICO + 1];
-		fullRecord[ProcurementsDatanestHarvester.ATTR_INDEX_YEAR] = TEST_YEAR;
-		fullRecord[ProcurementsDatanestHarvester.ATTR_INDEX_CUSTOMER_ICO] = TEST_ICO;
-		fullRecord[ProcurementsDatanestHarvester.ATTR_INDEX_SUPPLIER_ICO] = TEST_ICO;
-		fullRecord[ProcurementsDatanestHarvester.ATTR_INDEX_PRICE] = TEST_PRICE;
-		fullRecord[ProcurementsDatanestHarvester.ATTR_INDEX_CURRENCY] = TEST_CURRENCY.toString();
+		fullRecord[ProcurementsDatanestHarvester.ATTR_INDEX_YEAR] = ProcurementTestData.TEST_YEAR;
+		fullRecord[ProcurementsDatanestHarvester.ATTR_INDEX_CUSTOMER_ICO] = ProcurementTestData.TEST_CUSTOMER_ICO;
+		fullRecord[ProcurementsDatanestHarvester.ATTR_INDEX_SUPPLIER_ICO] = ProcurementTestData.TEST_CUSTOMER_ICO;
+		fullRecord[ProcurementsDatanestHarvester.ATTR_INDEX_PRICE] = ProcurementTestData.TEST_PRICE_STRING;
+		fullRecord[ProcurementsDatanestHarvester.ATTR_INDEX_CURRENCY] = ProcurementTestData.TEST_CURRENCY.toString();
 		
 		recordWithPriceIssue2 = Arrays
 				.copyOf(fullRecord, fullRecord.length);
-		recordWithPriceIssue2[ProcurementsDatanestHarvester.ATTR_INDEX_PRICE] = TEST_PRICE_ISSUE_2;
+		recordWithPriceIssue2[ProcurementsDatanestHarvester.ATTR_INDEX_PRICE] = ProcurementTestData.TEST_PRICE_ISSUE_2;
 		
 		recordWithInvalidPrice = Arrays
 				.copyOf(fullRecord, fullRecord.length);
-		recordWithInvalidPrice[ProcurementsDatanestHarvester.ATTR_INDEX_PRICE] = TEST_INVALID_PRICE;
+		recordWithInvalidPrice[ProcurementsDatanestHarvester.ATTR_INDEX_PRICE] = ProcurementTestData.TEST_INVALID_PRICE;
 		
 		recordWithEmptyPrice = Arrays
 				.copyOf(fullRecord, fullRecord.length);
-		recordWithEmptyPrice[ProcurementsDatanestHarvester.ATTR_INDEX_PRICE] = TEST_EMPTY_STRING;
+		recordWithEmptyPrice[ProcurementsDatanestHarvester.ATTR_INDEX_PRICE] = ProcurementTestData.TEST_EMPTY_STRING;
 		
 		recordWithEmptyCurrency = Arrays
 				.copyOf(fullRecord, fullRecord.length);
-		recordWithEmptyCurrency[ProcurementsDatanestHarvester.ATTR_INDEX_CURRENCY] = TEST_EMPTY_STRING;
+		recordWithEmptyCurrency[ProcurementsDatanestHarvester.ATTR_INDEX_CURRENCY] = ProcurementTestData.TEST_EMPTY_STRING;
 		
 		recordWithEmptyCurrencyAndPrice = Arrays
 				.copyOf(fullRecord, fullRecord.length);
-		recordWithEmptyCurrencyAndPrice[ProcurementsDatanestHarvester.ATTR_INDEX_PRICE] = TEST_EMPTY_STRING;
-		recordWithEmptyCurrencyAndPrice[ProcurementsDatanestHarvester.ATTR_INDEX_CURRENCY] = TEST_EMPTY_STRING;
+		recordWithEmptyCurrencyAndPrice[ProcurementsDatanestHarvester.ATTR_INDEX_PRICE] = ProcurementTestData.TEST_EMPTY_STRING;
+		recordWithEmptyCurrencyAndPrice[ProcurementsDatanestHarvester.ATTR_INDEX_CURRENCY] = ProcurementTestData.TEST_EMPTY_STRING;
 	}
 
 	@Test
@@ -88,12 +81,12 @@ public class TestProcurementsDatanestHarvester {
 		try {
 			ProcurementRecord record = harvester.scrapOneRecord(fullRecord);
 			
-			assertEquals("name", TEST_YEAR, record.getYear());
-			assertEquals("customer ICO", TEST_ICO, record.getCustomerIco());
-			assertEquals("supplier ICO", TEST_ICO, record.getSupplierIco());
+			assertEquals("name", ProcurementTestData.TEST_YEAR, record.getYear());
+			assertEquals("customer ICO", ProcurementTestData.TEST_CUSTOMER_ICO, record.getCustomerIco());
+			assertEquals("supplier ICO", ProcurementTestData.TEST_CUSTOMER_ICO, record.getSupplierIco());
 			
-			assertEquals("price", 1.25f, record.getPrice(), 0.001f);
-			assertEquals("currency", TEST_CURRENCY, record.getCurrency());
+			assertEquals("price", ProcurementTestData.TEST_PRICE, record.getPrice(), 0.001f);
+			assertEquals("currency", ProcurementTestData.TEST_CURRENCY, record.getCurrency());
 
 			assertEquals("number of scrap notes", 0, record.getScrapNotes().size());
 		} catch (ParseException e) {
