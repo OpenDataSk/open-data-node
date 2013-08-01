@@ -28,26 +28,11 @@ import java.util.Calendar;
 import org.junit.Before;
 import org.junit.Test;
 
-import sk.opendata.odn.harvester.datanest.PoliticalPartyDonationsDatanestHarvester;
 import sk.opendata.odn.model.Currency;
 import sk.opendata.odn.model.PoliticalPartyDonationRecord;
+import sk.opendata.odn.utils.tests.PoliticalPartyDonationTestData;
 
 public class TestPoliticalPartyDonationsDatanestHarvester {
-	
-	public final String TEST_DONOR_NAME = "Testname";
-	public final String TEST_DONOR_SURNAME = "Testsurname";
-	public final String TEST_DONOR_TITLE = "Mr.";
-	public final String TEST_DONOR_COMPANY = "Testing Company";
-	public final String TEST_DONOR_ICO = "17321204";
-	public final String TEST_DONOR_CITY = "Bratislava";
-	public final String TEST_DONOR_PSC_COMMON_FORM = "831 05";
-	public final String TEST_DONOR_PSC_ODN_STORAGE_FORM = "83105";
-	public final Float TEST_DONATION_VALUE = 1.25f;
-	public final String TEST_INVALID_DONATION_VALUE = "L.25";
-	public final Currency TEST_DONATION_CURRENCY = Currency.EUR;
-	public final String TEST_ACCEPT_DATE = "1991-07-17";
-	public final String TEST_INVALID_ACCEPT_DATE = "L991/07/1T";
-	public final String TEST_EMPTY_STRING = "";
 	
 	private PoliticalPartyDonationsDatanestHarvester harvester;
 	
@@ -60,24 +45,24 @@ public class TestPoliticalPartyDonationsDatanestHarvester {
 		harvester = new PoliticalPartyDonationsDatanestHarvester();
 
 		fullRecord = new String[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_NOTE + 1];
-		fullRecord[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_DONOR_NAME] = TEST_DONOR_NAME;
-		fullRecord[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_DONOR_SURNAME] = TEST_DONOR_SURNAME;
-		fullRecord[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_DONOR_TITLE] = TEST_DONOR_TITLE;
-		fullRecord[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_DONOR_COMPANY] = TEST_DONOR_COMPANY;
-		fullRecord[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_DONOR_ICO] = TEST_DONOR_ICO;
-		fullRecord[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_DONOR_CITY] = TEST_DONOR_CITY;
-		fullRecord[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_DONOR_PSC] = TEST_DONOR_PSC_COMMON_FORM;
-		fullRecord[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_DONATION_VALUE] = TEST_DONATION_VALUE.toString();
-		fullRecord[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_DONATION_CURRENCY] = TEST_DONATION_CURRENCY.toString();
-		fullRecord[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_ACCEPT_DATE] = TEST_ACCEPT_DATE;
-		fullRecord[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_NOTE] = TEST_EMPTY_STRING;
+		fullRecord[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_DONOR_NAME] = PoliticalPartyDonationTestData.TEST_DONOR_NAME;
+		fullRecord[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_DONOR_SURNAME] = PoliticalPartyDonationTestData.TEST_DONOR_SURNAME;
+		fullRecord[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_DONOR_TITLE] = PoliticalPartyDonationTestData.TEST_DONOR_TITLE;
+		fullRecord[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_DONOR_COMPANY] = PoliticalPartyDonationTestData.TEST_DONOR_COMPANY;
+		fullRecord[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_DONOR_ICO] = PoliticalPartyDonationTestData.TEST_DONOR_ICO;
+		fullRecord[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_DONOR_CITY] = PoliticalPartyDonationTestData.TEST_DONOR_CITY;
+		fullRecord[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_DONOR_PSC] = PoliticalPartyDonationTestData.TEST_DONOR_PSC_COMMON_FORM;
+		fullRecord[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_DONATION_VALUE] = PoliticalPartyDonationTestData.TEST_DONATION_VALUE.toString();
+		fullRecord[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_DONATION_CURRENCY] = PoliticalPartyDonationTestData.TEST_DONATION_CURRENCY.toString();
+		fullRecord[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_ACCEPT_DATE] = PoliticalPartyDonationTestData.TEST_ACCEPT_DATE;
+		fullRecord[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_NOTE] = PoliticalPartyDonationTestData.TEST_EMPTY_STRING;
 
 		recordWithEmptyCurrency = Arrays.copyOf(fullRecord, fullRecord.length);
-		recordWithEmptyCurrency[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_DONATION_CURRENCY] = TEST_EMPTY_STRING;
+		recordWithEmptyCurrency[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_DONATION_CURRENCY] = PoliticalPartyDonationTestData.TEST_EMPTY_STRING;
 
 		recordWithInvalidAcceptDate = Arrays.copyOf(fullRecord,
 				fullRecord.length);
-		recordWithInvalidAcceptDate[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_ACCEPT_DATE] = TEST_INVALID_ACCEPT_DATE;
+		recordWithInvalidAcceptDate[PoliticalPartyDonationsDatanestHarvester.ATTR_INDEX_ACCEPT_DATE] = PoliticalPartyDonationTestData.TEST_INVALID_ACCEPT_DATE;
 	}
 
 	@Test
@@ -85,16 +70,16 @@ public class TestPoliticalPartyDonationsDatanestHarvester {
 		try {
 			PoliticalPartyDonationRecord record = harvester.scrapOneRecord(fullRecord);
 			
-			assertEquals("donor name", TEST_DONOR_NAME, record.getDonorName());
-			assertEquals("donor surname", TEST_DONOR_SURNAME, record.getDonorSurname());
-			assertEquals("donor title", TEST_DONOR_TITLE, record.getDonorTitle());
-			assertEquals("donor company", TEST_DONOR_COMPANY, record.getName());
-			assertEquals("donor ico", TEST_DONOR_ICO, record.getIco());
-			assertEquals("donor city", TEST_DONOR_CITY, record.getDonorCity());
-			assertEquals("donor PSC", TEST_DONOR_PSC_ODN_STORAGE_FORM, record.getDonorPsc());
+			assertEquals("donor name", PoliticalPartyDonationTestData.TEST_DONOR_NAME, record.getDonorName());
+			assertEquals("donor surname", PoliticalPartyDonationTestData.TEST_DONOR_SURNAME, record.getDonorSurname());
+			assertEquals("donor title", PoliticalPartyDonationTestData.TEST_DONOR_TITLE, record.getDonorTitle());
+			assertEquals("donor company", PoliticalPartyDonationTestData.TEST_DONOR_COMPANY, record.getName());
+			assertEquals("donor ico", PoliticalPartyDonationTestData.TEST_DONOR_ICO, record.getIco());
+			assertEquals("donor city", PoliticalPartyDonationTestData.TEST_DONOR_CITY, record.getDonorCity());
+			assertEquals("donor PSC", PoliticalPartyDonationTestData.TEST_DONOR_PSC_ODN_STORAGE_FORM, record.getDonorPsc());
 			
-			assertEquals("donation value", TEST_DONATION_VALUE.floatValue(), record.getDonationValue(), 0.001f);
-			assertEquals("donation currency", TEST_DONATION_CURRENCY, record.getCurrency());
+			assertEquals("donation value", PoliticalPartyDonationTestData.TEST_DONATION_VALUE.floatValue(), record.getDonationValue(), 0.001f);
+			assertEquals("donation currency", PoliticalPartyDonationTestData.TEST_DONATION_CURRENCY, record.getCurrency());
 			
 			Calendar acceptDate = Calendar.getInstance();
 			acceptDate.setTime(record.getAcceptDate());

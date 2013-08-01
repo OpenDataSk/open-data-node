@@ -28,20 +28,10 @@ import java.util.Calendar;
 import org.junit.Before;
 import org.junit.Test;
 
-import sk.opendata.odn.harvester.datanest.OrganizationsDatanestHarvester;
 import sk.opendata.odn.model.OrganizationRecord;
+import sk.opendata.odn.utils.tests.OrganizationTestData;
 
 public class TestOrganizationsDatanestHarvester {
-	
-	public final String TEST_NAME = "Test Name";
-	public final String TEST_NAME_WITH_SPECIAL_CHARS = "<\"Test\" & 'Name'>";
-	public final String TEST_SEAT = "Testovacia 1, Bratislava";
-	public final String TEST_ICO = "17321204";
-	public final String TEST_DATE_FROM = "1991-07-17";
-	public final String TEST_INVALID_DATE_FROM = "L991/07/1T";
-	public final String TEST_DATE_TO = "2011-12-06";
-	public final String TEST_SOURCE = "http://www.test.sk/test1";
-	public final String TEST_EMPTY_STRING = "";
 	
 	private OrganizationsDatanestHarvester harvester;
 	
@@ -55,23 +45,23 @@ public class TestOrganizationsDatanestHarvester {
 		harvester = new OrganizationsDatanestHarvester();
 		
 		fullRecord = new String[OrganizationsDatanestHarvester.ATTR_INDEX_SOURCE + 1];
-		fullRecord[OrganizationsDatanestHarvester.ATTR_INDEX_NAME] = TEST_NAME;
-		fullRecord[OrganizationsDatanestHarvester.ATTR_INDEX_SEAT] = TEST_SEAT;
-		fullRecord[OrganizationsDatanestHarvester.ATTR_INDEX_ICO] = TEST_ICO;
-		fullRecord[OrganizationsDatanestHarvester.ATTR_INDEX_DATE_FROM] = TEST_DATE_FROM;
-		fullRecord[OrganizationsDatanestHarvester.ATTR_INDEX_DATE_TO] = TEST_DATE_TO;
-		fullRecord[OrganizationsDatanestHarvester.ATTR_INDEX_SOURCE] = TEST_SOURCE;
+		fullRecord[OrganizationsDatanestHarvester.ATTR_INDEX_NAME] = OrganizationTestData.TEST_NAME;
+		fullRecord[OrganizationsDatanestHarvester.ATTR_INDEX_SEAT] = OrganizationTestData.TEST_SEAT;
+		fullRecord[OrganizationsDatanestHarvester.ATTR_INDEX_ICO] = OrganizationTestData.TEST_ICO;
+		fullRecord[OrganizationsDatanestHarvester.ATTR_INDEX_DATE_FROM] = OrganizationTestData.TEST_DATE_FROM;
+		fullRecord[OrganizationsDatanestHarvester.ATTR_INDEX_DATE_TO] = OrganizationTestData.TEST_DATE_TO;
+		fullRecord[OrganizationsDatanestHarvester.ATTR_INDEX_SOURCE] = OrganizationTestData.TEST_SOURCE;
 		
 		recordWithoutDateTo = Arrays.copyOf(fullRecord, fullRecord.length);
-		recordWithoutDateTo[OrganizationsDatanestHarvester.ATTR_INDEX_DATE_TO] = TEST_EMPTY_STRING;
+		recordWithoutDateTo[OrganizationsDatanestHarvester.ATTR_INDEX_DATE_TO] = OrganizationTestData.TEST_EMPTY_STRING;
 		
 		recordWithInvalidDateFrom = Arrays
 				.copyOf(fullRecord, fullRecord.length);
-		recordWithInvalidDateFrom[OrganizationsDatanestHarvester.ATTR_INDEX_DATE_FROM] = TEST_INVALID_DATE_FROM;
+		recordWithInvalidDateFrom[OrganizationsDatanestHarvester.ATTR_INDEX_DATE_FROM] = OrganizationTestData.TEST_INVALID_DATE_FROM;
 		
 		recordWithSpecialCharsInName = Arrays
 				.copyOf(fullRecord, fullRecord.length);
-		recordWithSpecialCharsInName[OrganizationsDatanestHarvester.ATTR_INDEX_NAME] = TEST_NAME_WITH_SPECIAL_CHARS;
+		recordWithSpecialCharsInName[OrganizationsDatanestHarvester.ATTR_INDEX_NAME] = OrganizationTestData.TEST_NAME_WITH_SPECIAL_CHARS;
 	}
 
 	@Test
@@ -79,9 +69,9 @@ public class TestOrganizationsDatanestHarvester {
 		try {
 			OrganizationRecord record = harvester.scrapOneRecord(fullRecord);
 			
-			assertEquals("name", TEST_NAME, record.getName());
-			assertEquals("seat", TEST_SEAT, record.getSeat());
-			assertEquals("ico", TEST_ICO, record.getIco());
+			assertEquals("name", OrganizationTestData.TEST_NAME, record.getName());
+			assertEquals("seat", OrganizationTestData.TEST_SEAT, record.getSeat());
+			assertEquals("ico", OrganizationTestData.TEST_ICO, record.getIco());
 			
 			Calendar dateFrom = Calendar.getInstance();
 			dateFrom.setTime(record.getDateFrom());
@@ -95,7 +85,7 @@ public class TestOrganizationsDatanestHarvester {
 			assertEquals("date to: month", 12 - 1, dateTo.get(Calendar.MONTH));
 			assertEquals("date to: day", 6, dateTo.get(Calendar.DAY_OF_MONTH));
 			
-			assertEquals("source", TEST_SOURCE, record.getSource());
+			assertEquals("source", OrganizationTestData.TEST_SOURCE, record.getSource());
 		} catch (ParseException e) {
 			fail("exception occured: " + e);
 		}
