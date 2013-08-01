@@ -49,7 +49,7 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 	public final static String ORGANIZATIONS_BASE_URI = "http://data.gov.sk/id/interior/organization/";
 	public final static String OPENDATA_ORGANIZATIONS_CONTEXTS_KEY = "organizations";
 	
-	public final static String TAG_NAME_ORG_REGORG = "org:RegisteredOrganization";
+	public final static String TAG_NAME_ORG_REGORG = "rov:RegisteredOrganization";
 	
 	/**
 	 * Initialize serializer to use given repository.
@@ -79,7 +79,7 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 	
 	@Override
 	public void serializeRecord(Document doc, Element concept, OrganizationRecord record) {
-	    concept.appendChild(appendTextNode(doc, "org:legalName", record.getName()));
+	    concept.appendChild(appendTextNode(doc, "rov:legalName", record.getName()));
 	    concept.appendChild(appendResourceNode(doc, "dc:source", "rdf:resource", record.getSource()));
 	    concept.appendChild(appendTextNode(doc, "dc:type", record.getLegalForm()));
 	    if (record.getDateFrom() != null) {
@@ -93,13 +93,13 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 	    //concept.appendChild(appendTextNode(doc, "opendata:seat", record.getSeat()));
 	    Element fullAddress = appendTextNode(doc, "locn:fullAddress", record.getSeat());
 	    fullAddress.setAttribute("rdf:datatype", "xsd:string");
-	    Element address = doc.createElement("locn:Address");
+	    Element address = doc.createElement("locn:address");
 	    // TODO: does the fullAddress have to contain also the organization name
 	    // (i.e. is it as written on envelope)?
 	    address.appendChild(fullAddress);
 	    // TODO: parse out PSC from full address
 	    //address.appendChild(appendTextNode(doc, "locn:postCode", record.getSeat()));
-	    Element primarySite = doc.createElement("org:hasPrimarySite");
+	    Element primarySite = doc.createElement("rov:hasPrimarySite");
 	    primarySite.appendChild(address);
 	    concept.appendChild(primarySite);
 	    concept.appendChild(appendTextNode(doc, "opendata:ico", record.getIco()));
