@@ -39,12 +39,17 @@ import sk.opendata.odn.serialization.OdnSerializationException;
  */
 public class OrganizationRdfSerializer extends AbstractRdfSerializer<OrganizationRecord> {
 	
-	// TODO: do we need that configurable? if we want the that RDF data
-	// accessible over the net via that URL/URI (which is encouraged) it would
-	// be either nice to "guess" it correctly from some other configuration or
-	// have it in some per-ODN repository configuration
-	public final static String OPENDATA_ORGANIZATIONS_BASE_URI = "http://opendata.sk/dataset/organizations/";
+	// One thing should have one URI. For Slovak companies it maybe will be this one even officially.
+	// URI might be understood this way:
+	// a) Slovak government has a dataset (http://data.gov.sk/...)
+	// b) where we're distinguishing real things by ID (.../id/...)
+	// c) which (the dataset) is being curated by Ministry of Interior (../interior/...)
+	// d) and contains information about organizations (.../organization/...)
+	// e) distinguished by ICO (the last thing appended to base URI: .../<ico>) 
+	public final static String ORGANIZATIONS_BASE_URI = "http://data.gov.sk/id/interior/organization/";
 	public final static String OPENDATA_ORGANIZATIONS_CONTEXTS_KEY = "organizations";
+	
+	public final static String TAG_NAME_ORG_REGORG = "org:RegisteredOrganization";
 	
 	/**
 	 * Initialize serializer to use given repository.
@@ -68,8 +73,13 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 	}
 	
 	@Override
+	public String getRecordTagName() {
+		return TAG_NAME_ORG_REGORG;
+	}
+	
+	@Override
 	public void serializeRecord(Document doc, Element concept, OrganizationRecord record) {
-	    concept.appendChild(appendTextNode(doc, "skos:prefLabel", record.getName()));
+	    concept.appendChild(appendTextNode(doc, "org:legalName", record.getName()));
 	    concept.appendChild(appendResourceNode(doc, "dc:source", "rdf:resource", record.getSource()));
 	    concept.appendChild(appendTextNode(doc, "dc:type", record.getLegalForm()));
 	    if (record.getDateFrom() != null) {
@@ -80,13 +90,24 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 	    	String dateTo = sdf.format(record.getDateTo());
 	        concept.appendChild(appendTextNode(doc, "opendata:dateTo", dateTo));
 	    }
-	    concept.appendChild(appendTextNode(doc, "opendata:seat", record.getSeat()));
+	    //concept.appendChild(appendTextNode(doc, "opendata:seat", record.getSeat()));
+	    Element fullAddress = appendTextNode(doc, "locn:fullAddress", record.getSeat());
+	    fullAddress.setAttribute("rdf:datatype", "xsd:string");
+	    Element address = doc.createElement("locn:Address");
+	    // TODO: does the fullAddress have to contain also the organization name
+	    // (i.e. is it as written on envelope)?
+	    address.appendChild(fullAddress);
+	    // TODO: parse out PSC from full address
+	    //address.appendChild(appendTextNode(doc, "locn:postCode", record.getSeat()));
+	    Element primarySite = doc.createElement("org:hasPrimarySite");
+	    primarySite.appendChild(address);
+	    concept.appendChild(primarySite);
 	    concept.appendChild(appendTextNode(doc, "opendata:ico", record.getIco()));
 	}
 	
 	@Override
 	public String getConceptRdfAbout(OrganizationRecord record) {
-		return OPENDATA_ORGANIZATIONS_BASE_URI + record.getIco();
+		return ORGANIZATIONS_BASE_URI + record.getIco();
 	}
 	
 	@Override
@@ -96,7 +117,7 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 		
 		RdfData rdfData = new RdfData(
 				serialize(records),
-				OPENDATA_ORGANIZATIONS_BASE_URI,
+				ORGANIZATIONS_BASE_URI,
 				OPENDATA_ORGANIZATIONS_CONTEXTS_KEY);
 		getRepository().store(rdfData);
 	}

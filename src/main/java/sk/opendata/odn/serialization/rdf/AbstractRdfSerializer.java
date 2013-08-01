@@ -56,7 +56,11 @@ public abstract class AbstractRdfSerializer<RecordType extends AbstractRecord> e
 	public final static String NS_RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
 	public final static String NS_SKOS = "http://www.w3.org/2004/02/skos/core#";
 	public final static String NS_DC = "http://purl.org/dc/elements/1.1/";
+	public final static String NS_ORG = "http://www.w3.org/TR/vocab-regorg/";
+	public final static String NS_LOCN = "http://www.w3.org/ns/locn#";
 	public final static String NS_OPENDATA = "http://sk.eea.opendata/2011/02/opendicts#";
+	
+	public final static String TAG_NAME_SKOS_CONCEPT = "skos:Concept";
 	
 	public final static String OPENDATA_DATE_FORMAT = "dd.MM.yyyy";
 	
@@ -151,6 +155,13 @@ public abstract class AbstractRdfSerializer<RecordType extends AbstractRecord> e
 	 */
 	abstract public String getConceptRdfAbout(RecordType record);
 	
+	/**
+	 * @return tag name for a record
+	 */
+	public String getRecordTagName() {
+		return TAG_NAME_SKOS_CONCEPT;
+	}
+	
 	@Override
 	public String serialize(List<RecordType> records)
 			throws OdnSerializationException {
@@ -161,12 +172,14 @@ public abstract class AbstractRdfSerializer<RecordType extends AbstractRecord> e
 		rdfElement.setAttribute("xmlns:rdf", NS_RDF);
 		rdfElement.setAttribute("xmlns:skos", NS_SKOS);
 		rdfElement.setAttribute("xmlns:dc", NS_DC);
+		rdfElement.setAttribute("xmlns:org", NS_ORG);
+		rdfElement.setAttribute("xmlns:locn", NS_LOCN);
 		rdfElement.setAttribute("xmlns:opendata", NS_OPENDATA);
 		addCustomRdfNsElements(rdfElement);
 		doc.appendChild(rdfElement);
 		
 		for (RecordType record : records) {
-			Element concept = doc.createElement("skos:Concept");
+			Element concept = doc.createElement(getRecordTagName());
 			concept.setAttribute("rdf:about", getConceptRdfAbout(record));
 			serializeRecord(doc, concept, record);
 			

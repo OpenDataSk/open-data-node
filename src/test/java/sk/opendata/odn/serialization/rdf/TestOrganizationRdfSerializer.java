@@ -22,16 +22,25 @@ public class TestOrganizationRdfSerializer {
 	private static OrganizationRdfSerializer rdfSerializer; 
 	
 	private final static String TEST_RESULT = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
-			+ "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:opendata=\"http://sk.eea.opendata/2011/02/opendicts#\" xmlns:skos=\"http://www.w3.org/2004/02/skos/core#\">\n"
-			+ "<skos:Concept rdf:about=\"http://opendata.sk/dataset/organizations/17321204\">\n"
-			+ "<skos:prefLabel>Test Name</skos:prefLabel>\n"
+			+ "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" "
+			+ "xmlns:dc=\"http://purl.org/dc/elements/1.1/\" "
+			+ "xmlns:locn=\"http://www.w3.org/ns/locn#\" "
+			+ "xmlns:opendata=\"http://sk.eea.opendata/2011/02/opendicts#\" "
+			+ "xmlns:org=\"http://www.w3.org/TR/vocab-regorg/\" "
+			+ "xmlns:skos=\"http://www.w3.org/2004/02/skos/core#\">\n"
+			+ "<org:RegisteredOrganization rdf:about=\"http://data.gov.sk/id/interior/organization/17321204\">\n"
+			+ "<org:legalName>Test Name</org:legalName>\n"
 			+ "<dc:source rdf:resource=\"http://www.test.sk/test1\"/>\n"
 			+ "<dc:type>Spoločnosť s ručením obmedzeným</dc:type>\n"
 			+ "<opendata:dateFrom>01.09.2013</opendata:dateFrom>\n"
 			+ "<opendata:dateTo>01.09.2013</opendata:dateTo>\n"
-			+ "<opendata:seat>Testovacia 1, 850 00 Bratislava</opendata:seat>\n"
+			+ "<org:hasPrimarySite>\n"
+			+ "<locn:Address>\n"
+			+ "<locn:fullAddress rdf:datatype=\"xsd:string\">Testovacia 1, 850 00 Bratislava</locn:fullAddress>\n"
+			+ "</locn:Address>\n"
+			+ "</org:hasPrimarySite>\n"
 			+ "<opendata:ico>17321204</opendata:ico>\n"
-			+ "</skos:Concept>\n"
+			+ "</org:RegisteredOrganization>\n"
 			+ "</rdf:RDF>\n";
 
 	@BeforeClass
