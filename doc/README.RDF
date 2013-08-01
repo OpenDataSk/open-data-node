@@ -30,7 +30,7 @@ PREFIX pc:<http://opendata.cz/vocabulary/procurement.rdf#>
 SELECT *
 WHERE {
    GRAPH <http://opendata.sk/datanest/> {
-    ?supplier opendata:xSupplierIco ?suspectIco .
+    ?supplier opendata:supplierIco ?suspectIco .
     ?donor opendata:xDonorIco ?suspectIco .
   }
 }
@@ -52,10 +52,10 @@ PREFIX pc:<http://opendata.cz/vocabulary/procurement.rdf#>
 SELECT *
 WHERE {
    GRAPH <http://opendata.sk/datanest/procurements/> {
-    ?supplier opendata:xSupplierIco ?suspectIco .
+    ?supplier opendata:supplierIco ?suspectIco .
   }
    GRAPH <http://opendata.sk/datanest/political_party_donations/> {
-    ?donor opendata:xDonorIco ?suspectIco .
+    ?donor opendata:donorIco ?suspectIco .
   }
 }
 

@@ -38,7 +38,7 @@ public class TestProcurementRdfSerializer {
 			+ "<opendata:xCurrency>EUR</opendata:xCurrency>\n"
 			+ "<opendata:xIsVatIncluded>false</opendata:xIsVatIncluded>\n"
 			+ "<opendata:xCustomerIco>17321204</opendata:xCustomerIco>\n"
-			+ "<opendata:xSupplierIco>40212371</opendata:xSupplierIco>\n"
+			+ "<opendata:supplierIco>40212371</opendata:supplierIco>\n"
 			+ "</skos:Concept>\n"
 			+ "</rdf:RDF>\n";
 

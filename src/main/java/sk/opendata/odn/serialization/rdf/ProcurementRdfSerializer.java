@@ -101,7 +101,7 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 		concept.appendChild(appendTextNode(doc, "opendata:xCustomerIco",
 				record.getCustomerIco()));
 		// TODO: use 'opendata:ico' child inside 'pc:Supplier' instead
-		concept.appendChild(appendTextNode(doc, "opendata:xSupplierIco",
+		concept.appendChild(appendTextNode(doc, "opendata:supplierIco",
 				record.getSupplierIco()));
 		
 		for (String scrapNote : record.getScrapNotes())
