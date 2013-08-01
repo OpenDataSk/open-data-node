@@ -35,9 +35,9 @@ public class TestProcurementRdfSerializer {
 			+ "<dc:source rdf:resource=\"http://datanest.fair-play.sk/datasets/2/records/procurement_0\"/>\n"
 			+ "<opendata:xProcurementSubject rdf:resource=\"Rekonštrukcia ZŠ v obci Horná Dolná\"/>\n"
 			+ "<pc:price>1.25</pc:price>\n"
-			+ "<opendata:xCurrency>EUR</opendata:xCurrency>\n"
+			+ "<opendata:currency>EUR</opendata:currency>\n"
 			+ "<opendata:xIsVatIncluded>false</opendata:xIsVatIncluded>\n"
-			+ "<opendata:xCustomerIco>17321204</opendata:xCustomerIco>\n"
+			+ "<opendata:customerIco>17321204</opendata:customerIco>\n"
 			+ "<opendata:supplierIco>40212371</opendata:supplierIco>\n"
 			+ "</skos:Concept>\n"
 			+ "</rdf:RDF>\n";

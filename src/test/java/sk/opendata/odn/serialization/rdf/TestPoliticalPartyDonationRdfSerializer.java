@@ -40,8 +40,8 @@ public class TestPoliticalPartyDonationRdfSerializer {
 			+ "<opendata:donorIco>17321204</opendata:donorIco>\n"
 			+ "<opendata:giftValue>1.25</opendata:giftValue>\n"
 			+ "<opendata:giftCurrency>EUR</opendata:giftCurrency>\n"
-			+ "<opendata:xRecipientParty>Nezavisla Iniciativa Excentrikov</opendata:xRecipientParty>\n"
-			+ "<opendata:xAcceptDate>01.09.2013</opendata:xAcceptDate>\n"
+			+ "<opendata:recipientParty>Nezavisla Iniciativa Excentrikov</opendata:recipientParty>\n"
+			+ "<opendata:acceptDate>01.09.2013</opendata:acceptDate>\n"
 			+ "</skos:Concept>\n"
 			+ "</rdf:RDF>\n";
 
