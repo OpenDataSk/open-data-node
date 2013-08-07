@@ -81,7 +81,7 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 	public void serializeRecord(Document doc, Element rdfElement, OrganizationRecord record) {
 		// *** organization ***
 		Element concept1 = doc.createElement(TAG_NAME_ORG_REGORG);
-		concept1.setAttribute("rdf:about", getConceptRdfAbout(record));
+		concept1.setAttribute("rdf:about", ORGANIZATIONS_BASE_URI + record.getIco());
 
 		concept1.appendChild(appendTextNode(doc, "rov:legalName", record.getName()));
 	    concept1.appendChild(appendResourceNode(doc, "dc:source", "rdf:resource", record.getSource()));
@@ -129,11 +129,6 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 	    concept2.appendChild(appendResourceNode(doc, "dcterms:type", "rdf:resource", IDENTIFIERS_TYPE_URI));
 		
 		rdfElement.appendChild(concept2);
-	}
-	
-	@Override
-	public String getConceptRdfAbout(OrganizationRecord record) {
-		return ORGANIZATIONS_BASE_URI + record.getIco();
 	}
 	
 	@Override

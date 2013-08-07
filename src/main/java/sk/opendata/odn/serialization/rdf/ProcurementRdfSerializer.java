@@ -80,7 +80,7 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 	@Override
 	public void serializeRecord(Document doc, Element rdfElement, ProcurementRecord record) {
 		Element concept = doc.createElement(TAG_NAME_SKOS_CONCEPT);
-		concept.setAttribute("rdf:about", getConceptRdfAbout(record));
+		concept.setAttribute("rdf:about", OPENDATA_PROCUREMENTS_BASE_URI + record.getId());
 
 		// TODO: verify, that it is indeed a form of unique name identifying
 		// single procurement
@@ -125,11 +125,6 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 					scrapNote));
 		
 		rdfElement.appendChild(concept);
-	}
-	
-	@Override
-	public String getConceptRdfAbout(ProcurementRecord record) {
-		return OPENDATA_PROCUREMENTS_BASE_URI + record.getId();
 	}
 	
 	@Override

@@ -73,7 +73,7 @@ public class PoliticalPartyDonationRdfSerializer extends AbstractRdfSerializer<P
 	@Override
 	public void serializeRecord(Document doc, Element rdfElement, PoliticalPartyDonationRecord record) {
 		Element concept = doc.createElement(TAG_NAME_SKOS_CONCEPT);
-		concept.setAttribute("rdf:about", getConceptRdfAbout(record));
+		concept.setAttribute("rdf:about", OPENDATA_PPD_BASE_URI + record.getId());
 
 		// TODO: this is a) ugly and b) "suspect" (i.e. I feel like it's not
 		// entirely "in the spirit" of RDF => re-think, re-research, ...
@@ -144,11 +144,6 @@ public class PoliticalPartyDonationRdfSerializer extends AbstractRdfSerializer<P
 					record.getNote()));
 		
 		rdfElement.appendChild(concept);
-	}
-	
-	@Override
-	public String getConceptRdfAbout(PoliticalPartyDonationRecord record) {
-		return OPENDATA_PPD_BASE_URI + record.getId();
 	}
 	
 	@Override
