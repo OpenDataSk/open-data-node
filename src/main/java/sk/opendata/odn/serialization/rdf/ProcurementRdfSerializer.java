@@ -20,7 +20,9 @@
 package sk.opendata.odn.serialization.rdf;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
+import java.util.Locale;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
@@ -48,7 +50,8 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 	public final static String OPENDATA_PROCUREMENTS_BASE_URI = "http://opendata.sk/dataset/procurements/";
 	public final static String OPENDATA_PROCUREMENTS_CONTEXTS_KEY = "procurements";
 	
-	private final static DecimalFormat priceFormat = new DecimalFormat("#.##");
+	private final static DecimalFormat priceFormat = new DecimalFormat(
+			"#.##", new DecimalFormatSymbols(Locale.US));
 	
 	
 	/**

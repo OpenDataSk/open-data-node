@@ -20,7 +20,9 @@
 package sk.opendata.odn.serialization.rdf;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
+import java.util.Locale;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerConfigurationException;
@@ -47,7 +49,8 @@ public class PoliticalPartyDonationRdfSerializer extends AbstractRdfSerializer<P
 	public final static String OPENDATA_PPD_BASE_URI = "http://opendata.sk/dataset/political_party_donations/";
 	public final static String OPENDATA_PPD_CONTEXTS_KEY = "political_party_donations";
 	
-	private final static DecimalFormat donationValueFormat = new DecimalFormat("#.##");
+	private final static DecimalFormat donationValueFormat = new DecimalFormat(
+			"#.##", new DecimalFormatSymbols(Locale.US));
 	
 	/**
 	 * Initialize serializer to use given repository.
