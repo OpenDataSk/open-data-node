@@ -71,9 +71,12 @@ public class PoliticalPartyDonationRdfSerializer extends AbstractRdfSerializer<P
 	}
 	
 	@Override
-	public void serializeRecord(Document doc, Element concept, PoliticalPartyDonationRecord record) {
+	public void serializeRecord(Document doc, Element rdfElement, PoliticalPartyDonationRecord record) {
+		Element concept = doc.createElement(TAG_NAME_SKOS_CONCEPT);
+		concept.setAttribute("rdf:about", getConceptRdfAbout(record));
+
 		// TODO: this is a) ugly and b) "suspect" (i.e. I feel like it's not
-		// entirely "in the spirit" of RDF => rethink, re-research, ...
+		// entirely "in the spirit" of RDF => re-think, re-research, ...
 		StringBuffer label = new StringBuffer();
 		if (record.getDonorName() != null)
 			label.append(record.getDonorName()).append(" ");
@@ -139,6 +142,8 @@ public class PoliticalPartyDonationRdfSerializer extends AbstractRdfSerializer<P
 		if (record.getNote() != null)
 			concept.appendChild(appendTextNode(doc, "opendata:xNote",
 					record.getNote()));
+		
+		rdfElement.appendChild(concept);
 	}
 	
 	@Override

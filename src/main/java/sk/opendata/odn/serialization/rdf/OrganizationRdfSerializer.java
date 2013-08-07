@@ -74,13 +74,11 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 	}
 	
 	@Override
-	public String getRecordTagName() {
-		return TAG_NAME_ORG_REGORG;
-	}
-	
-	@Override
-	public void serializeRecord(Document doc, Element concept, OrganizationRecord record) {
-	    concept.appendChild(appendTextNode(doc, "rov:legalName", record.getName()));
+	public void serializeRecord(Document doc, Element rdfElement, OrganizationRecord record) {
+		Element concept = doc.createElement(TAG_NAME_ORG_REGORG);
+		concept.setAttribute("rdf:about", getConceptRdfAbout(record));
+
+		concept.appendChild(appendTextNode(doc, "rov:legalName", record.getName()));
 	    concept.appendChild(appendResourceNode(doc, "dc:source", "rdf:resource", record.getSource()));
 	    concept.appendChild(appendTextNode(doc, "dc:type", record.getLegalForm()));
 	    if (record.getDateFrom() != null) {
@@ -108,6 +106,8 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 				"opendata:ico",
 				"rdf:resource",
 				IDENTIFIERS_BASE_URI + record.getIco()));
+		
+		rdfElement.appendChild(concept);
 	}
 	
 	@Override

@@ -127,16 +127,15 @@ public abstract class AbstractRdfSerializer<RecordType extends AbstractRecord> e
 	 * Serialize one given record into RDF and store the result in given
 	 * 'concept' (which in turn is in given 'doc').
 	 * 
-	 * @param doc			+ "xmlns:dcterms=\"http://purl.org/dc/terms/\" "
-
+	 * @param doc
 	 *            XML document we are serializing into
-	 * @param concept
-	 *            XML document element used to store the serialization of given
-	 *            record
+	 * @param rdfElement
+	 *            XML document element into which to append the serialization of
+	 *            given record
 	 * @param record
 	 *            record to serialize into RDF
 	 */
-	public abstract void serializeRecord(Document doc, Element concept,
+	public abstract void serializeRecord(Document doc, Element rdfElement,
 			RecordType record);
 
 	/**
@@ -159,13 +158,6 @@ public abstract class AbstractRdfSerializer<RecordType extends AbstractRecord> e
 	 */
 	abstract public String getConceptRdfAbout(RecordType record);
 	
-	/**
-	 * @return tag name for a record
-	 */
-	public String getRecordTagName() {
-		return TAG_NAME_SKOS_CONCEPT;
-	}
-	
 	@Override
 	public String serialize(List<RecordType> records)
 			throws OdnSerializationException {
@@ -185,16 +177,8 @@ public abstract class AbstractRdfSerializer<RecordType extends AbstractRecord> e
 		addCustomRdfNsElements(rdfElement);
 		doc.appendChild(rdfElement);
 		
-		for (RecordType record : records) {
-			// TODO: OrganizationRdfSErializer is adding two cvhilds per record/ Thus it would be nicer to:
-			// a) move this 'concept' creation and "child appending" into 'serializeRecord()'
-			// b) thus also getting rid of 'getRecordTagName()'
-			Element concept = doc.createElement(getRecordTagName());
-			concept.setAttribute("rdf:about", getConceptRdfAbout(record));
-			serializeRecord(doc, concept, record);
-			
-			rdfElement.appendChild(concept);
-		}
+		for (RecordType record : records)
+			serializeRecord(doc, rdfElement, record);
 		
 		StringWriter sw = new StringWriter();
         StreamResult result = new StreamResult(sw);

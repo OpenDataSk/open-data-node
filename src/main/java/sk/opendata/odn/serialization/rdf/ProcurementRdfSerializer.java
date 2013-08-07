@@ -78,7 +78,10 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 	}
 	
 	@Override
-	public void serializeRecord(Document doc, Element concept, ProcurementRecord record) {
+	public void serializeRecord(Document doc, Element rdfElement, ProcurementRecord record) {
+		Element concept = doc.createElement(TAG_NAME_SKOS_CONCEPT);
+		concept.setAttribute("rdf:about", getConceptRdfAbout(record));
+
 		// TODO: verify, that it is indeed a form of unique name identifying
 		// single procurement
 	    concept.appendChild(appendTextNode(doc, "skos:prefLabel", record.getProcurementId()));
@@ -120,6 +123,8 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 		for (String scrapNote : record.getScrapNotes())
 			concept.appendChild(appendTextNode(doc, "opendata:xScrapNote",
 					scrapNote));
+		
+		rdfElement.appendChild(concept);
 	}
 	
 	@Override
