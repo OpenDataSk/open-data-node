@@ -44,12 +44,11 @@ public class TestOrganizationRdfSerializer {
 			+ "</org:registeredSite>\n"
 			+ "<opendata:ico rdf:resource=\"http://data.gov.sk/id/interior/identifier/17321204\"/>\n"
 			+ "</rov:RegisteredOrganization>\n"
-			// TODO:
-			//+ "<adms:Identifier rdf:about=\"http://data.gov.sk/id/interior/identifier/17321204\">\n"
-			//+ "<skos:notation rdf:datatype=\"xsd:string\">17321204</skos:notation>\n"
-			//+ "<adms:schemaAgency rdf:datatype=\"xsd:string\">Ministry of Interior, Slovak Republic</adms:schemaAgency>\n"
-			//+ "<dcterms:type rdf:resource=\"http://data.gov.sk/def/interior/identifier/ico\"/>\n"
-			//+ "</adms:Identifier>\n"
+			+ "<adms:Identifier rdf:about=\"http://data.gov.sk/id/interior/identifier/17321204\">\n"
+			+ "<skos:notation rdf:datatype=\"xsd:string\">17321204</skos:notation>\n"
+			+ "<adms:schemaAgency rdf:datatype=\"xsd:string\">Ministry of Interior, Slovak Republic</adms:schemaAgency>\n"
+			+ "<dcterms:type rdf:resource=\"http://data.gov.sk/def/interior/identifier/ico\"/>\n"
+			+ "</adms:Identifier>\n"
 			+ "</rdf:RDF>\n";
 
 	@BeforeClass

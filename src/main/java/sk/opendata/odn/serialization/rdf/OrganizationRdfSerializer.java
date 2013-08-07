@@ -50,7 +50,11 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 	public final static String IDENTIFIERS_BASE_URI = "http://data.gov.sk/id/interior/identifier/";
 	public final static String OPENDATA_ORGANIZATIONS_CONTEXTS_KEY = "organizations";
 	
+	public final static String TAG_NAME_ADMS_IDENTIFIER = "adms:Identifier";
 	public final static String TAG_NAME_ORG_REGORG = "rov:RegisteredOrganization";
+	
+	public final static String ORG_SCHEMA_AGENCY = "Ministry of Interior, Slovak Republic";
+	public final static String IDENTIFIERS_TYPE_URI = "http://data.gov.sk/def/interior/identifier/ico";
 	
 	/**
 	 * Initialize serializer to use given repository.
@@ -75,39 +79,56 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 	
 	@Override
 	public void serializeRecord(Document doc, Element rdfElement, OrganizationRecord record) {
-		Element concept = doc.createElement(TAG_NAME_ORG_REGORG);
-		concept.setAttribute("rdf:about", getConceptRdfAbout(record));
+		// *** organization ***
+		Element concept1 = doc.createElement(TAG_NAME_ORG_REGORG);
+		concept1.setAttribute("rdf:about", getConceptRdfAbout(record));
 
-		concept.appendChild(appendTextNode(doc, "rov:legalName", record.getName()));
-	    concept.appendChild(appendResourceNode(doc, "dc:source", "rdf:resource", record.getSource()));
-	    concept.appendChild(appendTextNode(doc, "dc:type", record.getLegalForm()));
+		concept1.appendChild(appendTextNode(doc, "rov:legalName", record.getName()));
+	    concept1.appendChild(appendResourceNode(doc, "dc:source", "rdf:resource", record.getSource()));
+	    concept1.appendChild(appendTextNode(doc, "dc:type", record.getLegalForm()));
 	    if (record.getDateFrom() != null) {
 	    	String dateFrom = sdf.format(record.getDateFrom());
-	        concept.appendChild(appendTextNode(doc, "opendata:dateFrom", dateFrom));
+	        concept1.appendChild(appendTextNode(doc, "opendata:dateFrom", dateFrom));
 	    }
 	    if (record.getDateTo() != null) {
 	    	String dateTo = sdf.format(record.getDateTo());
-	        concept.appendChild(appendTextNode(doc, "opendata:dateTo", dateTo));
+	        concept1.appendChild(appendTextNode(doc, "opendata:dateTo", dateTo));
 	    }
 	    //concept.appendChild(appendTextNode(doc, "opendata:seat", record.getSeat()));
 	    Element fullAddress = appendTextNode(doc, "locn:fullAddress", record.getSeat());
 	    fullAddress.setAttribute("rdf:datatype", "xsd:string");
 	    Element address = doc.createElement("locn:address");
 	    // TODO: does the fullAddress have to contain also the organization name
-	    // (i.e. is it as written on envelope)?
+	    // (i.e. is it as written on envelope)?public final static String 
 	    address.appendChild(fullAddress);
 	    // TODO: parse out PSC from full address
 	    //address.appendChild(appendTextNode(doc, "locn:postCode", record.getSeat()));
 	    Element primarySite = doc.createElement("org:registeredSite");
 	    primarySite.appendChild(address);
-	    concept.appendChild(primarySite);
-		concept.appendChild(appendResourceNode(
+	    concept1.appendChild(primarySite);
+		concept1.appendChild(appendResourceNode(
 				doc,
 				"opendata:ico",
 				"rdf:resource",
 				IDENTIFIERS_BASE_URI + record.getIco()));
 		
-		rdfElement.appendChild(concept);
+		rdfElement.appendChild(concept1);
+		
+		// *** organization's ICO ***
+		Element concept2 = doc.createElement(TAG_NAME_ADMS_IDENTIFIER);
+		concept2.setAttribute("rdf:about", IDENTIFIERS_BASE_URI + record.getIco());
+
+	    Element notation = appendTextNode(doc, "skos:notation", record.getIco());
+	    notation.setAttribute("rdf:datatype", "xsd:string");
+	    concept2.appendChild(notation);
+		
+	    Element schemaAgency = appendTextNode(doc, "adms:schemaAgency", ORG_SCHEMA_AGENCY);
+	    schemaAgency.setAttribute("rdf:datatype", "xsd:string");
+	    concept2.appendChild(schemaAgency);
+		
+	    concept2.appendChild(appendResourceNode(doc, "dcterms:type", "rdf:resource", IDENTIFIERS_TYPE_URI));
+		
+		rdfElement.appendChild(concept2);
 	}
 	
 	@Override

@@ -156,6 +156,7 @@ public abstract class AbstractRdfSerializer<RecordType extends AbstractRecord> e
 	 *            record for which we need to derive OpenData.sk's ID
 	 * @return OpenData.sk's URI of the given record
 	 */
+	// TODO: remove
 	abstract public String getConceptRdfAbout(RecordType record);
 	
 	@Override
