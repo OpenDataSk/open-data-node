@@ -54,9 +54,7 @@ public abstract class AbstractRdfSerializer<RecordType extends AbstractRecord> e
 		AbstractSerializer<RecordType, String, RdfData> {
 
 	public final static String NS_RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
-	public final static String NS_ADMS = "http://www.w3.org/ns/adms#";
 	public final static String NS_DC = "http://purl.org/dc/elements/1.1/";
-	public final static String NS_DCTERMS = "http://purl.org/dc/terms/";
 	public final static String NS_LOCN = "http://www.w3.org/ns/locn#";
 	public final static String NS_ORG = "http://www.w3.org/ns/org#";
 	public final static String NS_ROV = "http://www.w3.org/TR/vocab-regorg/";
@@ -157,9 +155,7 @@ public abstract class AbstractRdfSerializer<RecordType extends AbstractRecord> e
 		
 		Element rdfElement = doc.createElementNS(NS_RDF, "rdf:RDF");
 		rdfElement.setAttribute("xmlns:rdf", NS_RDF);
-		rdfElement.setAttribute("xmlns:adms", NS_ADMS);
 		rdfElement.setAttribute("xmlns:dc", NS_DC);
-		rdfElement.setAttribute("xmlns:dcterms", NS_DCTERMS);
 		rdfElement.setAttribute("xmlns:locn", NS_LOCN);
 		rdfElement.setAttribute("xmlns:org", NS_ORG);
 		rdfElement.setAttribute("xmlns:rov", NS_ROV);

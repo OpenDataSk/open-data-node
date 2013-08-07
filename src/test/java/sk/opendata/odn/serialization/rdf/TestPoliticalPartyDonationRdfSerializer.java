@@ -23,9 +23,7 @@ public class TestPoliticalPartyDonationRdfSerializer {
 	
 	private final static String TEST_RESULT = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 			+ "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" "
-			+ "xmlns:adms=\"http://www.w3.org/ns/adms#\" "
 			+ "xmlns:dc=\"http://purl.org/dc/elements/1.1/\" "
-			+ "xmlns:dcterms=\"http://purl.org/dc/terms/\" "
 			+ "xmlns:locn=\"http://www.w3.org/ns/locn#\" "
 			+ "xmlns:opendata=\"http://sk.eea.opendata/2011/02/opendicts#\" "
 			+ "xmlns:org=\"http://www.w3.org/ns/org#\" "

@@ -39,6 +39,8 @@ import sk.opendata.odn.serialization.OdnSerializationException;
  */
 public class OrganizationRdfSerializer extends AbstractRdfSerializer<OrganizationRecord> {
 	
+	public final static String NS_ADMS = "http://www.w3.org/ns/adms#";
+	public final static String NS_DCTERMS = "http://purl.org/dc/terms/";
 	// One thing should have one URI. For Slovak companies it maybe will be this one even officially.
 	// URI might be understood this way:
 	// a) Slovak government has a dataset (http://data.gov.sk/...)
@@ -75,6 +77,12 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 			TransformerConfigurationException {
 	
 		super(repository);
+	}
+	
+	@Override
+	public void addCustomRdfNsElements(Element rdfElement) {
+		rdfElement.setAttribute("xmlns:adms", NS_ADMS);
+		rdfElement.setAttribute("xmlns:dcterms", NS_DCTERMS);
 	}
 	
 	@Override
