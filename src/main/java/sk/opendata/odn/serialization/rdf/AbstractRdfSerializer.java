@@ -54,11 +54,13 @@ public abstract class AbstractRdfSerializer<RecordType extends AbstractRecord> e
 		AbstractSerializer<RecordType, String, RdfData> {
 
 	public final static String NS_RDF = "http://www.w3.org/1999/02/22-rdf-syntax-ns#";
-	public final static String NS_SKOS = "http://www.w3.org/2004/02/skos/core#";
+	public final static String NS_ADMS = "http://www.w3.org/ns/adms#";
 	public final static String NS_DC = "http://purl.org/dc/elements/1.1/";
+	public final static String NS_DCTERMS = "http://purl.org/dc/terms/";
+	public final static String NS_LOCN = "http://www.w3.org/ns/locn#";
 	public final static String NS_ORG = "http://www.w3.org/ns/org#";
 	public final static String NS_ROV = "http://www.w3.org/TR/vocab-regorg/";
-	public final static String NS_LOCN = "http://www.w3.org/ns/locn#";
+	public final static String NS_SKOS = "http://www.w3.org/2004/02/skos/core#";
 	public final static String NS_OPENDATA = "http://sk.eea.opendata/2011/02/opendicts#";
 	
 	public final static String TAG_NAME_SKOS_CONCEPT = "skos:Concept";
@@ -125,7 +127,8 @@ public abstract class AbstractRdfSerializer<RecordType extends AbstractRecord> e
 	 * Serialize one given record into RDF and store the result in given
 	 * 'concept' (which in turn is in given 'doc').
 	 * 
-	 * @param doc
+	 * @param doc			+ "xmlns:dcterms=\"http://purl.org/dc/terms/\" "
+
 	 *            XML document we are serializing into
 	 * @param concept
 	 *            XML document element used to store the serialization of given
@@ -171,16 +174,21 @@ public abstract class AbstractRdfSerializer<RecordType extends AbstractRecord> e
 		
 		Element rdfElement = doc.createElementNS(NS_RDF, "rdf:RDF");
 		rdfElement.setAttribute("xmlns:rdf", NS_RDF);
-		rdfElement.setAttribute("xmlns:skos", NS_SKOS);
+		rdfElement.setAttribute("xmlns:adms", NS_ADMS);
 		rdfElement.setAttribute("xmlns:dc", NS_DC);
+		rdfElement.setAttribute("xmlns:dcterms", NS_DCTERMS);
+		rdfElement.setAttribute("xmlns:locn", NS_LOCN);
 		rdfElement.setAttribute("xmlns:org", NS_ORG);
 		rdfElement.setAttribute("xmlns:rov", NS_ROV);
-		rdfElement.setAttribute("xmlns:locn", NS_LOCN);
+		rdfElement.setAttribute("xmlns:skos", NS_SKOS);
 		rdfElement.setAttribute("xmlns:opendata", NS_OPENDATA);
 		addCustomRdfNsElements(rdfElement);
 		doc.appendChild(rdfElement);
 		
 		for (RecordType record : records) {
+			// TODO: OrganizationRdfSErializer is adding two cvhilds per record/ Thus it would be nicer to:
+			// a) move this 'concept' creation and "child appending" into 'serializeRecord()'
+			// b) thus also getting rid of 'getRecordTagName()'
 			Element concept = doc.createElement(getRecordTagName());
 			concept.setAttribute("rdf:about", getConceptRdfAbout(record));
 			serializeRecord(doc, concept, record);

@@ -84,10 +84,9 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 	    concept.appendChild(appendTextNode(doc, "skos:prefLabel", record.getProcurementId()));
 	    // TODO: hardcoded strings are not nice ... meaning the URL mainly but ...
 	    concept.appendChild(appendResourceNode(doc, "dc:source", "rdf:resource",
-	    		"http://datanest.fair-play.sk/datasets/2/records/" + record.getId()));
-		concept.appendChild(appendResourceNode(doc,
-				"opendata:xProcurementSubject", "rdf:resource",
-				record.getProcurementSubject()));
+	    		"http://datanest.fair-play.sk/datasets/2/records/" + record.getDatanestId()));
+		concept.appendChild(appendTextNode(doc,
+				"opendata:procurementSubject", record.getProcurementSubject()));
 		concept.appendChild(appendTextNode(doc, "pc:price",
 				priceFormat.format(record.getPrice())));
 		// sometimes the currency is not filled in the source (so far only for
@@ -97,12 +96,26 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 					record.getCurrency().getCurrencyCode()));
 		concept.appendChild(appendTextNode(doc, "opendata:xIsVatIncluded",
 				Boolean.toString(record.isVatIncluded())));
-		// TODO: use 'opendata:ico' child inside 'pc:buyerProfile' instead
+		// TODO:
+		// a) use 'opendata:customer' child inside 'pc:buyerProfile' instead
+		// b) remove 'opendata:customerIco' as it is superseded by 'opendata:customer'
 		concept.appendChild(appendTextNode(doc, "opendata:customerIco",
 				record.getCustomerIco()));
-		// TODO: use 'opendata:ico' child inside 'pc:Supplier' instead
+		concept.appendChild(appendResourceNode(
+				doc,
+				"opendata:customer",
+				"rdf:resource",
+				OrganizationRdfSerializer.ORGANIZATIONS_BASE_URI + record.getCustomerIco()));
+		// TODO:
+		// a) use 'opendata:customer' child inside 'pc:Supplier' instead
+		// b) remove 'opendata:customerIco' as it is superseded by 'opendata:customer'
 		concept.appendChild(appendTextNode(doc, "opendata:supplierIco",
 				record.getSupplierIco()));
+		concept.appendChild(appendResourceNode(
+				doc,
+				"opendata:supplier",
+				"rdf:resource",
+				OrganizationRdfSerializer.ORGANIZATIONS_BASE_URI + record.getSupplierIco()));
 		
 		for (String scrapNote : record.getScrapNotes())
 			concept.appendChild(appendTextNode(doc, "opendata:xScrapNote",

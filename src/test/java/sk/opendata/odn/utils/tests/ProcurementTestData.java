@@ -9,6 +9,7 @@ import sk.opendata.odn.model.Currency;
 public class ProcurementTestData {
 
 	public final static String TEST_ID = "procurement_0";
+	public final static String TEST_DATANEST_ID = "0";
 	public final static String TEST_PROCUREMENT_ID = "06281 - VUP";
 	public final static String TEST_PROCUREMENT_SUBJECT = "Rekonštrukcia ZŠ v obci Horná Dolná";
 	public final static String TEST_YEAR = "2012";

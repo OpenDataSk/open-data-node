@@ -23,7 +23,9 @@ public class TestPoliticalPartyDonationRdfSerializer {
 	
 	private final static String TEST_RESULT = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 			+ "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" "
+			+ "xmlns:adms=\"http://www.w3.org/ns/adms#\" "
 			+ "xmlns:dc=\"http://purl.org/dc/elements/1.1/\" "
+			+ "xmlns:dcterms=\"http://purl.org/dc/terms/\" "
 			+ "xmlns:locn=\"http://www.w3.org/ns/locn#\" "
 			+ "xmlns:opendata=\"http://sk.eea.opendata/2011/02/opendicts#\" "
 			+ "xmlns:org=\"http://www.w3.org/ns/org#\" "
@@ -31,12 +33,12 @@ public class TestPoliticalPartyDonationRdfSerializer {
 			+ "xmlns:skos=\"http://www.w3.org/2004/02/skos/core#\">\n"
 			+ "<skos:Concept rdf:about=\"http://opendata.sk/dataset/political_party_donations/donation_0\">\n"
 			+ "<skos:prefLabel>Testname Testsurname Mr. Testing Company  - 1.25 - Nezavisla Iniciativa Excentrikov</skos:prefLabel>\n"
-			+ "<dc:source rdf:resource=\"http://datanest.fair-play.sk/datasets/32/records/donation_0\"/>\n"
+			+ "<dc:source rdf:resource=\"http://datanest.fair-play.sk/datasets/32/records/0\"/>\n"
 			+ "<opendata:donorName>Testname</opendata:donorName>\n"
 			+ "<opendata:donorSurname>Testsurname</opendata:donorSurname>\n"
 			+ "<opendata:donorTitle>Mr.</opendata:donorTitle>\n"
 			+ "<opendata:donorCompanyName>Testing Company</opendata:donorCompanyName>\n"
-			+ "<opendata:donorCompany>http://data.gov.sk/id/interior/organization/17321204</opendata:donorCompany>\n"
+			+ "<opendata:donorCompany rdf:resource=\"http://data.gov.sk/id/interior/organization/17321204\"/>\n"
 			+ "<opendata:donorIco>17321204</opendata:donorIco>\n"
 			+ "<opendata:giftValue>1.25</opendata:giftValue>\n"
 			+ "<opendata:giftCurrency>EUR</opendata:giftCurrency>\n"
@@ -57,6 +59,7 @@ public class TestPoliticalPartyDonationRdfSerializer {
 		record.setDonorTitle(PoliticalPartyDonationTestData.TEST_DONOR_TITLE);
 		record.setIco(PoliticalPartyDonationTestData.TEST_DONOR_ICO);
 		record.setId(PoliticalPartyDonationTestData.TEST_ID);
+		record.setDatanestId(PoliticalPartyDonationTestData.TEST_DATANEST_ID);
 		record.setName(PoliticalPartyDonationTestData.TEST_DONOR_COMPANY);
 		record.setRecipientParty(PoliticalPartyDonationTestData.TEST_RECIPIENT_PARTY);
 		

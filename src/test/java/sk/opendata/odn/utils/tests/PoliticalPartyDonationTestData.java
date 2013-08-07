@@ -8,6 +8,7 @@ import sk.opendata.odn.model.Currency;
  */
 public class PoliticalPartyDonationTestData {
 
+	public final static String TEST_DATANEST_ID = "0";
 	public final static String TEST_ID = "donation_0";
 	public final static String TEST_DONOR_NAME = "Testname";
 	public final static String TEST_DONOR_SURNAME = "Testsurname";

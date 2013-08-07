@@ -14,7 +14,7 @@ public class OrganizationTestData {
 	public final static String TEST_DATE_FROM = "1991-07-17";
 	public final static String TEST_INVALID_DATE_FROM = "L991/07/1T";
 	public final static String TEST_DATE_TO = "2011-12-06";
-	public final static String TEST_SOURCE = "http://www.test.sk/test1";
+	public final static String TEST_SOURCE = "http://datanest.fair-play.sk/datasets/1/records/0";
 	public final static String TEST_LEGAL_FORM = "Spoločnosť s ručením obmedzeným";
 	public final static String TEST_EMPTY_STRING = "";
 	

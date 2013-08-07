@@ -47,6 +47,7 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 	// d) and contains information about organizations (.../organization/...)
 	// e) distinguished by ICO (the last thing appended to base URI: .../<ico>) 
 	public final static String ORGANIZATIONS_BASE_URI = "http://data.gov.sk/id/interior/organization/";
+	public final static String IDENTIFIERS_BASE_URI = "http://data.gov.sk/id/interior/identifier/";
 	public final static String OPENDATA_ORGANIZATIONS_CONTEXTS_KEY = "organizations";
 	
 	public final static String TAG_NAME_ORG_REGORG = "rov:RegisteredOrganization";
@@ -102,7 +103,11 @@ public class OrganizationRdfSerializer extends AbstractRdfSerializer<Organizatio
 	    Element primarySite = doc.createElement("org:registeredSite");
 	    primarySite.appendChild(address);
 	    concept.appendChild(primarySite);
-	    concept.appendChild(appendTextNode(doc, "opendata:ico", record.getIco()));
+		concept.appendChild(appendResourceNode(
+				doc,
+				"opendata:ico",
+				"rdf:resource",
+				IDENTIFIERS_BASE_URI + record.getIco()));
 	}
 	
 	@Override

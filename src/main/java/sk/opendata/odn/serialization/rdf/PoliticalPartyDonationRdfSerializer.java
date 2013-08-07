@@ -95,7 +95,7 @@ public class PoliticalPartyDonationRdfSerializer extends AbstractRdfSerializer<P
 				"dc:source",
 				"rdf:resource",
 				"http://datanest.fair-play.sk/datasets/32/records/"
-						+ record.getId()));
+						+ record.getDatanestId()));
 		// TODO: use FOAF for people and Good Relations for companies
 		// and use only URIs or something ... as a link - we have or will have
 		// organizations and people repository so the main point twill be the URI,
@@ -114,8 +114,12 @@ public class PoliticalPartyDonationRdfSerializer extends AbstractRdfSerializer<P
 			concept.appendChild(appendTextNode(doc, "opendata:donorCompanyName",
 					record.getName()));
 		if (record.getIco() != null) {
-			concept.appendChild(appendTextNode(doc, "opendata:donorCompany",
+			concept.appendChild(appendResourceNode(
+					doc,
+					"opendata:donorCompany",
+					"rdf:resource",
 					OrganizationRdfSerializer.ORGANIZATIONS_BASE_URI + record.getIco()));
+			
 			concept.appendChild(appendTextNode(doc, "opendata:donorIco",
 					record.getIco()));
 		}

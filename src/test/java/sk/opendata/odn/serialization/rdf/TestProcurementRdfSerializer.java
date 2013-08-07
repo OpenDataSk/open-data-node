@@ -23,7 +23,9 @@ public class TestProcurementRdfSerializer {
 	
 	private final static String TEST_RESULT = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>\n"
 			+ "<rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" "
+			+ "xmlns:adms=\"http://www.w3.org/ns/adms#\" "
 			+ "xmlns:dc=\"http://purl.org/dc/elements/1.1/\" "
+			+ "xmlns:dcterms=\"http://purl.org/dc/terms/\" "
 			+ "xmlns:locn=\"http://www.w3.org/ns/locn#\" "
 			+ "xmlns:opendata=\"http://sk.eea.opendata/2011/02/opendicts#\" "
 			+ "xmlns:org=\"http://www.w3.org/ns/org#\" "
@@ -32,13 +34,15 @@ public class TestProcurementRdfSerializer {
 			+ "xmlns:skos=\"http://www.w3.org/2004/02/skos/core#\">\n"
 			+ "<skos:Concept rdf:about=\"http://opendata.sk/dataset/procurements/procurement_0\">\n"
 			+ "<skos:prefLabel>06281 - VUP</skos:prefLabel>\n"
-			+ "<dc:source rdf:resource=\"http://datanest.fair-play.sk/datasets/2/records/procurement_0\"/>\n"
-			+ "<opendata:xProcurementSubject rdf:resource=\"Rekonštrukcia ZŠ v obci Horná Dolná\"/>\n"
+			+ "<dc:source rdf:resource=\"http://datanest.fair-play.sk/datasets/2/records/0\"/>\n"
+			+ "<opendata:procurementSubject>Rekonštrukcia ZŠ v obci Horná Dolná</opendata:procurementSubject>\n"
 			+ "<pc:price>1.25</pc:price>\n"
 			+ "<opendata:currency>EUR</opendata:currency>\n"
 			+ "<opendata:xIsVatIncluded>false</opendata:xIsVatIncluded>\n"
 			+ "<opendata:customerIco>17321204</opendata:customerIco>\n"
+			+ "<opendata:customer rdf:resource=\"http://data.gov.sk/id/interior/organization/17321204\"/>\n"
 			+ "<opendata:supplierIco>40212371</opendata:supplierIco>\n"
+			+ "<opendata:supplier rdf:resource=\"http://data.gov.sk/id/interior/organization/40212371\"/>\n"
 			+ "</skos:Concept>\n"
 			+ "</rdf:RDF>\n";
 
@@ -47,6 +51,7 @@ public class TestProcurementRdfSerializer {
 		Calendar date = Calendar.getInstance();
 		date.set(2013, 8, 1);
 		record.setId(ProcurementTestData.TEST_ID);
+		record.setDatanestId(ProcurementTestData.TEST_DATANEST_ID);
 		record.setCurrency(ProcurementTestData.TEST_CURRENCY);
 		record.setCustomerIco(ProcurementTestData.TEST_CUSTOMER_ICO);
 		record.setPrice(ProcurementTestData.TEST_PRICE);
