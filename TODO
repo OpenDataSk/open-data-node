@@ -1,12 +1,7 @@
 Things to do (a.k.a. "road map"):
 ---------------------------------
 
-a) update the RDF schema used in Sesame repository to be in line with proposal
-   from Working Group PS1 of Slovak Standardization Committee associated with
-   Ministry of Finance, see
-   http://utopia.sk/wiki/pages/viewpage.action?pageId=32309648
-
-b) Jackrabbit as back-end repository for:
+a) Jackrabbit as back-end repository for:
 
    1) storage of whole "original" (as downloaded) documents:
    
@@ -22,7 +17,7 @@ b) Jackrabbit as back-end repository for:
       
       b) further publication/replication of data: OAI-PMH, APIs, ...
 
-c) document presentation layer: using processed documents from Jackrabbit - we
+b) document presentation layer: using processed documents from Jackrabbit - we
    need to implement "pages" which will display details about organizations, procurement,
    ... so that we can link to them (from search pages, from anywhere else)
    - needed feature: SOA friendly URLs like http://opendata.sk/dataset/organizations/<org_id>
@@ -30,7 +25,7 @@ c) document presentation layer: using processed documents from Jackrabbit - we
      .../<org_id>
    - idea: assuming processed documents are XML, we can employ XSLT to produce HTML
 
-d) some simple GUI for full-text searching using SOLR
+c) some simple GUI for full-text searching using SOLR
 
    1) for organizations:
       searching using name and surname, organization name or ICO
@@ -40,21 +35,21 @@ d) some simple GUI for full-text searching using SOLR
    
    n) this also means creating proper SOLR schema!
 
-e) GUI for "advanced search" using SOLR syntax with some "prepared examples"
+d) GUI for "advanced search" using SOLR syntax with some "prepared examples"
    (in a form of link: after link is clicked, search term is filled in and
    search results are updated - each field and data type should be covered, like
    "zakladne imanie: from 10 to 100 €" etc.)
 
-f) find out the best value for 'datanest.organizations.batch_size', "best"
+e) find out the best value for 'datanest.organizations.batch_size', "best"
    meaning "quickest addition of all records into repository" - currently it
    takes around 6-8 hourse to add all items which slows down development and
    testing
 
-g) adding more harvesters: direct harvesting of ORSR to get more data
+f) adding more harvesters: direct harvesting of ORSR to get more data
    about companies, direct harvesting of procurement portals to have
    a shot by getting more data from the scanned documents themselves, ...
 
-h) transform the existing application into something like container
+g) transform the existing application into something like container
    or whatever (maybe even using OSGI) so that it loads and runs
    Harvester and other components (as sort of plug-ins)
 
@@ -66,4 +61,4 @@ h) transform the existing application into something like container
        not need certain harvesters and APIs so there would be a way to
        configure and deploy ODN to meet that criteria)
 
-i) ...
+h) ...
