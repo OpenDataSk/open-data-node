@@ -52,12 +52,13 @@ PREFIX pc:<http://opendata.cz/vocabulary/procurement.rdf#>
 SELECT *
 WHERE {
    GRAPH <http://opendata.sk/datanest/procurements/> {
-    ?supplier opendata:supplierIco ?suspectIco .
+    ?supplier opendata:supplier ?someCompany .
   }
    GRAPH <http://opendata.sk/datanest/political_party_donations/> {
-    ?donor opendata:donorIco ?suspectIco .
+    ?donor opendata:donorCompany ?someCompany .
   }
 }
+
 
 thus TODO: Which query is more efficient?
 (note: If the second query is more efficient - i.e. quicker execution - then it would

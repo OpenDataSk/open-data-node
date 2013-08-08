@@ -125,9 +125,6 @@ public class PoliticalPartyDonationRdfSerializer extends AbstractRdfSerializer<P
 					"opendata:donorCompany",
 					"rdf:resource",
 					OrganizationRdfSerializer.ORGANIZATIONS_BASE_URI + record.getIco()));
-			
-			concept.appendChild(appendTextNode(doc, "opendata:donorIco",
-					record.getIco()));
 		}
 		// TODO: adresa, mesto a PSC darcu
 		

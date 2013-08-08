@@ -37,7 +37,6 @@ public class TestPoliticalPartyDonationRdfSerializer {
 			+ "<opendata:donorTitle>Mr.</opendata:donorTitle>\n"
 			+ "<opendata:donorCompanyName>Testing Company</opendata:donorCompanyName>\n"
 			+ "<opendata:donorCompany rdf:resource=\"http://data.gov.sk/id/interior/organization/17321204\"/>\n"
-			+ "<opendata:donorIco>17321204</opendata:donorIco>\n"
 			+ "<opendata:giftValue>1.25</opendata:giftValue>\n"
 			+ "<opendata:giftCurrency>EUR</opendata:giftCurrency>\n"
 			+ "<opendata:recipientParty>Nezavisla Iniciativa Excentrikov</opendata:recipientParty>\n"

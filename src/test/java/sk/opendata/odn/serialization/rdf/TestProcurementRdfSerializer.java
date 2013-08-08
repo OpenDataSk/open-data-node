@@ -37,9 +37,7 @@ public class TestProcurementRdfSerializer {
 			+ "<pc:price>1.25</pc:price>\n"
 			+ "<opendata:currency>EUR</opendata:currency>\n"
 			+ "<opendata:xIsVatIncluded>false</opendata:xIsVatIncluded>\n"
-			+ "<opendata:customerIco>17321204</opendata:customerIco>\n"
 			+ "<opendata:customer rdf:resource=\"http://data.gov.sk/id/interior/organization/17321204\"/>\n"
-			+ "<opendata:supplierIco>40212371</opendata:supplierIco>\n"
 			+ "<opendata:supplier rdf:resource=\"http://data.gov.sk/id/interior/organization/40212371\"/>\n"
 			+ "</skos:Concept>\n"
 			+ "</rdf:RDF>\n";

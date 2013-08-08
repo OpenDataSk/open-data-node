@@ -102,21 +102,13 @@ public class ProcurementRdfSerializer extends AbstractRdfSerializer<ProcurementR
 					record.getCurrency().getCurrencyCode()));
 		concept.appendChild(appendTextNode(doc, "opendata:xIsVatIncluded",
 				Boolean.toString(record.isVatIncluded())));
-		// TODO:
-		// a) use 'opendata:customer' child inside 'pc:buyerProfile' instead
-		// b) remove 'opendata:customerIco' as it is superseded by 'opendata:customer'
-		concept.appendChild(appendTextNode(doc, "opendata:customerIco",
-				record.getCustomerIco()));
+		// TODO: use 'opendata:customer' child inside 'pc:buyerProfile' instead
 		concept.appendChild(appendResourceNode(
 				doc,
 				"opendata:customer",
 				"rdf:resource",
 				OrganizationRdfSerializer.ORGANIZATIONS_BASE_URI + record.getCustomerIco()));
-		// TODO:
-		// a) use 'opendata:customer' child inside 'pc:Supplier' instead
-		// b) remove 'opendata:customerIco' as it is superseded by 'opendata:customer'
-		concept.appendChild(appendTextNode(doc, "opendata:supplierIco",
-				record.getSupplierIco()));
+		// TODO: use 'opendata:customer' child inside 'pc:Supplier' instead
 		concept.appendChild(appendResourceNode(
 				doc,
 				"opendata:supplier",
