@@ -43,7 +43,7 @@ d) GUI for "advanced search" using SOLR syntax with some "prepared examples"
 
 e) find out the best value for 'datanest.organizations.batch_size', "best"
    meaning "quickest addition of all records into repository" - currently it
-   takes around 6-8 hourse to add all items which slows down development and
+   takes around 6-8 hours to add all items which slows down development and
    testing
 
 f) adding more harvesters: direct harvesting of ORSR to get more data
