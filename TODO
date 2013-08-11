@@ -25,7 +25,8 @@ b) document presentation layer: using processed documents from Jackrabbit - we
      .../<org_id>
    - idea: assuming processed documents are XML, we can employ XSLT to produce HTML
 
-c) some simple GUI for full-text searching using SOLR
+c) some simple GUI for full-text searching using SOLR (started at
+   https://github.com/OpenDataSk/odn-search)
 
    1) for organizations:
       searching using name and surname, organization name or ICO
