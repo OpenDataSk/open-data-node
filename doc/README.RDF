@@ -30,8 +30,8 @@ PREFIX pc:<http://opendata.cz/vocabulary/procurement.rdf#>
 SELECT *
 WHERE {
    GRAPH <http://opendata.sk/datanest/> {
-    ?supplier opendata:supplierIco ?suspectIco .
-    ?donor opendata:xDonorIco ?suspectIco .
+    ?supplier opendata:supplier ?someCompany .
+    ?donor opendata:donorCompany ?someCompany .
   }
 }
 
