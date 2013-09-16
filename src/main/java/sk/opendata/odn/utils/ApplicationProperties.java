@@ -27,15 +27,13 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import sk.opendata.odn.harvester.datanest.AbstractDatanestHarvester;
-
 public class ApplicationProperties extends Properties {
 	
 	private static final long serialVersionUID = 4684911806029642651L;
 
 	public final String ODN_PROPERTY_SUBDIR = ".odn";
 	
-	private static Logger logger = LoggerFactory.getLogger(AbstractDatanestHarvester.class);
+	private static Logger logger = LoggerFactory.getLogger(ApplicationProperties.class);
 	private static Hashtable<String, ApplicationProperties> instances = new Hashtable<String, ApplicationProperties>();
 	
 	private ApplicationProperties(String propertiesFileName) throws IOException {
