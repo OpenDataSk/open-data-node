@@ -44,4 +44,6 @@ d) transform the existing application into something like container
        not need certain harvesters and APIs so there would be a way to
        configure and deploy ODN to meet that criteria)
 
+   Use ODCleanStore2 for that as it already does precisely that. 
+
 e) ...
