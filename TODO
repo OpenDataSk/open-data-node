@@ -24,6 +24,9 @@ b) document presentation layer: using processed documents from Jackrabbit - we
      possibly with also http://opendata.sk/dataset/organizations/<ico> redirecting to
      .../<org_id>
    - idea: assuming processed documents are XML, we can employ XSLT to produce HTML
+   
+   note: This might/should be reused by ODN Search i.e. that's where
+   the search results should point to.
 
 c) some simple GUI for full-text searching using SOLR (started at
    https://github.com/OpenDataSk/odn-search)
