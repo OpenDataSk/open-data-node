@@ -28,16 +28,11 @@ b) document presentation layer: using processed documents from Jackrabbit - we
    note: This might/should be reused by ODN Search i.e. that's where
    the search results should point to.
 
-c) GUI for "advanced search" using SOLR syntax with some "prepared examples"
-   (in a form of link: after link is clicked, search term is filled in and
-   search results are updated - each field and data type should be covered, like
-   "zakladne imanie: from 10 to 100 €" etc.)
-
-d) adding more harvesters: direct harvesting of ORSR to get more data
+c) adding more harvesters: direct harvesting of ORSR to get more data
    about companies, direct harvesting of procurement portals to have
    a shot by getting more data from the scanned documents themselves, ...
 
-e) transform the existing application into something like container
+d) transform the existing application into something like container
    or whatever (maybe even using OSGI) so that it loads and runs
    Harvester and other components (as sort of plug-ins)
 
@@ -49,4 +44,4 @@ e) transform the existing application into something like container
        not need certain harvesters and APIs so there would be a way to
        configure and deploy ODN to meet that criteria)
 
-f) ...
+e) ...
