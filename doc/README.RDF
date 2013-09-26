@@ -18,7 +18,7 @@ Example SPARQL query:
 What companies are both giving donations to political parties and participating
 in public procurement?
 
-Go to http://ohio.in.eea.sk:8080/openrdf-workbench/repositories/datanest-combined/query
+Go to http://localhost:8080/openrdf-workbench/repositories/datanest-combined/query
 and submit following query:
 
 PREFIX dc:<http://purl.org/dc/elements/1.1/>
