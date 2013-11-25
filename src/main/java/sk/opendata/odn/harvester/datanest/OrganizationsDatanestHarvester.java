@@ -48,13 +48,13 @@ public class OrganizationsDatanestHarvester extends
 	public final static String KEY_DATANEST_ORGANIZATIONS_URL_KEY = "datanest.organizations.url";
 	
 	protected final static int ATTR_INDEX_ID = 0;
-	protected final static int ATTR_INDEX_NAME = 1;
-	protected final static int ATTR_INDEX_SEAT = 3;
-	protected final static int ATTR_INDEX_LEGAL_FORM = 4;
-	protected final static int ATTR_INDEX_ICO = 2;
-	protected final static int ATTR_INDEX_DATE_FROM = 6;
-	protected final static int ATTR_INDEX_DATE_TO = 7;
-	protected final static int ATTR_INDEX_SOURCE = 13;
+	protected final static int ATTR_INDEX_NAME = 2;
+	protected final static int ATTR_INDEX_SEAT = 4;
+	protected final static int ATTR_INDEX_LEGAL_FORM = 5;
+	protected final static int ATTR_INDEX_ICO = 3;
+	protected final static int ATTR_INDEX_DATE_FROM = 7;
+	protected final static int ATTR_INDEX_DATE_TO = 8;
+	protected final static int ATTR_INDEX_SOURCE = 14;
 	
 	private static Logger logger = LoggerFactory.getLogger(OrganizationsDatanestHarvester.class);
 
