@@ -43,9 +43,11 @@ public class SolrRepository implements OdnRepositoryStoreInterface<List<SolrItem
 	public final static String SOLR_REPOSITORY_PROPERTIES_NAME = "/repo-solr.properties";
 	public final static String KEY_DEBUG_DUMP = "solr.debug.dump";
 	public final static String KEY_REPO_URL = "solr.repo.url";
+	public final static String KEY_REPO_ENABLED = "solr.repo.enabled";
 
 	private static Logger logger = LoggerFactory.getLogger(SolrRepository.class);
 	private ApplicationProperties srProperties = null;
+	private boolean enabled = false;
 	private SolrServer solrServer = null;
 
 	private static SolrRepository instance = null;
@@ -62,9 +64,14 @@ public class SolrRepository implements OdnRepositoryStoreInterface<List<SolrItem
 				.getInstance(SOLR_REPOSITORY_PROPERTIES_NAME);
 
 		// initialize SOLR server connection
-		String solrServerUrl = srProperties.getProperty(KEY_REPO_URL);
-		solrServer = new HttpSolrServer(solrServerUrl);
-		logger.info("index '" + solrServerUrl + "' initialized");
+		enabled = Boolean.valueOf(srProperties.getProperty(KEY_REPO_ENABLED));
+		if (enabled) {
+			String solrServerUrl = srProperties.getProperty(KEY_REPO_URL);
+			solrServer = new HttpSolrServer(solrServerUrl);
+			logger.info("SOLR index '" + solrServerUrl + "' initialized");
+		}
+		else
+			logger.info("SOLR index disabled");
 	}
 
 	/**
@@ -114,6 +121,10 @@ public class SolrRepository implements OdnRepositoryStoreInterface<List<SolrItem
 	@Override
 	public void store(List<SolrItem> records)
 			throws IllegalArgumentException, OdnRepositoryException {
+		
+		if (!enabled)
+			// disabled => do not store anything
+			return;
 		
 		OdnRepositoryException odnRepoException = null;
 
