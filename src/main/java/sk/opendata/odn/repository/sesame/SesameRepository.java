@@ -47,11 +47,13 @@ public class SesameRepository implements OdnRepositoryStoreInterface<RdfData> {
 	public final static String KEY_DEBUG_DUMP_RDF = "sesame.debug.dump_rdf";
 	public final static String PREFIX_KEY_REPO = "sesame.repo.";
 	public final static String KEY_SERVER = PREFIX_KEY_REPO + "server";
+	public final static String KEY_REPO_ENABLED = PREFIX_KEY_REPO + "enabled";
 	public final static String KEY_ID = PREFIX_KEY_REPO + "id";
 	public final static String PREFIX_KEY_CONTEXTS = PREFIX_KEY_REPO + "contexts.";
 
 	private static Logger logger = LoggerFactory.getLogger(SesameRepository.class);
 	private ApplicationProperties srProperties = null;
+	private boolean enabled = false;
 	private HTTPRepository sesameRepo = null;
 
 	private static SesameRepository instance = null;
@@ -66,6 +68,9 @@ public class SesameRepository implements OdnRepositoryStoreInterface<RdfData> {
 		// load properties
 		srProperties = ApplicationProperties
 				.getInstance(SESAME_REPOSITORY_PROPERTIES_NAME);
+		enabled = Boolean.valueOf(srProperties.getProperty(KEY_REPO_ENABLED));
+		if (!enabled)
+			logger.info("Sesame repository disabled");
 	}
 
 	/**
@@ -92,6 +97,7 @@ public class SesameRepository implements OdnRepositoryStoreInterface<RdfData> {
 	 */
 	private HTTPRepository initRepo() throws RepositoryException {
 
+		enabled = Boolean.valueOf(srProperties.getProperty(KEY_REPO_ENABLED));
 		String repoServer = srProperties.getProperty(KEY_SERVER);
 		String repoID = srProperties.getProperty(KEY_ID);
 
@@ -170,6 +176,10 @@ public class SesameRepository implements OdnRepositoryStoreInterface<RdfData> {
 	public void store(RdfData records)
 			throws IllegalArgumentException, OdnRepositoryException {
 
+		if (!enabled)
+			// disabled => do not store anything
+			return;
+		
 		OdnRepositoryException odnRepoException = null;
 		RepositoryConnection connection = null;
 

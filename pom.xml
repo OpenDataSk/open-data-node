@@ -108,13 +108,18 @@
 		</dependency>
 
 		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>jta</artifactId>
+			<version>1.1</version>
+		</dependency>
+		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
 			<version>${quartz.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
-			<artifactId>quartz-jboss</artifactId>
+			<artifactId>quartz-jobs</artifactId>
 			<version>${quartz.version}</version>
 		</dependency>
 
@@ -193,7 +198,7 @@
 		<jackrabbit.version>2.2.13</jackrabbit.version>
 		<jetty.version>6.1.26</jetty.version>
 		<log4j.version>1.2.17</log4j.version>
-		<quartz.version>2.1.7</quartz.version>
+		<quartz.version>2.2.1</quartz.version>
 		<sesame.version>2.7.11</sesame.version>
 		<slf4j.version>1.6.6</slf4j.version>
 		<solr.version>3.6.2</solr.version>
