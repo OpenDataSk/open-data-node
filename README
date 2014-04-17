@@ -5,6 +5,17 @@ This is a proof-of-concept implementation of Open Data Node
 (http://opendata.sk/liferay/open-data-node).
 
 
+Branching:
+----------
+
+Please follow git flow model:
+
+http://nvie.com/posts/a-successful-git-branching-model/
+
+http://danielkummer.github.io/git-flow-cheatsheet/
+
+
+
 License:
 --------
 
