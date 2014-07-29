@@ -4,7 +4,7 @@
 	<groupId>sk.opendata</groupId>
 	<artifactId>open-data-node</artifactId>
 	<packaging>war</packaging>
-	<version>0.1.3-SNAPSHOT</version>
+	<version>0.1.4-SNAPSHOT</version>
 	<name>Open Data Node</name>
 	<description>proof-of-concept implementation of Open Data Node</description>
 
