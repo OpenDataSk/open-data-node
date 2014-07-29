@@ -44,12 +44,12 @@ import sk.opendata.odn.utils.ApplicationProperties;
 public class SesameRepository implements OdnRepositoryStoreInterface<RdfData> {
 
 	public final static String SESAME_REPOSITORY_PROPERTIES_NAME = "/repo-sesame.properties";
-	public final static String KEY_DEBUG_DUMP_RDF = "sesame.debug.dump_rdf";
 	public final static String PREFIX_KEY_REPO = "sesame.repo.";
 	public final static String KEY_SERVER = PREFIX_KEY_REPO + "server";
 	public final static String KEY_REPO_ENABLED = PREFIX_KEY_REPO + "enabled";
 	public final static String KEY_ID = PREFIX_KEY_REPO + "id";
-	public final static String PREFIX_KEY_CONTEXTS = PREFIX_KEY_REPO + "contexts.";
+	public final static String PREFIX_KEY_CONTEXTS = "sesame.contexts.";
+	public final static String PREFIX_KEY_RDF_DUMP = "sesame.rdf_dump.";
 
 	private static Logger logger = LoggerFactory.getLogger(SesameRepository.class);
 	private ApplicationProperties srProperties = null;
@@ -122,9 +122,9 @@ public class SesameRepository implements OdnRepositoryStoreInterface<RdfData> {
 		return repo;
 	}
 
-	private void debugRdfDump(String rdfData) {
+	private void rdfDump(String fn, String rdfData) {
 		try {
-			File dumpFile = File.createTempFile("odn-", ".rdf");
+			File dumpFile = new File(fn);
 			BufferedWriter out = new BufferedWriter(new FileWriter(dumpFile));
 			out.write(rdfData);
 			out.close();
@@ -188,8 +188,10 @@ public class SesameRepository implements OdnRepositoryStoreInterface<RdfData> {
 			if (repo == null)
 				throw new IllegalArgumentException("Sesame repository not found");
 
-			URI[] contexts = determineRdfContexts(records.getRdfContextsKey(),
+			URI[] contexts = determineRdfContexts(records.getPropKey(),
 					repo.getValueFactory());
+			String rdfDumpFn = srProperties.getProperty(PREFIX_KEY_RDF_DUMP
+					+ records.getPropKey());
 
 			connection = repo.getConnection();
 
@@ -210,8 +212,8 @@ public class SesameRepository implements OdnRepositoryStoreInterface<RdfData> {
 			logger.info("pushed " + records.getRdfData().length()
 					+ " characters of RDF into the Sesame repository");
 
-			if (Boolean.valueOf(srProperties.getProperty(KEY_DEBUG_DUMP_RDF)))
-				debugRdfDump(records.getRdfData());
+			if (rdfDumpFn != null && !rdfDumpFn.isEmpty())
+				rdfDump(rdfDumpFn, records.getRdfData());
 		} catch (RepositoryException e) {
 			logger.error("repository exception", e);
 			odnRepoException = new OdnRepositoryException(e.getMessage(), e);

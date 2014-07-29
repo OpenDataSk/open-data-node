@@ -25,7 +25,7 @@ package sk.opendata.odn.repository.sesame;
 public class RdfData {
 	private String rdfData;
 	private String rdfBaseURI;
-	private String rdfContextsKey;
+	private String propKey;
 	
 	/**
 	 * Construct contained holding data necessary to perform storage operation.
@@ -34,16 +34,17 @@ public class RdfData {
 	 *            RDF data to store
 	 * @param rdfBaseURI
 	 *            base URI of the RDF data
-	 * @param rdfContextsKey
-	 *            property name used to retrieve context(s) of the RDF data,
-	 *            {@code null} means "no context"
+	 * @param propKey
+	 *            property name used to retrieve context(s) of the RDF data and
+	 *            other settings from properties, ({@code null} means
+	 *            "no context", etc.)
 	 */
 	public RdfData(String rdfData, String rdfBaseURI,
-			String rdfContextsKey) {
+			String propKey) {
 		
 		this.rdfData = rdfData;
 		this.rdfBaseURI = rdfBaseURI;
-		this.rdfContextsKey = rdfContextsKey;
+		this.propKey = propKey;
 	}
 
 	public String getRdfData() {
@@ -62,11 +63,11 @@ public class RdfData {
 		this.rdfBaseURI = rdfBaseURI;
 	}
 
-	public String getRdfContextsKey() {
-		return rdfContextsKey;
+	public String getPropKey() {
+		return propKey;
 	}
 
-	public void setRdfContextsKey(String rdfContextsKey) {
-		this.rdfContextsKey = rdfContextsKey;
+	public void setPropKey(String rdfContextsKey) {
+		this.propKey = rdfContextsKey;
 	}
 }
