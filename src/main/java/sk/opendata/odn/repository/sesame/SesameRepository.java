@@ -49,7 +49,7 @@ public class SesameRepository implements OdnRepositoryStoreInterface<RdfData> {
 	public final static String KEY_SERVER = PREFIX_KEY_REPO + "server";
 	public final static String KEY_REPO_ENABLED = PREFIX_KEY_REPO + "enabled";
 	public final static String KEY_ID = PREFIX_KEY_REPO + "id";
-	public final static String PREFIX_KEY_CONTEXTS = PREFIX_KEY_REPO + "contexts.";
+	public final static String PREFIX_KEY_CONTEXTS = "sesame.contexts.";
 
 	private static Logger logger = LoggerFactory.getLogger(SesameRepository.class);
 	private ApplicationProperties srProperties = null;
